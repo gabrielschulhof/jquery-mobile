@@ -200,7 +200,9 @@ $.testHelper.delayStart();
 				// wait for the scrollstop to fire and for the scroll to be
 				// recorded 100 ms afterward (see changes made to handle hash
 				// scrolling in some browsers)
-				setTimeout( navigateTestRoot, 500 );
+				setTimeout( function() {
+					$.mobile.changePage( "external-scroll-test.html" );
+				}, 500 );
 			},
 
 			function(){
@@ -212,9 +214,11 @@ $.testHelper.delayStart();
 				setTimeout(function() {
 					deepEqual( $(window).scrollTop(), 300, "scrollTop is 300 after returning to the page" );
 					$( "body" ).height( "" );
-					start();
+					history.back();
 				}, 300 );
-			}
+			},
+
+			start
 		]);
 	});
 
