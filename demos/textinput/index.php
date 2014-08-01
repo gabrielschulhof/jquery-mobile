@@ -11,6 +11,38 @@
     <script src="../../external/jquery/jquery.js"></script>
     <script src="../_assets/js/"></script>
     <script src="../../js/"></script>
+	<script id="email-with-custom-action-script">
+		$( document )
+			.on( "popupcreate", "#address-book-listbox", function() {
+
+				// Center address book in window
+				$( "#address-book-listbox" ).popup( "option", "positionTo", "window" );
+			})
+			.on( "change", "#address-book", function() {
+				var input = $( "#email-custom-1" ),
+					currentValue = input.val(),
+					newEmail = $( "#address-book" ).val();
+
+				// Append the email address chosen from the select menu to the input
+				input.val( currentValue + ( currentValue.match( /;$/ ) || !currentValue ?
+					( newEmail + ";" ) : ( ";" + newEmail ) ) );
+			});
+	</script>
+	<style id="email-with-custom-action-style">
+
+		/* Remove the margins for the select menu wrapper */
+		#insert-address > .ui-select {
+			margin: 0;
+		}
+
+		/* Convey the background/border settings imparted to the #insert-address div by the
+		   .ui-input-action class down through the DOM to the anchor created by the select menu */
+		#insert-address > .ui-select,
+		#insert-address > .ui-select > a {
+			border: inherit;
+			background: inherit;
+		}
+	</style>
 </head>
 <body>
 <div data-role="page" class="jqm-demos" data-quicklinks="true">
@@ -166,6 +198,24 @@
             <input type="email" data-clear-btn="true" name="email-2" id="email-2" value="">
         </form>
         </div><!-- /demo-html -->
+
+		<h2>Email with custom action</h2>
+
+		<div data-demo-html="true" data-demo-js="#email-with-custom-action-script" data-demo-css="#email-with-custom-action-style">
+			<form>
+				<label for="email-custom-1">Email:</label>
+				<input type="email" data-action="#insert-address" name="email-custom-1" id="email-custom-1" value="">
+				<div id="insert-address">
+					<select id="address-book" data-icon="grid" data-iconpos="notext" data-native-menu="false" data-shadow="false">
+						<option data-placeholder="true">Address Book</option>
+						<option value="martin.zimmerman@example.com">Martin Zimmerman</option>
+						<option value="sebastian.turner@example.com">Sebastian Turner</option>
+						<option value="eileen.parenteau@example.com">Eileen Parenteau</option>
+						<option value="jeoffrey.robbins@example.com">Jeoffrey Robbins</option>
+					</select>
+				</div>
+			</form>
+		</div>
 
         <h2>URL</h2>
 
