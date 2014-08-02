@@ -44,6 +44,9 @@ textarea.ui-mini {
 textarea.ui-mini {
 	margin: .446em 0;
 }
+
+/* TODO: ui-input-has-clear and ui-input-clear are deprecated as of 1.5.0 and will be removed in
+   1.6.0 */
 .ui-input-has-clear,
 .ui-input-search {
 	position: relative;

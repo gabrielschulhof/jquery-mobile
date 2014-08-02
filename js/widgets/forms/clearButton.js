@@ -7,7 +7,7 @@
 
 define( [
 	"jquery",
-	"./textinput" ], function( jQuery ) {
+	"./textinput.action" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
 
@@ -25,11 +25,12 @@ define( [
 			}
 		},
 
+		// TODO: Adding class ui-input-clear is deprecated as of 1.5.0 and will be removed in 1.6.0
 		clearButton: function() {
-
-			return $( "<a href='#' class='ui-input-clear ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all" +
-    "' title='" + this.options.clearBtnText + "'>" + this.options.clearBtnText + "</a>" );
-
+			return $( "<a href='#' " +
+				"class='ui-btn ui-input-clear ui-icon-delete ui-btn-icon-notext ui-corner-all' " +
+				"title='" + this.options.clearBtnText + "'></a>" )
+					.text( this.options.clearBtnText );
 		},
 
 		_clearBtnClick: function( event ) {
@@ -37,36 +38,32 @@ define( [
 					.focus()
 					.trigger( "change" );
 
-			this._clearBtn.addClass( "ui-input-clear-hidden" );
+			this.actionVisible( false );
+
+			// TODO: Adding class ui-input-clear-hidden is deprecated as of 1.5.0 and will be
+			// removed in 1.6.0
+			this._action.addClass( "ui-input-clear-hidden" );
 			event.preventDefault();
 		},
 
 		_addClearBtn: function() {
-
 			if ( !this.options.enhanced ) {
 				this._enhanceClear();
 			}
-
-			$.extend( this, {
-				_clearBtn: this.widget().find("a.ui-input-clear")
-			});
-
 			this._bindClearEvents();
-
 			this._toggleClear();
-
 		},
 
 		_enhanceClear: function() {
+			this.option( "action", this.clearButton() );
 
-			this.clearButton().appendTo( this.widget() );
+			// TODO: Adding class ui-input-has-clear is deprecated as of 1.5.0 and will be removed
+			// in 1.6.0
 			this.widget().addClass( "ui-input-has-clear" );
-
 		},
 
 		_bindClearEvents: function() {
-
-			this._on( this._clearBtn, {
+			this._on( this._action, {
 				"click": "_clearBtnClick"
 			});
 
@@ -78,13 +75,12 @@ define( [
 				"blur": "_toggleClear",
 				"cut": "_toggleClear",
 				"paste": "_toggleClear"
-
 			});
 
 		},
 
 		_unbindClear: function() {
-			this._off( this._clearBtn, "click");
+			this._off( this._action, "click");
 			this._off( this.element, "keyup change input focus blur cut paste" );
 		},
 
@@ -100,24 +96,30 @@ define( [
 				}
 			}
 
-			if ( options.clearBtnText !== undefined && this._clearBtn !== undefined ) {
-				this._clearBtn.text( options.clearBtnText )
+			if ( options.clearBtnText !== undefined && this._action !== undefined ) {
+				this._action.text( options.clearBtnText )
 					.attr("title", options.clearBtnText);
 			}
 		},
 
 		_toggleClear: function() {
+
+			// TODO: Class ui-input-clear-hidden is deprecated as of 1.5.0 and will be removed in
+			// 1.6.0
+			this._action.toggleClass( "ui-input-clear-hidden", !this.element.val() );
 			this._delay( "_toggleClearClass", 0 );
 		},
 
 		_toggleClearClass: function() {
-			this._clearBtn.toggleClass( "ui-input-clear-hidden", !this.element.val() );
+			this.actionVisible( !!this.element.val() );
 		},
 
 		_destroyClear: function() {
+
+			// TODO: Class ui-input-has-clear is deprecated as of 1.5.0 and will be gone in 1.6.0
 			this.widget().removeClass( "ui-input-has-clear" );
 			this._unbindClear();
-			this._clearBtn.remove();
+			this.option( "action", null );
 		},
 
 		_destroy: function() {
