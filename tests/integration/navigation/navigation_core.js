@@ -51,6 +51,27 @@ $.testHelper.delayStart();
 		}
 	});
 
+	asyncTest( "Going to a page requiring url encoding works", function() {
+		$.testHelper.pageSequence([
+			function() {
+				$( "#goToPercentPage" ).click();
+			},
+			function() {
+				var locationHref = $.mobile.path.getLocation();
+
+				deepEqual( $.mobile.activePage.children( "#percentPageChild" ).length, 1,
+					"Active page is the one loaded from the directory with a percent symbol" );
+
+				deepEqual(
+					locationHref.lastIndexOf( "100%25test/index.html" ),
+					locationHref.length - 21,
+					"Location ends in '100%25test/index.html'" );
+				$.mobile.back();
+			},
+			start
+		]);
+	});
+
 	asyncTest( "window.history.back() from external to internal page", function(){
 		$.testHelper.pageSequence([
 			// open our test page
