@@ -34,23 +34,26 @@ return $.widget( "mobile.navbar", {
 	version: "@VERSION",
 
 	options: {
+		classes: {},
 		iconpos: "top",
 		grid: null
 	},
 
 	_create: function() {
 
-		var $navbar = this.element,
-			$navbuttons = $navbar.find( "a, button" ),
-			iconpos = $navbuttons.filter( ":jqmData(icon)" ).length ? this.options.iconpos : undefined;
+		var that = this,
+			navbar = this.element,
+			navbuttons = navbar.find( "a, button" ),
+			iconpos = navbuttons.filter( ":jqmData(icon)" ).length ? this.options.iconpos : undefined;
 
-		$navbar.addClass( "ui-navbar" )
+		this._addClass( navbar, "ui-navbar" );
+		navbar
 			.attr( "role", "navigation" )
 			.find( "ul" )
 			.jqmEnhanceable()
 			.grid({ grid: this.options.grid });
 
-		$navbuttons
+		navbuttons
 			.each( function() {
 				var icon = $.mobile.getAttribute( this, "icon" ),
 					theme = $.mobile.getAttribute( this, "theme" ),
@@ -62,32 +65,32 @@ return $.widget( "mobile.navbar", {
 				if ( icon ) {
 					classes += " ui-icon-" + icon + " ui-button-icon-" + iconpos;
 				}
-				$( this ).addClass( classes );
+				that._addClass( $( this ), classes );
 			});
 
-		$navbar.delegate( "a", "vclick", function( /* event */ ) {
-			var activeBtn = $( this );
+		this._on( navbar, {
+			"vclick a": function( event ) {
+				var activeBtn = $( event.target ).closest( "a" );
 
-			if ( !( activeBtn.hasClass( "ui-state-disabled" ) ||
+				if ( !( activeBtn.hasClass( "ui-state-disabled" ) ||
+					activeBtn.hasClass( "ui-button-active" ) ) ) {
 
-				// DEPRECATED as of 1.4.0 - remove after 1.4.0 release
-				// only ui-state-disabled should be present thereafter
-				activeBtn.hasClass( "ui-disabled" ) ||
-				activeBtn.hasClass( $.mobile.activeBtnClass ) ) ) {
+					that._removeClass( navbuttons, null, "ui-button-active" );
+					that._addClass( activeBtn, null, "ui-button-active" );
 
-				$navbuttons.removeClass( $.mobile.activeBtnClass );
-				activeBtn.addClass( $.mobile.activeBtnClass );
-
-				// The code below is a workaround to fix #1181
-				$( document ).one( "pagehide", function() {
-					activeBtn.removeClass( $.mobile.activeBtnClass );
-				});
+					// The code below is a workaround to fix #1181
+					$( document ).one( "pagehide", function() {
+						that._removeClass( activeBtn, null, "ui-button-active" );
+					});
+				}
 			}
 		});
 
 		// Buttons in the navbar with ui-state-persist class should regain their active state before page show
-		$navbar.closest( ".ui-page" ).bind( "pagebeforeshow", function() {
-			$navbuttons.filter( ".ui-state-persist" ).addClass( $.mobile.activeBtnClass );
+		this._on( navbar.closest( ".ui-page" ), {
+			pagebeforeshow: function() {
+				that._addClass( navbuttons.filter( ".ui-state-persist" ), null, "ui-button-active" );
+			}
 		});
 	}
 });

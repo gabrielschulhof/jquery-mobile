@@ -3,14 +3,14 @@
  */
 (function($){
 	test( "navbar button gets active button class when clicked", function() {
-		var link = $("#disabled-button-click a:not(.ui-disabled)").first();
+		var link = $("#disabled-button-click a:not(.ui-state-disabled)").first();
 
 		link.click();
 		ok( link.hasClass($.mobile.activeBtnClass), "link has active button class" );
 	});
 
 	test( "disabled navbar button doesn't add active button class when clicked", function() {
-		var link = $("#disabled-button-click a.ui-disabled").first();
+		var link = $("#disabled-button-click a.ui-state-disabled").first();
 
 		link.click();
 		ok( !link.hasClass($.mobile.activeBtnClass), "link doesn't have active button class" );
@@ -29,10 +29,12 @@
 	});
 
 	test( "classes are correctly assigned", function() {
-		var $ul = $('#enhanced-classes'),
-			r = $ul.find("li").eq(0).find("a"),
-			d = $ul.find("li").eq(1).find("a"),
-			u = $ul.find("li").eq(2).find("a");
+		var ul = $('#enhanced-classes'),
+			r = ul.find("li").eq(0).find("a"),
+			d = ul.find("li").eq(1).find("a"),
+			u = ul.find("li").eq(2).find("a");
+
+		deepEqual( ul.parent().hasClass( "ui-navbar" ), true, "navbar has class 'ui-navbar'" );
 
 		ok(r.hasClass("ui-icon-arrow-r") && !r.hasClass("ui-icon-arrow-d") && !r.hasClass("ui-icon-arrow-u"),"first item only has class of arrow-r");
 		ok(!d.hasClass("ui-icon-arrow-r") && d.hasClass("ui-icon-arrow-d") && !d.hasClass("ui-icon-arrow-u"),"second item only has class of arrow-d");
