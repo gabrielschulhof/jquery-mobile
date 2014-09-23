@@ -32,12 +32,15 @@ module.exports = {
 			"js/widgets/enhancer.js",
 			"js/widgets/enhancer.backcompat.js",
 			"js/degradeInputs.js",
+			"js/widgets/loader.js",
+			"js/widgets/loader.backcompat.js",
 
 			// Tests
 			"tests/unit/textinput/settings.js",
 			"tests/unit/textinput/textinput_core.js",
 			"tests/unit/degrade-inputs/degradeInputs.js",
-			"tests/unit/enhancer/enhancer.js"
+			"tests/unit/enhancer/enhancer.js",
+			"tests/unit/loader/loader_core.js"
 		]
 	},
 	tests: {
