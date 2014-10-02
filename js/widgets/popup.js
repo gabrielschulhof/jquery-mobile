@@ -852,7 +852,7 @@ $.widget( "mobile.popup", {
 	// TODO no clear deliniation of what should be here and
 	// what should be in _open. Seems to be "visual" vs "history" for now
 	open: function( options ) {
-		var url, hashkey, activePage, currentIsDialog, hasHash, urlHistory,
+		var url, activePage, urlHistory,
 			self = this,
 			currentOptions = this.options;
 
@@ -885,25 +885,10 @@ $.widget( "mobile.popup", {
 
 		// cache some values for min/readability
 		urlHistory = $.mobile.navigate.history;
-		hashkey = $.mobile.dialogHashKey;
 		activePage = $.mobile.activePage;
-		currentIsDialog = ( activePage ? activePage.hasClass( "ui-dialog" ) : false );
 		this._myUrl = url = urlHistory.getActive().url;
-		hasHash = ( url.indexOf( hashkey ) > -1 ) && !currentIsDialog && ( urlHistory.activeIndex > 0 );
 
-		if ( hasHash ) {
-			self._open( options );
-			self._bindContainerClose();
-			return this;
-		}
-
-		// if the current url has no dialog hash key proceed as normal
-		// otherwise, if the page is a dialog simply tack on the hash key
-		if ( url.indexOf( hashkey ) === -1 && !currentIsDialog ) {
-			url = url + (url.indexOf( "#" ) > -1 ? hashkey : "#" + hashkey);
-		} else {
-			url = $.mobile.path.parseLocation().hash + hashkey;
-		}
+		url = url + (url.indexOf( "#" ) > -1 ? "" : "#" ) + "popup-" + this.uuid;
 
 		// swallow the the initial navigation event, and bind for the next
 		this.window.one( "beforenavigate", function( theEvent ) {

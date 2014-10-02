@@ -8,11 +8,9 @@ define([
 //>>excludeEnd("jqmBuildExclude");
 
 (function( $, undefined ) {
-		var path, $base, dialogHashKey = "&ui-state=dialog";
+		var path, $base;
 
 		$.mobile.path = path = {
-			uiStateKey: "&ui-state",
-
 			// This scary looking regular expression parses an absolute URL or its relative
 			// variants (protocol, site, document, query, and hash), into the various
 			// components (protocol, host, path, query, fragment, etc that make up the
@@ -206,14 +204,13 @@ define([
 					u = path.parseUrl( absUrl );
 
 				if ( path.isEmbeddedPage( u ) ) {
-					// For embedded pages, remove the dialog hash key as in getFilePath(),
-					// and remove otherwise the Data Url won't match the id of the embedded Page.
+					// For embedded pages remove the hash mark and the query otherwise the Data Url
+					// won't match the id of the embedded Page.
 					result = u.hash
-						.split( dialogHashKey )[0]
 						.replace( /^#/, "" )
 						.replace( /\?.*$/, "" );
 				} else if ( path.isSameDomain( u, this.documentBase ) ) {
-					result = u.hrefNoHash.replace( this.documentBase.domain, "" ).split( dialogHashKey )[0];
+					result = u.hrefNoHash.replace( this.documentBase.domain, "" );
 				}
 
 				return window.decodeURIComponent( result );
@@ -252,9 +249,9 @@ define([
 				return url.replace( /\?.*$/, "" );
 			},
 
-			//remove the preceding hash, any query params, and dialog notations
+			//remove the preceding hash and any query params
 			cleanHash: function( hash ) {
-				return path.stripHash( hash.replace( /\?.*$/, "" ).replace( dialogHashKey, "" ) );
+				return path.stripHash( hash.replace( /\?.*$/, "" ) );
 			},
 
 			isHashValid: function( hash ) {
@@ -289,11 +286,10 @@ define([
 			},
 
 			squash: function( url, resolutionUrl ) {
-				var href, cleanedUrl, search, stateIndex, docUrl,
+				var href, cleanedUrl, search, docUrl,
 					isPath = this.isPath( url ),
 					uri = this.parseUrl( url ),
-					preservedHash = uri.hash,
-					uiState = "";
+					preservedHash = uri.hash;
 
 				// produce a url against which we can resolve the provided path
 				if ( !resolutionUrl ) {
@@ -318,15 +314,6 @@ define([
 				// if it is, strip the #, and use it otherwise continue without change
 				cleanedUrl = path.isPath( uri.hash ) ? path.stripHash( uri.hash ) : cleanedUrl;
 
-				// Split the UI State keys off the href
-				stateIndex = cleanedUrl.indexOf( this.uiStateKey );
-
-				// store the ui state keys for use
-				if ( stateIndex > -1 ) {
-					uiState = cleanedUrl.slice( stateIndex );
-					cleanedUrl = cleanedUrl.slice( 0, stateIndex );
-				}
-
 				// make the cleanedUrl absolute relative to the resolution url
 				href = path.makeUrlAbsolute( cleanedUrl, resolutionUrl );
 
@@ -336,15 +323,9 @@ define([
 
 				// TODO all this crap is terrible, clean it up
 				if ( isPath ) {
-					// reject the hash if it's a path or it's just a dialog key
-					if ( path.isPath( preservedHash ) || preservedHash.replace("#", "").indexOf( this.uiStateKey ) === 0) {
+					// reject the hash if it's a path
+					if ( path.isPath( preservedHash ) ) {
 						preservedHash = "";
-					}
-
-					// Append the UI State keys where it exists and it's been removed
-					// from the url
-					if ( uiState && preservedHash.indexOf( this.uiStateKey ) === -1) {
-						preservedHash += uiState;
 					}
 
 					// make sure that pound is on the front of the hash
@@ -357,14 +338,10 @@ define([
 					href = href.protocol + href.doubleSlash + href.host + href.pathname + search +
 						preservedHash;
 				} else {
-					href += href.indexOf( "#" ) > -1 ? uiState : "#" + uiState;
+					href += href.indexOf( "#" ) > -1 ? "" : "#";
 				}
 
 				return href;
-			},
-
-			isPreservableHash: function( hash ) {
-				return hash.replace( "#", "" ).indexOf( this.uiStateKey ) === 0;
 			},
 
 			// Escape weird characters in the hash if it is to be used as a selector
@@ -374,12 +351,6 @@ define([
 					hash = hash.substring( 1 );
 				}
 				return ( hasHash ? "#" : "" ) + hash.replace( /([!"#$%&'()*+,./:;<=>?@[\]^`{|}~])/g, "\\$1" );
-			},
-
-			// return the substring of a filepath before the dialogHashKey, for making a server
-			// request
-			getFilePath: function( path ) {
-				return path && path.split( dialogHashKey )[0];
 			},
 
 			// check if the specified url refers to the first page in the main

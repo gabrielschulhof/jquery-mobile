@@ -54,7 +54,7 @@ define([
 		initializePage: function() {
 			// find present pages
 			var path = $.mobile.path,
-				$pages = $( ":jqmData(role='page'), :jqmData(role='dialog')" ),
+				$pages = $( ":jqmData(role='page')" ),
 				hash = path.stripHash( path.stripQueryParams(path.parseLocation().hash) ),
 				theLocation = $.mobile.path.parseLocation(),
 				hashPage = hash ? document.getElementById( hash ) : undefined;
@@ -105,8 +105,7 @@ define([
 			if ( ! ( $.mobile.hashListeningEnabled &&
 				$.mobile.path.isHashValid( location.hash ) &&
 				( $( hashPage ).is( ":jqmData(role='page')" ) ||
-					$.mobile.path.isPath( hash ) ||
-					hash === $.mobile.dialogHashKey ) ) ) {
+					$.mobile.path.isPath( hash ) ) ) ) {
 
 				// make sure to set initial popstate state if it exists
 				// so that navigation back to the initial page works properly

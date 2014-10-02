@@ -58,6 +58,7 @@ define( [ "jquery", "./ns", "json!../package.json" ], function( jQuery, ns, pkg 
 		// Deprecated remove in 1.5
 		minScrollBack: 0,
 
+		// Deprecated as of 1.5.0 and will be removed in 1.6.0
 		// Set default dialog transition - 'none' for no transitions
 		defaultDialogTransition: "pop",
 
@@ -92,9 +93,7 @@ define( [ "jquery", "./ns", "json!../package.json" ], function( jQuery, ns, pkg 
 		pageContainer: $(),
 
 		//enable cross-domain page support
-		allowCrossDomainPages: false,
-
-		dialogHashKey: "&ui-state=dialog"
+		allowCrossDomainPages: false
 	});
 })( jQuery, this );
 //>>excludeStart("jqmBuildExclude", pragmas.jqmBuildExclude);

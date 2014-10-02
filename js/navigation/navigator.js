@@ -70,7 +70,7 @@ define(["jquery",
 			} else if ( path.isPath(url) ) {
 				resolved = path.parseUrl( href );
 				// If the passed url is a path, make it domain relative and remove any trailing hash
-				hash = resolved.pathname + resolved.search + (path.isPreservableHash( resolved.hash )? resolved.hash.replace( "#", "" ) : "");
+				hash = resolved.pathname + resolved.search;
 			} else {
 				hash = url;
 			}

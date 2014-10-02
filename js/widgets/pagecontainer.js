@@ -243,44 +243,6 @@ define( [
 			return ( ( entry && entry[ optionName ] ) || fallbackValue );
 		},
 
-		_handleDialog: function( changePageOptions, data ) {
-			var to, active, activeContent = this.getActivePage();
-
-			// If current active page is not a dialog skip the dialog and continue
-			// in the same direction
-			// Note: The dialog widget is deprecated as of 1.4.0 and will be removed in 1.5.0.
-			// Thus, as of 1.5.0 activeContent.data( "mobile-dialog" ) will always evaluate to
-			// falsy, so the second condition in the if-statement below can be removed altogether.
-			if ( activeContent && !activeContent.data( "mobile-dialog" ) ) {
-				// determine if we're heading forward or backward and continue
-				// accordingly past the current dialog
-				if ( data.direction === "back" ) {
-					this.back();
-				} else {
-					this.forward();
-				}
-
-				// prevent changePage call
-				return false;
-			} else {
-				// if the current active page is a dialog and we're navigating
-				// to a dialog use the dialog objected saved in the stack
-				to = data.pageUrl;
-				active = this._getActiveHistory();
-
-				// make sure to set the role, transition and reversal
-				// as most of this is lost by the domCache cleaning
-				$.extend( changePageOptions, {
-					role: active.role,
-					transition: this._optionFromHistory( data.direction, "transition",
-						changePageOptions.transition ),
-					reverse: data.direction === "back"
-				});
-			}
-
-			return to;
-		},
-
 		_handleNavigate: function( url, data ) {
 			//find first page via hash
 			// TODO stripping the hash twice with handleUrl
@@ -305,20 +267,6 @@ define( [
 				allowSamePageTransition: this._optionFromHistory( data.direction,
 					"allowSamePageTransition" )
 			});
-
-			// TODO move to _handleDestination ?
-			// If this isn't the first page, if the current url is a dialog hash
-			// key, and the initial destination isn't equal to the current target
-			// page, use the special dialog handling
-			if ( history.activeIndex > 0 &&
-				to.indexOf( $.mobile.dialogHashKey ) > -1 ) {
-
-				to = this._handleDialog( changePageOptions, data );
-
-				if ( to === false ) {
-					return;
-				}
-			}
 
 			this._changeContent( this._handleDestination( to ), changePageOptions );
 		},
@@ -354,8 +302,7 @@ define( [
 
 		_find: function( absUrl ) {
 			// TODO consider supporting a custom callback
-			var fileUrl = this._createFileUrl( absUrl ),
-				dataUrl = this._createDataUrl( absUrl ),
+			var dataUrl = this._createDataUrl( absUrl ),
 				page, initialContent = this._getInitialContent();
 
 			// Check to see if the page already exists in the DOM.
@@ -382,7 +329,7 @@ define( [
 			// We check for this case here because we don't want a first-page with
 			// an id falling through to the non-existent embedded page error case.
 			if ( page.length === 0 &&
-				$.mobile.path.isFirstPageUrl( fileUrl ) &&
+				$.mobile.path.isFirstPageUrl( absUrl ) &&
 				initialContent &&
 				initialContent.parent().length ) {
 				page = $( initialContent );
@@ -436,7 +383,7 @@ define( [
 			//workaround to allow scripts to execute when included in page divs
 			all.get( 0 ).innerHTML = html;
 
-			page = all.find( ":jqmData(role='page'), :jqmData(role='dialog')" ).first();
+			page = all.find( ":jqmData(role='page')" ).first();
 
 			//if page elem couldn't be found, create one and insert the body element's contents
 			if ( !page.length ) {
@@ -472,10 +419,6 @@ define( [
 			return $.mobile.path.convertUrlToDataUrl( absoluteUrl );
 		},
 
-		_createFileUrl: function( absoluteUrl ) {
-			return $.mobile.path.getFilePath( absoluteUrl );
-		},
-
 		_triggerWithDeprecated: function( name, data, page ) {
 			var deprecatedEvent = $.Event( "page" + name ),
 				newEvent = $.Event( this.widgetName + name );
@@ -497,14 +440,13 @@ define( [
 		//      or require ordering such that other bits are sprinkled in between parts that
 		//      could be abstracted out as a group
 		_loadSuccess: function( absUrl, triggerData, settings, deferred ) {
-			var fileUrl = this._createFileUrl( absUrl );
+			var fileUrl = absUrl;
 
 			return $.proxy(function( html, textStatus, xhr ) {
 				//pre-parse html to check for a data-url,
 				//use it as the new fileUrl, base path, etc
 				var content,
 
-					// TODO handle dialogs again
 					pageElemRegex = new RegExp( "(<[^>]+\\bdata-" + this._getNs() + "role=[\"']?page[\"']?[^>]*>)" ),
 
 					dataUrlRegex = new RegExp( "\\bdata-" + this._getNs() + "url=[\"']?([^\"'>]*)[\"']?" );
@@ -516,7 +458,7 @@ define( [
 					RegExp.$1 &&
 					dataUrlRegex.test( RegExp.$1 ) &&
 					RegExp.$1 ) {
-					fileUrl = $.mobile.path.getFilePath( $("<div>" + RegExp.$1 + "</div>").text() );
+					fileUrl = $("<div>" + RegExp.$1 + "</div>").text();
 
 					// We specify that, if a data-url attribute is given on the page div, its value
 					// must be given non-URL-encoded. However, in this part of the code, fileUrl is
@@ -620,7 +562,7 @@ define( [
 
 			// The absolute version of the URL minus any dialog/subcontent params.
 			// In otherwords the real URL of the content to be loaded.
-			fileUrl = this._createFileUrl( absUrl );
+			fileUrl = absUrl;
 
 			// The version of the Url actually stored in the data-url attribute of
 			// the content. For embedded content, it is just the id of the page. For
@@ -929,10 +871,10 @@ define( [
 		},
 
 		transition: function( toPage, triggerData, settings ) {
-			var fromPage, url, pageUrl, fileUrl,
+			var fromPage, url, pageUrl,
 				active, activeIsInitialPage,
-				historyDir, pageTitle, isDialog,
-				alreadyThere, newPageTitle,
+				historyDir, pageTitle,
+				newPageTitle,
 				params,	cssTransitionDeferred,
 				beforeTransition;
 
@@ -983,14 +925,10 @@ define( [
 			// The pageUrl var is usually the same as url, except when url is obscured
 			// as a dialog url. pageUrl always contains the file path
 			pageUrl = url;
-			fileUrl = $.mobile.path.getFilePath( url );
 			active = $.mobile.navigate.history.getActive();
 			activeIsInitialPage = $.mobile.navigate.history.activeIndex === 0;
 			historyDir = 0;
 			pageTitle = document.title;
-			isDialog = ( settings.role === "dialog" ||
-				toPage.jqmData( "role" ) === "dialog" ) &&
-				toPage.jqmData( "dialog" ) !== true;
 
 			// By default, we prevent changePage requests when the fromPage and toPage
 			// are the same element, but folks that generate content
@@ -1047,47 +985,6 @@ define( [
 				}
 			} catch( e ) {}
 
-			// Record whether we are at a place in history where a dialog used to be -
-			// if so, do not add a new history entry and do not change the hash either
-			alreadyThere = false;
-
-			// If we're displaying the page as a dialog, we don't want the url
-			// for the dialog content to be used in the hash. Instead, we want
-			// to append the dialogHashKey to the url of the current page.
-			if ( isDialog && active ) {
-				// on the initial page load active.url is undefined and in that case
-				// should be an empty string. Moving the undefined -> empty string back
-				// into urlHistory.addNew seemed imprudent given undefined better
-				// represents the url state
-
-				// If we are at a place in history that once belonged to a dialog, reuse
-				// this state without adding to urlHistory and without modifying the
-				// hash. However, if a dialog is already displayed at this point, and
-				// we're about to display another dialog, then we must add another hash
-				// and history entry on top so that one may navigate back to the
-				// original dialog
-				if ( active.url &&
-					active.url.indexOf( $.mobile.dialogHashKey ) > -1 &&
-					this.activePage &&
-					!this.activePage.hasClass( "ui-dialog" ) &&
-					$.mobile.navigate.history.activeIndex > 0 ) {
-
-					settings.changeHash = false;
-					alreadyThere = true;
-				}
-
-				// Normally, we tack on a dialog hash key, but if this is the location
-				// of a stale dialog, we reuse the URL from the entry
-				url = ( active.url || "" );
-
-				// account for absolute urls instead of just relative urls use as hashes
-				if ( !alreadyThere && url.indexOf("#") > -1 ) {
-					url += $.mobile.dialogHashKey;
-				} else {
-					url += "#" + $.mobile.dialogHashKey;
-				}
-			}
-
 			// if title element wasn't found, try the page div data attr too
 			// If this is a deep-link or a reload ( active === undefined ) then just
 			// use pageTitle
@@ -1103,12 +1000,7 @@ define( [
 			// Make sure we have a transition defined.
 			settings.transition = settings.transition ||
 				( ( historyDir && !activeIsInitialPage ) ? active.transition : undefined ) ||
-				( isDialog ? $.mobile.defaultDialogTransition : $.mobile.defaultPageTransition );
-
-			//add page to history stack if it's not back or forward
-			if ( !historyDir && alreadyThere ) {
-				$.mobile.navigate.history.getActive().pageUrl = pageUrl;
-			}
+				$.mobile.defaultPageTransition;
 
 			// Set the location hash.
 			if ( url && !settings.fromHashChange ) {

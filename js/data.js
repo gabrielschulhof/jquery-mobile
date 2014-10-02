@@ -63,7 +63,7 @@ define( [ "jquery", "./ns" ], function( jQuery ) {
 		// doing a similar parent node traversal to the one found in the inherited theme code above
 		closestPageData: function( $target ) {
 			return $target
-				.closest( ":jqmData(role='page'), :jqmData(role='dialog')" )
+				.closest( ":jqmData(role='page')" )
 				.data( "mobile-page" );
 		}
 
