@@ -82,88 +82,6 @@
 		proto._filterNavigateEvents( mockEvent, { state: {}} );
 	});
 
-	module("Content Widget _handleDialog", {
-		setup: function() {
-			proto = $.mobile.pagecontainer.prototype;
-		}
-	});
-
-	test( "continues backward when the active content isn't a dialog", function() {
-		expect( 2 );
-
-		proto.getActivePage = function() {
-			return $( "<div>" );
-		};
-
-		proto.back = function(){
-			ok( true, "back called" );
-		};
-
-		ok( !proto._handleDialog( {}, {direction: "back"} ), "returns false to prevent action" );
-	});
-
-	test( "continues forward when the active content isn't a dialog", function() {
-		expect( 2 );
-
-		proto.getActivePage = function() {
-			return $( "<div>" );
-		};
-
-		proto.forward = function(){
-			ok( true, "forward called" );
-		};
-
-		ok( !proto._handleDialog( {}, {direction: "forward"} ), "returns false to prevent action" );
-	});
-
-	test( "extends changePageOptions when current content is a dialog", function() {
-		var result, opts = {};
-
-		proto.getActivePage = function() {
-			return $( "<div>" ).data( "mobile-dialog", true );
-		};
-
-		proto._getHistory = function() {
-			return {
-				length: 3,
-				activeIndex: 1,
-				lastIndex: 2,
-				stack: [
-					{
-						role: "page",
-						transition: "none"
-					},
-					{
-						role: "foo",
-						transition: "flip"
-					},
-					{
-						role: "page",
-						transition: "bar"
-					}
-				],
-				getLast: function() {
-					return this.stack[ this.lastIndex ];
-				},
-				getActive: function() {
-					return this.stack[ this.activeIndex ];
-				}
-			};
-		};
-
-		deepEqual( opts.role, undefined, "Initially, role is undefined" );
-		deepEqual( opts.transition, undefined, "Initially, transition is undefined" );
-		deepEqual( opts.reverse, undefined, "Initially, reverse is undefined" );
-
-		// the pageUrl is returned for use as the target url when the active content is a dialog
-		deepEqual( proto._handleDialog( opts, { direction: "back", pageUrl: "baz" } ), "baz",
-			"pageUrl is returned" );
-
-		deepEqual( opts.role, "foo", "Afterwards, role is 'foo'" );
-		deepEqual( opts.transition, "bar", "Afterwards, transition is 'bar'" );
-		deepEqual( opts.reverse, true, "Afterwards, reverse is true" );
-	});
-
 	var base = "http://example.com/";
 
 	module("Content Widget _handleDestination", {
@@ -325,18 +243,6 @@
 		html = "<div data-foo-role='page' id='first'></div>" +
 			"<div data-foo-role='dialog' id='second'></div>";
 		equal( proto._parse( html ).attr("id"), "first" );
-	});
-
-	test( "returns first page with data role dialog", function() {
-		var html, page;
-
-		html = "<div data-foo-role='dialog' id='first'></div>" +
-			"<div data-foo-role='page' id='second'></div>";
-
-		page = proto._parse( html );
-
-		equal( page.attr("id"), "first" );
-		equal( page.attr( "data-foo-role" ), "dialog" );
 	});
 
 	test( "returns the body of the html wrapped in a page when no page exists", function() {
