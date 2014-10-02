@@ -169,13 +169,6 @@
 		deepEqual( $.mobile.closestPageData( pageChild ).foo, "bar" );
 	});
 
-	test( "closestPageData returns the parent dialog's page data", function() {
-		var dialogChild = $( "#dialog-child" );
-
-		$( "#parent-dialog" ).data( "mobile-page", { foo: "bar" } );
-		deepEqual( $.mobile.closestPageData(dialogChild).foo, "bar" );
-	});
-
 	test( "test that $.fn.jqmHijackable works", function() {
 		$.mobile.ignoreContentEnabled = true;
 
