@@ -15,7 +15,6 @@ define([
 	"./navigation",
 	"./degradeInputs",
 	"./widgets/page.dialog",
-	"./widgets/dialog",
 	"./widgets/collapsible",
 	"./widgets/collapsibleSet",
 	"./fieldContain",

@@ -6,6 +6,7 @@
 //>>css.theme: ../css/themes/default/jquery.mobile.theme.css
 
 define( [ "jquery",
+	"../defaults",
 	"./addFirstLastClasses",
 	"../widget" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
@@ -33,7 +34,8 @@ $.widget( "mobile.controlgroup", $.extend( {
 		// Enhance child widgets
 		$.each( this._childWidgets, $.proxy( function( number, widgetName ) {
 			if ( $.mobile[ widgetName ] ) {
-				this.element.find( $.mobile[ widgetName ].initSelector ).not( $.mobile.page.prototype.keepNativeSelector() )[ widgetName ]();
+				this.element.find( $.mobile[ widgetName ].initSelector )
+					.not( $.mobile.keepNative )[ widgetName ]();
 			}
 		}, this ));
 

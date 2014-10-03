@@ -5,7 +5,11 @@
 //>>css.structure: ../css/structure/jquery.mobile.core.css
 //>>css.theme: ../css/themes/default/jquery.mobile.theme.css
 
-define( [ "jquery", "./ns", "jquery-ui/jquery.ui.core" ], function( jQuery ) {
+define( [
+	"jquery",
+	"./ns",
+	"./defaults",
+	"jquery-ui/jquery.ui.core" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, window, undefined ) {
 
@@ -212,7 +216,6 @@ define( [ "jquery", "./ns", "jquery-ui/jquery.ui.core" ], function( jQuery ) {
 		enhanceWithin: function() {
 			var index,
 				widgetElements = {},
-				keepNative = $.mobile.page.prototype.keepNativeSelector(),
 				that = this;
 
 			// Add no js class to elements
@@ -230,18 +233,6 @@ define( [ "jquery", "./ns", "jquery-ui/jquery.ui.core" ], function( jQuery ) {
 				$.mobile.degradeInputsWithin( this );
 			}
 
-			// Run buttonmarkup
-			if ( $.fn.buttonMarkup ) {
-				this.find( $.fn.buttonMarkup.initSelector ).not( keepNative )
-				.jqmEnhanceable().buttonMarkup();
-			}
-
-			// Add classes for fieldContain
-			if ( $.fn.fieldcontain ) {
-				this.find( ":jqmData(role='fieldcontain')" ).not( keepNative )
-				.jqmEnhanceable().fieldcontain();
-			}
-
 			// Enhance widgets
 			$.each( $.mobile.widgets, function( name, constructor ) {
 
@@ -251,12 +242,9 @@ define( [ "jquery", "./ns", "jquery-ui/jquery.ui.core" ], function( jQuery ) {
 					// Filter elements that should not be enhanced based on parents
 					var elements = $.mobile.enhanceable( that.find( constructor.initSelector ) );
 
-					// If any matching elements remain filter ones with keepNativeSelector
+					// If any matching elements remain filter ones with keepNative
 					if ( elements.length > 0 ) {
-
-						// $.mobile.page.prototype.keepNativeSelector is deprecated this is just for backcompat
-						// Switch to $.mobile.keepNative in 1.5 which is just a value not a function
-						elements = elements.not( keepNative );
+						elements = elements.not( $.mobile.keepNative );
 					}
 
 					// Enhance whatever is left

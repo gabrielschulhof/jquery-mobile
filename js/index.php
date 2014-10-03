@@ -46,7 +46,6 @@ $files = array(
 	'transitions/visuals/flow.js',
 	'transitions/visuals/turn.js',
 	'degradeInputs.js',
-	'widgets/dialog.js',
 	'widgets/collapsible.js',
 	'widgets/addFirstLastClasses.js',
 	'widgets/collapsibleSet.js',

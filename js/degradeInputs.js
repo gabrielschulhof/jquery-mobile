@@ -3,7 +3,10 @@
 //>>label: Degrade Inputs
 //>>group: Utilities
 
-define( [ "jquery", "./widgets/page" ], function( jQuery ) {
+define( [
+	"jquery",
+	"./defaults",
+	"./widgets/page" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
 
@@ -22,8 +25,6 @@ $.mobile.degradeInputs = {
 	url: false,
 	week: false
 };
-// Backcompat remove in 1.5
-$.mobile.page.prototype.options.degradeInputs = $.mobile.degradeInputs;
 
 // Auto self-init widgets
 $.mobile.degradeInputsWithin = function( target ) {
@@ -31,7 +32,7 @@ $.mobile.degradeInputsWithin = function( target ) {
 	target = $( target );
 
 	// Degrade inputs to avoid poorly implemented native functionality
-	target.find( "input" ).not( $.mobile.page.prototype.keepNativeSelector() ).each(function() {
+	target.find( "input" ).not( $.mobile.keepNative ).each( function() {
 		var element = $( this ),
 			type = this.getAttribute( "type" ),
 			optType = $.mobile.degradeInputs[ type ] || "text",
