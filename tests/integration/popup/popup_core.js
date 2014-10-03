@@ -237,9 +237,7 @@
 
 			function( result ) {
 				ok( !result.hashchange.timedOut, "Opening a popup from a non-dialogHashKey location causes a hashchange event" );
-				equal( decodeURIComponent( location.href ), baseUrl + ( ( baseUrl.indexOf( "#" ) > -1 ) ? "" : "#" ) +
-					"popup-" + $( "#test-popup" ).data( "mobile-popup" ).uuid,
-					"location.href has been updated correctly" );
+				equal( decodeURIComponent( location.href ), baseUrl, "location.href has remained unchanged" );
 				ok( $.mobile.navigate.history.activeIndex === activeIndex + 1, "$.mobile.navigate.history has been advanced correctly" );
 				$( "#test-popup" ).popup( "close" );
 			},
