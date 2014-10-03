@@ -281,11 +281,6 @@
 
 		equal( squash("http://example.com/#foo/bar.html", "http://example.com/bing.html"), "http://example.com/foo/bar.html", "relative path hash on full url applied to subdocument" );
 
-		equal( squash("#foo/bar.html&ui-state=foo", "http://example.com/"), "http://example.com/foo/bar.html#&ui-state=foo", "relative path hash on full url" );
-		equal( squash("foo/bar.html#&ui-state=foo", "http://example.com/"), "http://example.com/foo/bar.html#&ui-state=foo", "relative path hash on full url" );
-
-		equal( squash("#foo&ui-state=foo", "http://example.com/"), "http://example.com/#foo&ui-state=foo", "ui-state keys attached to simple string hashes are preserved" );
-
 		equal( squash("#/foo/bar/?foo=bar&baz=bak", "http://example.com/"), "http://example.com/foo/bar/?foo=bar&baz=bak", "ui-state keys attached to simple string hashes are preserved" );
 
 		equal( squash("#foo", "http://example.com/?foo=bar&baz=bak"), "http://example.com/?foo=bar&baz=bak#foo", "ui-state keys attached to simple string hashes are preserved" );
