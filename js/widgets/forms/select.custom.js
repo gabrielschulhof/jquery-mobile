@@ -13,10 +13,10 @@ define( [
 	"jquery",
 	"../../core",
 	"../../navigation",
-	"../dialog",
+	"../pagecontainer",
 	"./select",
 	"../listview",
-	"../page",
+	"../page.dialog",
 	"../popup" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
@@ -70,7 +70,7 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			if ( this.menuType === "overlay" ) {
 				this.button.attr( "href", "#" + this.popupId ).attr( "data-" + ( $.mobile.ns || "" ) + "rel", "popup" );
 			} else {
-				this.button.attr( "href", "#" + this.dialogId ).attr( "data-" + ( $.mobile.ns || "" ) + "rel", "dialog" );
+				this.button.attr( "href", "#" + this.dialogId );
 			}
 			this.isOpen = true;
 			// Do not prevent default, so the navigation may have a chance to actually open the chosen format
@@ -109,24 +109,21 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		}
 	},
 
-	_handleMenuPageHide: function() {
+	_handleMenuPageShow: function( event, data ) {
+		if ( data.toPage[ 0 ] === this.menuPage[ 0 ] ) {
+			this._focusMenuItem();
+		}
+	},
+
+	_handleMenuPageHide: function( event, data ) {
+
+		if ( data.prevPage[ 0 ] !== this.menuPage[ 0 ] ) {
+			return;
+		}
 
 		// After the dialog's done, we may want to trigger change if the value has actually changed
 		this._delayedTrigger();
-
-		// TODO centralize page removal binding / handling in the page plugin.
-		// Suggestion from @jblas to do refcounting
-		//
-		// TODO extremely confusing dependency on the open method where the pagehide.remove
-		// bindings are stripped to prevent the parent page from disappearing. The way
-		// we're keeping pages in the DOM right now sucks
-		//
-		// rebind the page remove that was unbound in the open function
-		// to allow for the parent page removal from actions other than the use
-		// of a dialog sized custom select
-		//
-		// doing this here provides for the back button on the custom select dialog
-		this.thisPage.page( "bindRemove" );
+		this.close();
 	},
 
 	_handleHeaderCloseClick: function() {
@@ -197,11 +194,12 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		overlayThemeAttr = overlayTheme ? ( " data-" + $.mobile.ns +
 			"overlay-theme='" + overlayTheme + "'" ) : "";
 		dividerThemeAttr = ( o.dividerTheme && isMultiple ) ? ( " data-" + $.mobile.ns + "divider-theme='" + o.dividerTheme + "'" ) : "";
-		menuPage = $( "<div data-" + $.mobile.ns + "role='dialog' class='ui-selectmenu' id='" + dialogId + "'" + themeAttr + overlayThemeAttr + ">" +
+		menuPage = $( "<div data-" + $.mobile.ns + "role='page' data-dialog='true' " +
+			"class='ui-selectmenu' id='" + dialogId + "'" + themeAttr + overlayThemeAttr + ">" +
 			"<div data-" + $.mobile.ns + "role='header'>" +
 			"<div class='ui-title'></div>"+
 			"</div>"+
-			"<div data-" + $.mobile.ns + "role='content'></div>"+
+			"<div class='ui-content'></div>"+
 			"</div>" );
 		listbox = $( "<div" + themeAttr + overlayThemeAttr + " id='" + popupId +
 				"' class='ui-selectmenu'></div>" )
@@ -270,7 +268,10 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 
 		// button refocus ensures proper height calculation
 		// by removing the inline style and ensuring page inclusion
-		this._on( this.menuPage, { pagehide: "_handleMenuPageHide" } );
+		this._on( $.mobile.pageContainer, {
+			pagecontainershow: "_handleMenuPageShow",
+			pagecontainerhide: "_handleMenuPageHide"
+		});
 
 		// Events on the popup
 		this._on( this.listbox, { popupafterclose: "_popupClosed" } );
@@ -359,8 +360,16 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		var self = this;
 
 		if ( self.menuType === "page" ) {
-			self.menuPage.dialog( "close" );
-			self.list.appendTo( self.listbox );
+			if ( $.mobile.activePage[ 0 ] === this.menuPage[ 0 ] ) {
+
+				// If the page is open, we close it. This will cause a call to this function, at
+				// which point we shall move the list back.
+				$.mobile.pageContainer.pagecontainer( "back" );
+				return;
+			} else {
+				this.menuPage.detach();
+				this.list.appendTo( this.listbox );
+			}
 		} else {
 			self.listbox.popup( "close" );
 		}
@@ -397,22 +406,12 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			self.menuPageContent = self.menuPage.find( ".ui-content" );
 			self.menuPageClose = self.menuPage.find( ".ui-header a" );
 
-			// prevent the parent page from being removed from the DOM,
-			// otherwise the results of selecting a list item in the dialog
-			// fall into a black hole
-			self.thisPage.unbind( "pagehide.remove" );
-
 			//for WebOS/Opera Mini (set lastscroll using button offset)
 			if ( scrollTop === 0 && btnOffset > screenHeight ) {
 				self.thisPage.one( "pagehide", function() {
 					$( this ).jqmData( "lastScroll", btnOffset );
 				});
 			}
-
-			self.menuPage.one( {
-				pageshow: $.proxy( this, "_focusMenuItem" ),
-				pagehide: $.proxy( this, "close" )
-			});
 
 			self.menuType = "page";
 			self.menuPageContent.append( self.list );
