@@ -109,6 +109,13 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		}
 	},
 
+	_handleMenuPageBeforeTransition: function( event, data ) {
+		if ( data.toPage[ 0 ] !== this.menuPage[ 0 ] ) {
+			return;
+		}
+		data.options.transientLocation = true;
+	},
+
 	_handleMenuPageShow: function( event, data ) {
 		if ( data.toPage[ 0 ] === this.menuPage[ 0 ] ) {
 			this._focusMenuItem();
@@ -269,6 +276,7 @@ $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		// button refocus ensures proper height calculation
 		// by removing the inline style and ensuring page inclusion
 		this._on( $.mobile.pageContainer, {
+			pagecontainerbeforetransition: "_handleMenuPageBeforeTransition",
 			pagecontainershow: "_handleMenuPageShow",
 			pagecontainerhide: "_handleMenuPageHide"
 		});
