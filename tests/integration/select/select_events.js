@@ -29,6 +29,6 @@
 
 	test( "select controls will create when inside a container that receives a 'create' event", function(){
 		ok( !$("#enhancetest").appendTo(".ui-page-active").find(".ui-select").length, "did not have enhancements applied" );
-		ok( $("#enhancetest").trigger("create").find(".ui-select").length, "enhancements applied" );
+		ok( $("#enhancetest").enhanceWithin().find(".ui-select").length, "enhancements applied" );
 	});
 })(jQuery);

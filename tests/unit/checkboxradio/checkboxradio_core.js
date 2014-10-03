@@ -115,12 +115,7 @@
 		$checkboxLabel.trigger( "click" );
 	});
 
-	test( "checkboxradio controls will create when inside a container that receives a 'create' event", function(){
-		ok( !$("#enhancetest").appendTo(".ui-page-active").find(".ui-checkbox").length, "did not have enhancements applied" );
-		ok( $("#enhancetest").trigger("create").find(".ui-checkbox").length, "enhancements applied" );
-	});
-
-	$.mobile.page.prototype.options.keepNative = "input.should-be-native";
+	$.mobile.keepNative = "input.should-be-native";
 
 	// not testing the positive case here since's it's obviously tested elsewhere
 	test( "checkboxradio elements in the keepNative set shouldn't be enhanced", function() {

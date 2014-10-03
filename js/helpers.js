@@ -216,6 +216,7 @@ define( [
 		enhanceWithin: function() {
 			var index,
 				widgetElements = {},
+				keepNative = $.mobile.keepNative,
 				that = this;
 
 			// Add no js class to elements
@@ -233,6 +234,18 @@ define( [
 				$.mobile.degradeInputsWithin( this );
 			}
 
+			// Run buttonmarkup
+			if ( $.fn.buttonMarkup ) {
+				this.find( $.fn.buttonMarkup.initSelector ).not( keepNative )
+				.jqmEnhanceable().buttonMarkup();
+			}
+
+			// Add classes for fieldContain
+			if ( $.fn.fieldcontain ) {
+				this.find( ":jqmData(role='fieldcontain')" ).not( keepNative )
+				.jqmEnhanceable().fieldcontain();
+			}
+
 			// Enhance widgets
 			$.each( $.mobile.widgets, function( name, constructor ) {
 
@@ -244,7 +257,7 @@ define( [
 
 					// If any matching elements remain filter ones with keepNative
 					if ( elements.length > 0 ) {
-						elements = elements.not( $.mobile.keepNative );
+						elements = elements.not( keepNative );
 					}
 
 					// Enhance whatever is left

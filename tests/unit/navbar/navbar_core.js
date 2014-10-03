@@ -21,7 +21,7 @@
 
 		$.mobile.ignoreContentEnabled = true;
 
-		$("#foo").trigger( "create" );
+		$("#foo").enhanceWithin();
 
 		deepEqual( $ignored.attr( "class" ), undefined, "ignored list doesn't have the grid theme" );
 		deepEqual( $enhanced.attr( "class" ).indexOf("ui-grid"), 0, "enhanced list has the grid theme" );

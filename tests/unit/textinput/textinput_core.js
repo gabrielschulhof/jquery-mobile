@@ -40,7 +40,7 @@
 		ok( $( "#typeless-input" ).parent().hasClass( "ui-input-text" ) );
 	});
 
-	$.mobile.page.prototype.options.keepNative = "textarea.should-be-native";
+	$.mobile.keepNative = "textarea.should-be-native";
 
 	// not testing the positive case here since's it's obviously tested elsewhere
 	test( "textarea in the keepNative set shouldn't be enhanced", function() {

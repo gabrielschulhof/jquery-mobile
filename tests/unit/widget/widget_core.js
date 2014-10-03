@@ -41,7 +41,7 @@
 		// uses default keep native of data-role=none
 		$("#enhance-prevented")
 				.append('<label for="unenhanced">Text Input:</label><input type="text" name="name" id="unenhanced" value="" data-'+$.mobile.ns+'role="none" />')
-				.trigger("create");
+				.enhanceWithin();
 
 		ok( !$("#unenhanced").parent().hasClass( "ui-input-text" ), "doesn't have the ui input text class (unenhanced)");
 	});
@@ -51,7 +51,7 @@
 		// uses default keep native of data-role=none
 		$("#enhance-allowed")
 				.append('<label for="enhanced">Text Input:</label><input type="text" name="name" id="enhanced" value=""/>')
-				.trigger("create");
+				.enhanceWithin();
 
 		ok( $("#enhanced").parent().hasClass( "ui-input-text" ), "has the ui input text class (unenhanced)");
 	});
