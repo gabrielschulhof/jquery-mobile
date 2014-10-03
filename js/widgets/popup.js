@@ -898,7 +898,7 @@ $.widget( "mobile.popup", {
 		});
 
 		this.urlAltered = true;
-		$.mobile.navigate( url, { role: "dialog" } );
+		$.mobile.navigate( url, { transientLocation: true } );
 
 		return this;
 	},
