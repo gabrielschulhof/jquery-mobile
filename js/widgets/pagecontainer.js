@@ -253,6 +253,8 @@ define( [
 				transition = history.stack.length === 0 ? "none" :
 					this._optionFromHistory( data.direction, "transition" ),
 
+				activeEntry = history.getActive(),
+
 				// default options for the changPage calls made after examining
 				// the current state of the page and the hash, NOTE that the
 				// transition is derived from the previous history entry
@@ -267,6 +269,16 @@ define( [
 				allowSamePageTransition: this._optionFromHistory( data.direction,
 					"allowSamePageTransition" )
 			});
+
+			if ( history.activeIndex > 0 && activeEntry && activeEntry.transientLocation ) {
+				// If this is a transient location entry, skip over it in the direction we're moving
+				if ( data.direction === "back" ) {
+					this.back();
+				} else {
+					this.forward();
+				}
+				return;
+			}
 
 			this._changeContent( this._handleDestination( to ), changePageOptions );
 		},
@@ -1013,6 +1025,7 @@ define( [
 
 				// TODO the property names here are just silly
 				params = {
+					transientLocation: settings.transientLocation,
 					allowSamePageTransition: settings.allowSamePageTransition,
 					transition: settings.transition,
 					title: pageTitle,
