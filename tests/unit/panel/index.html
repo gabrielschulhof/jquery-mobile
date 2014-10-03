@@ -19,6 +19,7 @@
 	</script>
 	<script>
 		$.testHelper.asyncLoad([
+			[ "widgets/toolbar" ],
 			[ "widgets/panel" ],
 			[ "init" ],
 			[ "panel_core.js" ]
@@ -85,7 +86,7 @@
 		<div data-nstest-role="header">
 			<h1>Panel Test</h1>
 		</div>
-		<div data-nstest-role="content">
+		<div class="ui-content">
 			<h1 id="demo-links">Panels</h1>
 			<a href="#panel-test-create">Open Panel</a>
 			<a href="#panel-test-events">Open Panel</a>
@@ -118,7 +119,7 @@
 		<div data-nstest-role="header">
 			<h1>Multipage</h1>
 		</div>
-		<div data-nstest-role="content">
+		<div class="ui-content">
 			<p>Contents of a page.</p>
 		</div>
 	</div>
