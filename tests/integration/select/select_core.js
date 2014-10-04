@@ -4,7 +4,6 @@
 
 (function($){
 	var libName = "forms.select",
-		originalDefaultDialogTrans = $.mobile.defaultDialogTransition,
 		originalDefTransitionHandler = $.mobile.defaultTransitionHandler.prototype.transition,
 		originalGetEncodedText = $.fn.getEncodedText,
 		resetHash, closeDialog;
@@ -32,7 +31,6 @@
 		},
 
 		teardown: function(){
-			$.mobile.defaultDialogTransition = originalDefaultDialogTrans;
 			$.mobile.defaultTransitionHandler.prototype.transition = originalDefTransitionHandler;
 
 			$.fn.getEncodedText = originalGetEncodedText;
@@ -93,37 +91,8 @@
 		]);
 	});
 
-	asyncTest( "a large select menu should use the default dialog transition", function(){
-		$.testHelper.pageSequence([
-			resetHash,
-
-			function(timeout){
-				var select, old;
-
-				select = $("#select-choice-many-container-1 a");
-
-				old = $.mobile.defaultTransitionHandler.prototype.transition;
-
-				//set to something else
-				$.mobile.defaultTransitionHandler.prototype.transition = function(){
-					// check that the instantiated transition handlers transition name
-					// property matches the default transition
-					deepEqual(this.name, $.mobile.defaultDialogTransition);
-					return old.apply(this, arguments);
-				};
-
-				// bring up the dialog
-				select.trigger("click");
-			},
-
-			closeDialog,
-
-			start
-		]);
-	});
-
 	asyncTest( "selecting an item from a dialog sized custom select menu leaves no dialog hash key", function(){
-		var dialogHashKey = "ui-state=dialog";
+		var historyIndex;
 
 		$.testHelper.pageSequence([
 			resetHash,
@@ -133,32 +102,36 @@
 			},
 
 			function(){
-				ok(location.hash.indexOf(dialogHashKey) > -1);
+				deepEqual( $.mobile.navigate.history.getActive().transientLocation, true,
+					"History entry for dialog is transient" );
+				historyIndex = $.mobile.navigate.history.activeIndex;
 				closeDialog();
 			},
 
 			function(){
-				deepEqual(location.hash.indexOf(dialogHashKey), -1);
+				deepEqual( $.mobile.navigate.history.activeIndex, historyIndex - 1,
+					"Closing the dialog has moved history back by one" );
+				deepEqual( !!$.mobile.navigate.history.getActive().transientLocation, false,
+					"History entry for page is not transient" );
 				start();
 			}
 		]);
 	});
 
 	asyncTest( "dialog sized select menu opened many times remains a dialog", function(){
-		var dialogHashKey = "ui-state=dialog",
+		var openDialogSequence = [
+			resetHash,
 
-				openDialogSequence = [
-					resetHash,
+			function(){
+				$("#select-choice-many-container-many-clicks a").click();
+			},
 
-					function(){
-						$("#select-choice-many-container-many-clicks a").click();
-					},
-
-					function(){
-						ok(location.hash.indexOf(dialogHashKey) > -1, "hash should have the dialog hash key");
-						closeDialog();
-					}
-				],
+			function(){
+				deepEqual( $.mobile.navigate.history.getActive().transientLocation, true,
+					"Current history entry marked transient");
+				closeDialog();
+			}
+		],
 
 				sequence = openDialogSequence.concat(openDialogSequence).concat([start]);
 
@@ -519,7 +492,7 @@
 
 	asyncTest( "Custom select passes overlay theme to its dialog", function() {
 
-		expect( 2 );
+		expect( 1 );
 
 		var dialog,
 			eventNs = ".passesOnOverlayThemeToDialog";
@@ -530,12 +503,9 @@
 			},
 			function() {
 				dialog = $( "#select-choice-many-overlay-theme-test-dialog" );
-				deepEqual(
-					$( ":mobile-pagecontainer" ).hasClass( "ui-overlay-x" ),
-					true, "Page container has appropriate theme." );
-				deepEqual( dialog.dialog( "option", "overlayTheme" ), "x",
+				deepEqual( dialog.page( "option", "overlayTheme" ), "x",
 					"Dialog widget overlayTheme option is correct." );
-				dialog.dialog( "close" );
+				$.mobile.back();
 			},
 			start
 		]);
