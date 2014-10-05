@@ -52,7 +52,7 @@ define([
 				state = event.originalEvent.state || {};
 
 			beforeNavigate.originalEvent = event;
-			$win.trigger( beforeNavigate );
+			$win.trigger( beforeNavigate, state );
 
 			if ( beforeNavigate.isDefaultPrevented() ) {
 				return;
