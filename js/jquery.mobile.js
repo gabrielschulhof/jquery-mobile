@@ -2,7 +2,7 @@
 //>>group: exclude
 
 define([
-	"require",
+	"require", "widgets/page", "navigation" ], function( require ) { require([
 	"./widgets/loader",
 	"./events/navigate",
 	"./navigation/path",
@@ -53,7 +53,9 @@ define([
 	"./widgets/tabs",
 	"./zoom",
 	"./zoom/iosorientationfix"
-], function( require ) {
+], function() {
 	require( [ "./init" ], function() {} );
+});
+
 });
 //>>excludeEnd("jqmBuildExclude");
