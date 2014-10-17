@@ -13,13 +13,15 @@
 	<script>
 		$.testHelper.asyncLoad([
 			[
-				"widgets/forms/checkboxradio",
-				"widgets/page" // Needed by the test suite
+				"widgets/page"
 			],
 			[
-				"checkboxradio_core.js"
+				"widgets/forms/checkboxradio"
 			],
-			[ "init" ]
+			[ "init" ],
+			[
+				"checkboxradio_core.js"
+			]
 		]);
 	</script>
 
