@@ -1,6 +1,10 @@
 /*
  * mobile init tests
  */
+
+// Stop the test suite until all the modules are loaded
+stop();
+
 define([
 	"jquery",
 	"jquery.mobile",
@@ -10,6 +14,10 @@ define([
 	require( [
 		"init"
 	], function() {
+
+		// Start up the test suite when all modules are loaded and we're ready to test
+		start();
+
 		var libName = 'init',
 			coreLib = 'core',
 			extendFn = $.extend,
