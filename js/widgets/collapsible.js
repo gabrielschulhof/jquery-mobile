@@ -105,6 +105,11 @@ $.widget( "mobile.collapsible", $.extend({
 			this._booleanOptionToClass( newOptions.corners, "ui-corner-all",
 				classesToRemove, classesToAdd, newOptions.corners && newOptions.inset ) ) {
 
+			// Can't have the ui-corner-all class if we're not inset
+			if ( classesToRemove[ "ui-collapsible-inset" ] ) {
+				classesToRemove[ "ui-corner-all" ] = true;
+			}
+
 			classesOption[ "ui-collapsible" ] =
 				this._calculateClassKeyValue( classesOption[ "ui-collapsible" ],
 					classesToRemove, classesToAdd );
