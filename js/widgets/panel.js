@@ -518,6 +518,12 @@ $.widget( "mobile.panel", {
 		this[ this._open ? "close" : "open" ]();
 	},
 
+	_elementsFromClassKey: function( classKey ) {
+		switch ( classKey ) {
+			
+		}
+	},
+
 	_destroy: function() {
 		var otherPanels,
 		o = this.options,
