@@ -184,17 +184,29 @@ define( [ "jquery", "../widget", "../core", "../animationComplete", "../navigati
 				);
 		},
 
+		_pendingShowAnimationComplete: $.noop,
+
+		_showAnimationComplete: function() {
+			this.element.removeClass( "in" );
+		},
+
 		show: function( notransition ) {
 			var hideClass = "ui-fixed-hidden",
 				$el = this.element;
 
 			if ( this._useTransition( notransition ) ) {
+
+				// Renders inert the .animationComplete() callback given during hide()
+				this._pendingHideAnimationComplete = $.noop;
+
+				// Activates the show() .animationComplete() callback
+				this._pendingShowAnimationComplete = this._showAnimationComplete;
 				$el
 					.removeClass( "out " + hideClass )
 					.addClass( "in" )
-					.animationComplete(function () {
-						$el.removeClass( "in" );
-					});
+					.animationComplete( $.proxy( function () {
+						this._pendingShowAnimationComplete();
+					}, this ) );
 			}
 			else {
 				$el.removeClass( hideClass );
@@ -202,22 +214,42 @@ define( [ "jquery", "../widget", "../core", "../animationComplete", "../navigati
 			this._visible = true;
 		},
 
-		hide: function( notransition ) {
-			var hideClass = "ui-fixed-hidden",
-				$el = this.element,
-				// if it's a slide transition, our new transitions need the reverse class as well to slide outward
-				outclass = "out" + ( this.options.transition === "slide" ? " reverse" : "" );
+		_hideAnimationClass: function() {
+			return "out" + ( this.options.transition === "slide" ? " reverse" : "" );
+		},
 
+		_pendingHideAnimationComplete: $.noop,
+
+		_hideAnimationComplete: function() {
+			this.element
+				.addClass( "ui-fixed-hidden" )
+
+				// if it's a slide transition, our new transitions need the reverse class as well
+				// to slide outward
+				.removeClass( this._hideAnimationClass() );
+		},
+
+		hide: function( notransition ) {
 			if ( this._useTransition( notransition ) ) {
-				$el
-					.addClass( outclass )
+
+				// Renders inert the .animationComplete() callback given during show()
+				this._pendingShowAnimationComplete = $.noop;
+
+				// Activates the hide() .animationComplete() callback
+				this._pendingHideAnimationComplete = this._hideAnimationComplete;
+
+				this.element
+
+					// if it's a slide transition, our new transitions need the reverse class as
+					// well to slide outward
+					.addClass( this._hideAnimationClass() )
 					.removeClass( "in" )
-					.animationComplete(function() {
-						$el.addClass( hideClass ).removeClass( outclass );
-					});
+					.animationComplete( $.proxy( function() {
+						this._pendingHideAnimationComplete();
+					}, this ) );
 			}
 			else {
-				$el.addClass( hideClass ).removeClass( outclass );
+				this._hideAnimationComplete();
 			}
 			this._visible = false;
 		},
