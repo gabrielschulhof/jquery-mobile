@@ -35,7 +35,7 @@ function attachPopupHandler( popup, sources ) {
 		});
 
 		collapsibleSet.find( "[data-role='collapsible']" ).first().attr( "data-collapsed", "false" );
-		popup.enhanceWithin();
+		popup.enhance();
 	});
 }
 

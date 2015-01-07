@@ -41,8 +41,6 @@ $.mobile.degradeInputs = {
 	url: false,
 	week: false
 };
-// Backcompat remove in 1.5
-$.mobile.page.prototype.options.degradeInputs = $.mobile.degradeInputs;
 
 // Auto self-init widgets
 $.mobile.degradeInputsWithin = function( target ) {

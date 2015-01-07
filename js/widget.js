@@ -53,9 +53,6 @@ $.extend( $.Widget.prototype, {
 	}
 });
 
-//TODO: Remove in 1.5 for backcompat only
-$.mobile.widget = $.extend( {}, $.Widget, $.mobile.widget );
-
 return $.Widget;
 
 });
