@@ -637,8 +637,9 @@
 	module( "Pre-enhanced" );
 
 	asyncTest( "basic pre-enhanced listview", function() {
-		var $page = $( "#list-pre-enhanced" ),
-			$list = $page.find( "ul" );
+		var item = $( "<li><a href='#'>New Item</a></li>" ),
+			page = $( "#list-pre-enhanced" ),
+			list = page.find( "ul" );
 
 		$.testHelper.pageSequence([
 			function() {
@@ -646,8 +647,11 @@
 			},
 
 			function() {
-				deepEqual(typeof $list.listview, "function", "listview object declared on pre-enhanced list");
-
+				deepEqual( !!list.listview( "instance" ), true,
+					"listview instance declared on pre-enhanced list" );
+				list.append( item ).listview( "refresh" );
+				deepEqual( item.children( "a" ).hasClass( "ui-button" ), true,
+					"Listview refresh() enhances new items" );
 				window.history.back();
 			},
 
