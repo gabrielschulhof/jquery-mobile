@@ -15,7 +15,6 @@ $.widget( "mobile.listview", $.extend( {
 
 	options: {
 		theme: null,
-		countTheme: null, /* Deprecated in 1.4 */
 		dividerTheme: null,
 		icon: "carat-r",
 		splitIcon: "carat-r",
@@ -45,29 +44,6 @@ $.widget( "mobile.listview", $.extend( {
 		t.refresh( true );
 	},
 
-	// TODO: Remove in 1.5
-	_findFirstElementByTagName: function( ele, nextProp, lcName, ucName ) {
-		var dict = {};
-		dict[ lcName ] = dict[ ucName ] = true;
-		while ( ele ) {
-			if ( dict[ ele.nodeName ] ) {
-				return ele;
-			}
-			ele = ele[ nextProp ];
-		}
-		return null;
-	},
-	// TODO: Remove in 1.5
-	_addThumbClasses: function( containers ) {
-		var i, img, len = containers.length;
-		for ( i = 0; i < len; i++ ) {
-			img = $( this._findFirstElementByTagName( containers[ i ].firstChild, "nextSibling", "img", "IMG" ) );
-			if ( img.length ) {
-				$( this._findFirstElementByTagName( img[ 0 ].parentNode, "parentNode", "li", "LI" ) ).addClass( img.hasClass( "ui-li-icon" ) ? "ui-li-has-icon" : "ui-li-has-thumb" );
-			}
-		}
-	},
-
 	_getChildrenByTagName: function( ele, lcName, ucName ) {
 		var results = [],
 			dict = {};
@@ -88,7 +64,7 @@ $.widget( "mobile.listview", $.extend( {
 	refresh: function( create ) {
 		var buttonClass, pos, numli, item, itemClass, itemTheme, itemIcon, icon, a,
 			isDivider, startCount, newStartCount, value, last, splittheme, splitThemeClass, spliticon,
-			altButtonClass, dividerTheme, li, ol, start, itemClassDict, countBubbles, countTheme, countThemeClass,
+			altButtonClass, dividerTheme, li, ol, start, itemClassDict, countBubbles,
 			o = this.options,
 			$list = this.element;
 
@@ -100,8 +76,6 @@ $.widget( "mobile.listview", $.extend( {
 		start = $list.attr( "start" );
 		itemClassDict = {};
 		countBubbles = $list.find( ".ui-li-count" );
-		countTheme = getAttr( $list[ 0 ], "counttheme" ) || this.options.countTheme;
-		countThemeClass = countTheme ? "ui-body-" + countTheme : "ui-body-inherit";
 
 		if ( o.theme ) {
 			$list.addClass( "ui-group-theme-" + o.theme );
@@ -203,13 +177,6 @@ $.widget( "mobile.listview", $.extend( {
 		countBubbles.each( function() {
 			$( this ).closest( "li" ).addClass( "ui-li-has-count" );
 		});
-		if ( countThemeClass ) {
-			countBubbles.not( "[class*='ui-body-']" ).addClass( countThemeClass );
-		}
-
-		// Deprecated in 1.4. From 1.5 you have to add class ui-li-has-thumb or ui-li-has-icon to the LI.
-		this._addThumbClasses( li );
-		this._addThumbClasses( li.find( ".ui-button" ) );
 
 		this._afterListviewRefresh();
 
