@@ -143,15 +143,15 @@
 			</div><!--/demo-html -->
 
 		<h2>Count bubbles</h2>
-		<p>To add a count indicator to the right of the list item, wrap the number in an element with a class of <code>ui-li-count</code>. The theme for <strong>count bubbles</strong> can be set by adding the <code>data-count-theme</code> to the list and specifying a swatch letter. </p>
+		<p>To add a count indicator to the right of the list item, wrap the number in an element with a class of <code>ui-listview-item-count-bubble</code>. The theme for <strong>count bubbles</strong> can be set by adding the <code>data-count-theme</code> to the list and specifying a swatch letter. </p>
 
 			<div data-demo-html="true">
 				<ul data-role="listview" data-count-theme="b" data-inset="true">
-					<li><a href="#">Inbox <span class="ui-li-count">12</span></a></li>
-					<li><a href="#">Outbox <span class="ui-li-count">0</span></a></li>
-					<li><a href="#">Drafts <span class="ui-li-count">4</span></a></li>
-					<li><a href="#">Sent <span class="ui-li-count">328</span></a></li>
-					<li><a href="#">Trash <span class="ui-li-count">62</span></a></li>
+					<li><a href="#">Inbox <span class="ui-listview-item-count-bubble">12</span></a></li>
+					<li><a href="#">Outbox <span class="ui-listview-item-count-bubble">0</span></a></li>
+					<li><a href="#">Drafts <span class="ui-listview-item-count-bubble">4</span></a></li>
+					<li><a href="#">Sent <span class="ui-listview-item-count-bubble">328</span></a></li>
+					<li><a href="#">Trash <span class="ui-listview-item-count-bubble">62</span></a></li>
 				</ul>
 			</div><!--/demo-html -->
 
@@ -170,14 +170,14 @@
 			</div><!--/demo-html -->
 
 		<h2>Icons: 16x16</h2>
-		<p>To use standard 16x16 pixel icons in list items, add the class of <code>ui-li-icon</code> to the image element and insert 16x16 icons as <code>img</code> tags inside the list items.</p>
+		<p>To use standard 16x16 pixel icons in list items, add the class of <code>ui-listview-item-icon</code> to the image element and insert 16x16 icons as <code>img</code> tags inside the list items.</p>
 			<div data-demo-html="true">
 				<ul data-role="listview" data-inset="true">
-					<li><a href="#"><img src="../_assets/img/gf.png" alt="France" class="ui-li-icon ui-corner-none">France</a></li>
-					<li><a href="#"><img src="../_assets/img/de.png" alt="Germany" class="ui-li-icon">Germany</a></li>
-					<li><a href="#"><img src="../_assets/img/gb.png" alt="Great Britain" class="ui-li-icon">Great Britain</a></li>
-					<li><a href="#"><img src="../_assets/img/fi.png" alt="Finland" class="ui-li-icon">Finland</a></li>
-					<li><a href="#"><img src="../_assets/img/us.png" alt="United States" class="ui-li-icon ui-corner-none">United States</a></li>
+					<li><a href="#"><img src="../_assets/img/gf.png" alt="France" class="ui-listview-item-icon ui-corner-none">France</a></li>
+					<li><a href="#"><img src="../_assets/img/de.png" alt="Germany" class="ui-listview-item-icon">Germany</a></li>
+					<li><a href="#"><img src="../_assets/img/gb.png" alt="Great Britain" class="ui-listview-item-icon">Great Britain</a></li>
+					<li><a href="#"><img src="../_assets/img/fi.png" alt="Finland" class="ui-listview-item-icon">Finland</a></li>
+					<li><a href="#"><img src="../_assets/img/us.png" alt="United States" class="ui-listview-item-icon ui-corner-none">United States</a></li>
 				</ul>
 			</div><!--/demo-html -->
 
@@ -237,29 +237,29 @@
 
 		<h2>Formatted content</h2>
 
-		<p>To add text hierarchy, use headings to increase font emphasis and use paragraphs to reduce emphasis. Supplemental information can be added to the right of each list item by wrapping content in an element with a class of <code>ui-li-aside</code></p>
+		<p>To add text hierarchy, use headings to increase font emphasis and use paragraphs to reduce emphasis. Supplemental information can be added to the right of each list item by wrapping content in an element with a class of <code>ui-listview-item-aside</code></p>
 
 			<div data-demo-html="true">
 				<ul data-role="listview" data-inset="true">
-					<li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
+					<li data-role="list-divider">Friday, October 8, 2010 <span class="ui-listview-item-count-bubble">2</span></li>
 					<li><a href="index.php">
 					<h2>Stephen Weber</h2>
 					<p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
 					<p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-						<p class="ui-li-aside"><strong>6:24</strong>PM</p>
+						<p class="ui-listview-item-aside"><strong>6:24</strong>PM</p>
 					</a></li>
 					<li><a href="index.php">
 					<h2>jQuery Team</h2>
 					<p><strong>Boston Conference Planning</strong></p>
 					<p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-						<p class="ui-li-aside"><strong>9:18</strong>AM</p>
+						<p class="ui-listview-item-aside"><strong>9:18</strong>AM</p>
 					</a></li>
-					<li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
+					<li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-listview-item-count-bubble">1</span></li>
 					<li><a href="index.php">
 					<h2>Avery Walker</h2>
 					<p><strong>Re: Dinner Tonight</strong></p>
 					<p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
-						<p class="ui-li-aside"><strong>4:48</strong>PM</p>
+						<p class="ui-listview-item-aside"><strong>4:48</strong>PM</p>
 					</a></li>
 				</ul>
 			</div><!--/demo-html -->
@@ -272,9 +272,9 @@
 
 				<ul data-role="listview" data-inset="true" data-theme="b" data-divider-theme="a" data-count-theme="a">
 					<li data-role="list-divider">Divider</li>
-					<li><a href="index.php" data-theme="a">Inbox <span class="ui-li-count">12</span></a></li>
-					<li><a href="index.php">Outbox <span class="ui-li-count">0</span></a></li>
-					<li><a href="index.php">Sent <span class="ui-li-count">328</span></a></li>
+					<li><a href="index.php" data-theme="a">Inbox <span class="ui-listview-item-count-bubble">12</span></a></li>
+					<li><a href="index.php">Outbox <span class="ui-listview-item-count-bubble">0</span></a></li>
+					<li><a href="index.php">Sent <span class="ui-listview-item-count-bubble">328</span></a></li>
 				</ul>
 			</div><!--/demo-html -->
 
@@ -391,18 +391,18 @@
 					<div data-role="collapsible">
 					<h2>Formatted text</h2>
 						<ul data-role="listview" data-theme="a" data-divider-theme="b">
-							<li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
+							<li data-role="list-divider">Friday, October 8, 2010 <span class="ui-listview-item-count-bubble">2</span></li>
 							<li><a href="index.php">
 								<h3>Stephen Weber</h3>
 							<p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
 							<p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-								<p class="ui-li-aside"><strong>6:24</strong>PM</p>
+								<p class="ui-listview-item-aside"><strong>6:24</strong>PM</p>
 							</a></li>
 							<li><a href="index.php">
 								<h3>jQuery Team</h3>
 							<p><strong>Boston Conference Planning</strong></p>
 							<p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-								<p class="ui-li-aside"><strong>9:18</strong>AM</p>
+								<p class="ui-listview-item-aside"><strong>9:18</strong>AM</p>
 							</a></li>
 						</ul>
 					</div>
@@ -441,42 +441,42 @@
 					<div data-role="collapsible">
 					<h2>Mailbox</h2>
 						<ul data-role="listview">
-							<li><a href="index.php">Inbox <span class="ui-li-count">12</span></a></li>
-							<li><a href="index.php">Outbox <span class="ui-li-count">0</span></a></li>
-							<li><a href="index.php">Drafts <span class="ui-li-count">4</span></a></li>
-							<li><a href="index.php">Sent <span class="ui-li-count">328</span></a></li>
-							<li><a href="index.php">Trash <span class="ui-li-count">62</span></a></li>
+							<li><a href="index.php">Inbox <span class="ui-listview-item-count-bubble">12</span></a></li>
+							<li><a href="index.php">Outbox <span class="ui-listview-item-count-bubble">0</span></a></li>
+							<li><a href="index.php">Drafts <span class="ui-listview-item-count-bubble">4</span></a></li>
+							<li><a href="index.php">Sent <span class="ui-listview-item-count-bubble">328</span></a></li>
+							<li><a href="index.php">Trash <span class="ui-listview-item-count-bubble">62</span></a></li>
 						</ul>
 					</div>
 					<div data-role="collapsible">
 					<h2>Calendar</h2>
 						<ul data-role="listview" data-theme="a" data-divider-theme="b">
-							<li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
+							<li data-role="list-divider">Friday, October 8, 2010 <span class="ui-listview-item-count-bubble">2</span></li>
 							<li><a href="index.php">
 									<h3>Stephen Weber</h3>
 								<p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
 								<p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-									<p class="ui-li-aside"><strong>6:24</strong>PM</p>
+									<p class="ui-listview-item-aside"><strong>6:24</strong>PM</p>
 							</a></li>
 							<li><a href="index.php">
 								<h3>jQuery Team</h3>
 							<p><strong>Boston Conference Planning</strong></p>
 							<p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-								<p class="ui-li-aside"><strong>9:18</strong>AM</p>
+								<p class="ui-listview-item-aside"><strong>9:18</strong>AM</p>
 							</a></li>
-							<li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
+							<li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-listview-item-count-bubble">1</span></li>
 							<li><a href="index.php">
 								<h3>Avery Walker</h3>
 							<p><strong>Re: Dinner Tonight</strong></p>
 							<p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait! </p>
-								<p class="ui-li-aside"><strong>4:48</strong>PM</p>
+								<p class="ui-listview-item-aside"><strong>4:48</strong>PM</p>
 							</a></li>
-							<li data-role="list-divider">Wednesday, October 6, 2010 <span class="ui-li-count">3</span></li>
+							<li data-role="list-divider">Wednesday, October 6, 2010 <span class="ui-listview-item-count-bubble">3</span></li>
 							<li><a href="index.php">
 								<h3>Amazon.com</h3>
 							<p><strong>4-for-3 Books for Kids</strong></p>
 							<p>As someone who has purchased children's books from our 4-for-3 Store, you may be interested in these featured books.</p>
-								<p class="ui-li-aside"><strong>12:47</strong>PM</p>
+								<p class="ui-listview-item-aside"><strong>12:47</strong>PM</p>
 							</a></li>
 						</ul>
 					</div>

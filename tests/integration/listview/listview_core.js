@@ -29,8 +29,10 @@
 			},
 
 			function() {
-				ok($('#basic-linked-test .ui-li-static').length, ".ui-li-static class added to read-only li elements");
-				ok($('#basic-linked-test .ui-li-divider').length, ".ui-li-divider class added to divider li elements");
+				ok($('#basic-linked-test .ui-listview-item-static').length,
+					".ui-listview-item-static class added to read-only li elements");
+				ok($('#basic-linked-test .ui-listview-item-divider').length,
+					".ui-listview-item-divider class added to divider li elements");
 				ok($('#basic-linked-test li > .ui-button').length, ".ui-button classes added to anchors that are immediate child of li elements");
 				start();
 			}
@@ -71,27 +73,33 @@
 		]);
 	});
 
-	asyncTest( "Presence of ui-li-has- classes", function(){
+	asyncTest( "Presence of ui-listview-item-has- classes", function(){
 		$.testHelper.pageSequence( [
 			function() {
-				$.mobile.changePage( "#ui-li-has-test" );
+				$.mobile.changePage( "#ui-listview-item-has-test" );
 			},
 
 			function() {
 				var page = $( ".ui-page-active" ),
 					items = page.find( "li" );
 
-				ok(  items.eq( 0 ).hasClass( "ui-li-has-count"), "First LI should have ui-li-has-count class" );
+				ok(  items.eq( 0 ).hasClass( "ui-listview-item-has-count"),
+					"First LI should have ui-listview-item-has-count class" );
 				ok(  items.eq( 0 ).find( "a" ).first().hasClass( "ui-icon-carat-r"), "First LI A should have ui-icon-carat-r class" );
-				ok( !items.eq( 1 ).hasClass( "ui-li-has-count"), "Second LI should NOT have ui-li-has-count class" );
+				ok( !items.eq( 1 ).hasClass( "ui-listview-item-has-count"),
+					"Second LI should NOT have ui-listview-item-has-count class" );
 				ok(  items.eq( 1 ).find( "a" ).first().hasClass( "ui-icon-carat-r"), "Second LI A should have ui-icon-carat-r class" );
-				ok( !items.eq( 2 ).hasClass( "ui-li-has-count"), "Third LI should NOT have ui-li-has-count class" );
+				ok( !items.eq( 2 ).hasClass( "ui-listview-item-has-count"),
+					"Third LI should NOT have ui-listview-item-has-count class" );
 				ok( !items.eq( 2 ).find( "a" ).first().hasClass( "ui-icon-carat-r"), "Third LI A should NOT have ui-icon-carat-r class" );
-				ok(  items.eq( 3 ).hasClass( "ui-li-has-count"), "Fourth LI should have ui-li-has-count class" );
+				ok(  items.eq( 3 ).hasClass( "ui-listview-item-has-count"),
+					"Fourth LI should have ui-listview-item-has-count class" );
 				ok( !items.eq( 3 ).find( "a" ).first().hasClass( "ui-icon-carat-r"), "Fourth LI A should NOT have ui-icon-carat-r class" );
-				ok( !items.eq( 4 ).hasClass( "ui-li-has-count"), "Fifth LI should NOT have ui-li-has-count class" );
+				ok( !items.eq( 4 ).hasClass( "ui-listview-item-has-count"),
+					"Fifth LI should NOT have ui-listview-item-has-count class" );
 				ok( !items.eq( 4 ).find( "a" ).first().hasClass( "ui-icon-carat-r"), "Fifth LI A should NOT have ui-icon-carat-r class" );
-				ok( items.eq( 5 ).hasClass( "ui-li-has-alt"), "Sixth LI should have ui-li-has-alt class" );
+				ok( items.eq( 5 ).hasClass( "ui-listview-item-has-alternate"),
+					"Sixth LI should have ui-listview-item-has-alternate class" );
 				start();
 			}
 		]);
@@ -176,7 +184,7 @@
 
 			function(){
 				var $new_page = $('#split-list-test');
-				ok($('.ui-li-has-alt', $new_page).length == 3);
+				ok($('.ui-listview-item-has-alternate', $new_page).length == 3);
 				ok($('li > .ui-button', $new_page).length == 6);
 				start();
 			}
@@ -228,7 +236,7 @@
 			},
 
 			function(){
-				$('.ui-page-active .ui-li-has-alt > .ui-button:eq(1)').click();
+				$('.ui-page-active .ui-listview-item-has-alternate > .ui-button:eq(1)').click();
 			},
 
 			function(){
@@ -248,7 +256,7 @@
 
 			function(){
 				var $new_page = $('#list-divider-test');
-				ok($new_page.find('.ui-li-divider').length == 2);
+				ok($new_page.find('.ui-listview-item-divider').length == 2);
 				ok($new_page.hasClass('ui-page-active'));
 				start();
 			}
@@ -266,7 +274,7 @@
 			function() {
 				var $new_page = $( '#autodividers-test' );
 				ok( $new_page.hasClass( 'ui-page-active' ) );
-				ok( $new_page.find( '.ui-li-divider' ).length === 4 );
+				ok( $new_page.find( '.ui-listview-item-divider' ).length === 4 );
 				start();
 			}
 		]);
@@ -290,51 +298,51 @@
 				// add li; should add an "X" divider
 				$list.append( '<li>x is for xanthe</li>' );
 				$list.listview('refresh');
-				ok( $new_page.find( '.ui-li-divider' ).length === 5 );
-				ok( $new_page.find( '.ui-li-divider' ).is( ':contains("X")' ) );
+				ok( $new_page.find( '.ui-listview-item-divider' ).length === 5 );
+				ok( $new_page.find( '.ui-listview-item-divider' ).is( ':contains("X")' ) );
 
 				// adding the same element again should create a valid list
 				// item but no new divider
-				ok( $new_page.find( '.ui-li-static' ).length === 5 );
+				ok( $new_page.find( '.ui-listview-item-static' ).length === 5 );
 				$list.append( '<li>x is for xanthe</li>' );
 				$list.listview('refresh');
-				ok( $new_page.find( '.ui-li-divider' ).length === 5 );
-				ok( $new_page.find( '.ui-li-divider:contains("X")' ).length === 1 );
-				ok( $new_page.find( '.ui-li-static' ).length === 6 );
+				ok( $new_page.find( '.ui-listview-item-divider' ).length === 5 );
+				ok( $new_page.find( '.ui-listview-item-divider:contains("X")' ).length === 1 );
+				ok( $new_page.find( '.ui-listview-item-static' ).length === 6 );
 
 				// should ignore addition of non-li elements to the list
 				$list.find( 'li:eq(0)' ).append( '<span>ignore me</span>' );
 				$list.listview('refresh');
-				ok( $new_page.find( '.ui-li-divider' ).length === 5 );
-				ok( $new_page.find( '.ui-li-static' ).length === 6 );
+				ok( $new_page.find( '.ui-listview-item-divider' ).length === 5 );
+				ok( $new_page.find( '.ui-listview-item-static' ).length === 6 );
 
 				// add li with the same initial letter as another li
 				// but after the X li item; should add a second "B" divider to the
 				// end of the list
 				$list.append( '<li>b is for barry</li>' );
 				$list.listview('refresh');
-				ok( $new_page.find( '.ui-li-divider' ).length === 6 );
-				ok( $new_page.find( '.ui-li-divider:contains("B")' ).length === 2 );
+				ok( $new_page.find( '.ui-listview-item-divider' ).length === 6 );
+				ok( $new_page.find( '.ui-listview-item-divider:contains("B")' ).length === 2 );
 
 				// remove the item with a repeated "b"; should remove the second
 				// "B" divider
 				$list.find( 'li:contains("barry")' ).remove();
 				$list.listview('refresh');
-				ok( $new_page.find( '.ui-li-divider' ).length === 5 );
-				ok( $new_page.find( '.ui-li-divider:contains("B")' ).length === 1 );
+				ok( $new_page.find( '.ui-listview-item-divider' ).length === 5 );
+				ok( $new_page.find( '.ui-listview-item-divider:contains("B")' ).length === 1 );
 
 				// remove li; should remove the "A" divider
 				$list.find( 'li:contains("aquaman")' ).remove();
 				$list.listview('refresh');
-				ok( $new_page.find( '.ui-li-divider' ).length === 4 );
-				ok( !$new_page.find( '.ui-li-divider' ).is( ':contains("A")' ) );
+				ok( $new_page.find( '.ui-listview-item-divider' ).length === 4 );
+				ok( !$new_page.find( '.ui-listview-item-divider' ).is( ':contains("A")' ) );
 
 				// adding another "B" item after "C" should create two separate
 				// "B" dividers
 				$list.find( 'li:contains("catwoman")' ).after( '<li>b is for barry</li>' );
 				$list.listview('refresh');
-				ok( $new_page.find( '.ui-li-divider' ).length === 5 );
-				ok( $new_page.find( '.ui-li-divider:contains("B")' ).length === 2 );
+				ok( $new_page.find( '.ui-listview-item-divider' ).length === 5 );
+				ok( $new_page.find( '.ui-listview-item-divider:contains("B")' ).length === 2 );
 
 				// if two dividers with the same letter have only non-dividers
 				// between them, they get merged
@@ -342,13 +350,13 @@
 				// removing catwoman should cause the two "B" dividers to merge
 				$list.find( 'li:contains("catwoman")' ).remove();
 				$list.listview('refresh');
-				ok( $new_page.find( '.ui-li-divider:contains("B")' ).length === 1 );
+				ok( $new_page.find( '.ui-listview-item-divider:contains("B")' ).length === 1 );
 
 				// adding another "D" item before the "D" divider should only
 				// result in a single "D" divider after merging
 				$list.find( 'li:contains("barry")' ).after( '<li>d is for dan</li>' );
 				$list.listview('refresh');
-				ok( $new_page.find( '.ui-li-divider:contains("D")' ).length === 1 );
+				ok( $new_page.find( '.ui-listview-item-divider:contains("D")' ).length === 1 );
 
 				start();
 			}
@@ -369,16 +377,16 @@
 
 				// check we have the right dividers
 				var $list = $( '#autodividers-selector-test-list1' );
-				ok( $list.find( '.ui-li-divider' ).length === 4 );
-				ok( $list.find( '.ui-li-divider' ).eq(0).is( ':contains(A)' ) );
-				ok( $list.find( '.ui-li-divider' ).eq(1).is( ':contains(B)' ) );
-				ok( $list.find( '.ui-li-divider' ).eq(2).is( ':contains(C)' ) );
-				ok( $list.find( '.ui-li-divider' ).eq(3).is( ':contains(D)' ) );
+				ok( $list.find( '.ui-listview-item-divider' ).length === 4 );
+				ok( $list.find( '.ui-listview-item-divider' ).eq(0).is( ':contains(A)' ) );
+				ok( $list.find( '.ui-listview-item-divider' ).eq(1).is( ':contains(B)' ) );
+				ok( $list.find( '.ui-listview-item-divider' ).eq(2).is( ':contains(C)' ) );
+				ok( $list.find( '.ui-listview-item-divider' ).eq(3).is( ':contains(D)' ) );
 
 				// check that adding a new item creates the right divider
 				$list.append( '<li><a href="#">e is for ethel</a></li>' );
 				$list.listview('refresh');
-				ok( $list.find( '.ui-li-divider' ).eq(4).is( ':contains(E)' ) );
+				ok( $list.find( '.ui-listview-item-divider' ).eq(4).is( ':contains(E)' ) );
 
 				start();
 			}
@@ -404,18 +412,18 @@
 				});
 
 				$list.listview( 'refresh' );
-				ok( $list.find( '.ui-li-divider' ).length === 4 );
-				ok( $list.find( '.ui-li-divider').eq(0).is( ':contains(E)' ) );
-				ok( $list.find( '.ui-li-divider').eq(1).is( ':contains(F)' ) );
-				ok( $list.find( '.ui-li-divider').eq(2).is( ':contains(G)' ) );
-				ok( $list.find( '.ui-li-divider').eq(3).is( ':contains(H)' ) );
+				ok( $list.find( '.ui-listview-item-divider' ).length === 4 );
+				ok( $list.find( '.ui-listview-item-divider').eq(0).is( ':contains(E)' ) );
+				ok( $list.find( '.ui-listview-item-divider').eq(1).is( ':contains(F)' ) );
+				ok( $list.find( '.ui-listview-item-divider').eq(2).is( ':contains(G)' ) );
+				ok( $list.find( '.ui-listview-item-divider').eq(3).is( ':contains(H)' ) );
 
 				// check that adding a new item creates the right divider
 				$list.append( '<li><div><span class="autodividers-selector-test-selectme">' +
 				'i is for impy</span></div></li>' );
 				$list.listview( 'refresh' );
 
-				ok( $list.find( '.ui-li-divider').eq(4).is( ':contains(I)' ) );
+				ok( $list.find( '.ui-listview-item-divider').eq(4).is( ':contains(I)' ) );
 
 				start();
 			}
