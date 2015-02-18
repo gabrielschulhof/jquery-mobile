@@ -22,6 +22,7 @@ define([
 	"./grid",
 	"./widgets/navbar",
 	"./widgets/listview",
+	"./widgets/listview.backcompat",
 	"./widgets/listview.autodividers",
 	"./widgets/listview.hidedividers",
 	"./nojs",
