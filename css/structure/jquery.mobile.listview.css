@@ -145,6 +145,10 @@
 	top: 50%;
 	margin-top: -.88em;
 }
+.ui-listview .ui-listview-item-count-bubble {
+	background-color: inherit;
+	border-color: inherit;
+}
 .ui-listview .ui-icon-end .ui-listview-item-count-bubble {
 	right: 3.2em;
 }
