@@ -30,7 +30,7 @@
 	}
 } )( function( $ ) {
 
-var getAttr = $.mobile.getAttribute;
+var getAttribute = $.mobile.getAttribute;
 
 return $.widget( "mobile.listview", $.extend( {
 	version: "@VERSION",
@@ -116,12 +116,12 @@ return $.widget( "mobile.listview", $.extend( {
 			if ( create || item[ 0 ].className
 					.search( /\bui-listview-item-static\b|\bui-listview-item-divider\b/ ) < 0 ) {
 				a = this._getChildrenByTagName( item[ 0 ], "a", "A" );
-				isDivider = ( getAttr( item[ 0 ], "role" ) === "list-divider" );
+				isDivider = ( getAttribute( item[ 0 ], "role" ) === "list-divider" );
 				value = item.attr( "value" );
-				itemTheme = getAttr( item[ 0 ], "theme" );
+				itemTheme = getAttribute( item[ 0 ], "theme" );
 
 				if ( a.length && a[ 0 ].className.search( /\bui-button\b/ ) < 0 && !isDivider ) {
-					itemIcon = getAttr( item[ 0 ], "icon" );
+					itemIcon = getAttribute( item[ 0 ], "icon" );
 					icon = ( itemIcon === false ) ? false : ( itemIcon || o.icon );
 
 					buttonClass = "ui-button";
@@ -134,9 +134,9 @@ return $.widget( "mobile.listview", $.extend( {
 						itemClass = "ui-listview-item-has-alternate";
 
 						last = a.last();
-						splittheme = getAttr( last[ 0 ], "theme" ) || o.splitTheme || getAttr( item[ 0 ], "theme", true );
+						splittheme = getAttribute( last[ 0 ], "theme" ) || o.splitTheme || getAttribute( item[ 0 ], "theme", true );
 						splitThemeClass = splittheme ? " ui-button-" + splittheme : "";
-						spliticon = getAttr( last[ 0 ], "icon" ) || getAttr( item[ 0 ], "icon" ) || o.splitIcon;
+						spliticon = getAttribute( last[ 0 ], "icon" ) || getAttribute( item[ 0 ], "icon" ) || o.splitIcon;
 						altButtonClass = "ui-button ui-button-icon-only ui-icon-" + spliticon + splitThemeClass;
 
 						last
@@ -153,7 +153,7 @@ return $.widget( "mobile.listview", $.extend( {
 					// Apply buttonClass to the (first) anchor
 					a.addClass( buttonClass );
 				} else if ( isDivider ) {
-					dividerTheme = ( getAttr( item[ 0 ], "theme" ) || o.dividerTheme || o.theme );
+					dividerTheme = ( getAttribute( item[ 0 ], "theme" ) || o.dividerTheme || o.theme );
 
 					itemClass = "ui-listview-item-divider";
 					itemExtraClass = "ui-bar-" + ( dividerTheme ? dividerTheme : "inherit" );
