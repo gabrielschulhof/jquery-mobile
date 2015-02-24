@@ -12,7 +12,7 @@
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 	<style id="custom-icon">
-        .ui-icon-custom:after {
+        .ui-icon.ui-icon-custom {
 			background-image: url("../_assets/img/glyphish-icons/21-skull.png");
 			background-position: 3px 3px;
 			background-size: 70%;
@@ -85,9 +85,12 @@
 			</div><!--/demo-html -->
 
 		<h2>Filter</h2>
-		<p>To make a list filterable, simply add the <code>data-filter="true"</code> attribute to the list. The framework will then append a search box above the list and add the behavior to filter out list items that don't contain the current search string as the user types. The input's placeholder text defaults to "Filter items...". To configure the placeholder text in the search input, use the <code>data-filter-placeholder</code> attribute. By default the search box will inherit its theme from its parent. The search box theme can be configured using the data attribute <code>data-filter-theme</code> on your listview.</p>
+		<p>The listview can be used in conjunction with the <a href="../filterable/" data-ajax="false">filterable</a> widget.</p>
 			<div data-demo-html="true">
-				<ul data-role="listview" data-filter="true" data-filter-placeholder="Search fruits..." data-inset="true">
+				<form class="ui-filterable">
+					<input id="filterable-input" data-type="search" placeholder="Search fruits...">
+				</form>
+				<ul data-role="listview" data-filter="true" data-inset="true" data-input="#filterable-input">
 					<li><a href="#">Apple</a></li>
 					<li><a href="#">Banana</a></li>
 					<li><a href="#">Cherry</a></li>
@@ -98,7 +101,7 @@
 			</div><!--/demo-html -->
 
 		<h2>Filter reveal</h2>
-		<p>The filter reveal feature of the <a href="../filterable/" data-ajax="false">Filterable widget</a> makes it easy to build a simple autocomplete with local data. When the Filterable widget is used on a list that has the <code>data-filter-reveal="true"</code> attribute, it will auto-hide all the list items when the search field is blank. If you need to search against a long list of values, we provide a way to create a filter with a <a href="../listview-autocomplete-remote/" data-ajax="false">remote data source</a>.</p>
+		<p>The filter reveal feature of the <a href="../filterable/" data-ajax="false">Filterable widget</a> makes it easy to build a simple autocomplete with local data. When the Filterable widget is instantiated on a list that has the <code>data-filter-reveal="true"</code> attribute, it will auto-hide all the list items when the search field is blank. If you need to search against a long list of values, we provide a way to create a filter with a <a href="../listview-autocomplete-remote/" data-ajax="false">remote data source</a>.</p>
 			<div data-demo-html="true">
 
 				<form class="ui-filterable">
@@ -143,10 +146,10 @@
 			</div><!--/demo-html -->
 
 		<h2>Count bubbles</h2>
-		<p>To add a count indicator to the right of the list item, wrap the number in an element with a class of <code>ui-listview-item-count-bubble</code>. The theme for <strong>count bubbles</strong> can be set by adding the <code>data-count-theme</code> to the list and specifying a swatch letter. </p>
+		<p>To add a count indicator to the right of the list item, wrap the number in an element with a class of <code>ui-listview-item-count-bubble</code>. The theme for <strong>count bubbles</strong> is inherited from the parent list item.</p>
 
 			<div data-demo-html="true">
-				<ul data-role="listview" data-count-theme="b" data-inset="true">
+				<ul data-role="listview" data-inset="true">
 					<li><a href="#">Inbox <span class="ui-listview-item-count-bubble">12</span></a></li>
 					<li><a href="#">Outbox <span class="ui-listview-item-count-bubble">0</span></a></li>
 					<li><a href="#">Drafts <span class="ui-listview-item-count-bubble">4</span></a></li>
@@ -266,11 +269,11 @@
 
 		<h2>Theme</h2>
 
-		<p>The list item color scheme can be changed to any button color theme swatch by adding the <code> data-theme</code> attribute to the listview or to individual list items. The theme for <strong>list dividers</strong> can be set by adding the <code>data-divider-theme</code> to the list. The theme for <strong>count bubbles</strong> can be set by adding the <code>data-count-theme</code> to the list.</p>
+		<p>The list item color scheme can be changed to any button color theme swatch by adding the <code> data-theme</code> attribute to the listview or to individual list items. The theme for <strong>list dividers</strong> can be set by adding the <code>data-divider-theme</code> to the list. The theme for <strong>count bubbles</strong> is inherited from the parent list item.</p>
 
 			<div data-demo-html="true">
 
-				<ul data-role="listview" data-inset="true" data-theme="b" data-divider-theme="a" data-count-theme="a">
+				<ul data-role="listview" data-inset="true" data-theme="b" data-divider-theme="a">
 					<li data-role="list-divider">Divider</li>
 					<li><a href="index.php" data-theme="a">Inbox <span class="ui-listview-item-count-bubble">12</span></a></li>
 					<li><a href="index.php">Outbox <span class="ui-listview-item-count-bubble">0</span></a></li>
