@@ -9,7 +9,8 @@ define( [ "jquery", "../widget", "./addFirstLastClasses" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
 
-var getAttribute = $.mobile.getAttribute;
+var getAttribute = $.mobile.getAttribute,
+	countBubbleClassRegex = /\bui-listview-item-count-bubble\b/;
 
 $.widget( "mobile.listview", $.extend({
 
@@ -59,7 +60,7 @@ $.widget( "mobile.listview", $.extend({
 	refresh: function( create ) {
 		var buttonClass, pos, numli, item, itemClass, itemExtraClass, itemTheme, itemIcon, icon, a,
 			isDivider, startCount, newStartCount, value, last, splittheme, splitThemeClass, spliticon,
-			altButtonClass, dividerTheme, li, ol, start, itemClassDict, dictionaryKey, countBubbles,
+			altButtonClass, dividerTheme, li, ol, start, itemClassDict, dictionaryKey,
 			o = this.options,
 			$list = this.element;
 
@@ -80,11 +81,6 @@ $.widget( "mobile.listview", $.extend({
 		this._beforeListviewRefresh();
 
 		li = this._getChildrenByTagName( $list[ 0 ], "li", "LI" );
-
-		countBubbles = li
-			.children( "a" )
-				.children( ".ui-listview-item-count-bubble" )
-			.add( li.children( ".ui-listview-item-count-bubble" ) );
 
 		for ( pos = 0, numli = li.length; pos < numli; pos++ ) {
 			item = li.eq( pos );
@@ -115,17 +111,19 @@ $.widget( "mobile.listview", $.extend({
 						splittheme = getAttribute( last[ 0 ], "theme" ) || o.splitTheme || getAttribute( item[ 0 ], "theme", true );
 						splitThemeClass = splittheme ? " ui-button-" + splittheme : "";
 						spliticon = getAttribute( last[ 0 ], "icon" ) || getAttribute( item[ 0 ], "icon" ) || o.splitIcon;
-						altButtonClass = "ui-button ui-button-icon-only ui-icon-" + spliticon + splitThemeClass;
+						altButtonClass = "ui-button ui-button-icon-only" + splitThemeClass;
 
 						last
 							.attr( "title", $.trim( last.getEncodedText() ) )
 							.addClass( altButtonClass )
-							.empty();
+							.empty()
+							.append( "<span class='ui-icon ui-icon-" + spliticon + "'></span>" );
 
 						// Reduce to the first anchor, because only the first gets the buttonClass
 						a = a.first();
 					} else if ( icon ) {
-						buttonClass += " ui-icon-end ui-icon-" + icon;
+						buttonClass += " ui-icon-end";
+						a.append( "<span class='ui-icon ui-icon-" + icon + "'></span>" );
 					}
 
 					// Apply buttonClass to the (first) anchor
@@ -178,7 +176,33 @@ $.widget( "mobile.listview", $.extend({
 					.concat( dictionaryKey.split( "|" ) ) );
 		}
 
-		this._addClass( countBubbles.closest( "li" ), "ui-listview-item-has-count" );
+		this._addClass(
+			li.filter( function trueIfContextHasBubbleOrHasAnchorThatHasBubble() {
+				var child, parentNode,
+					anchorHash = { "a": true, "A": true };
+
+				for ( child = this.firstChild ; !!child ; child = child.nextSibling ) {
+
+					// Accept list item when we've found an element with class
+					// ui-listview-item-count-bubble
+					if ( child.className && child.className.match( countBubbleClassRegex ) ) {
+						return true;
+					}
+
+					// Descend into anchor, remembering where we've been
+					if ( anchorHash[ child.nodeName ] ) {
+						parentNode = child;
+						child = child.firstChild;
+					}
+
+					// When done with anchor, resume checking children of list item
+					if ( !child && parentNode ) {
+						child = parentNode;
+						parentNode = null;
+					}
+				}
+			} ),
+			"ui-listview-item-has-count" );
 
 		this._afterListviewRefresh();
 

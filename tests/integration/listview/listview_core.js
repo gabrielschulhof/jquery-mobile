@@ -85,16 +85,24 @@
 
 				ok(  items.eq( 0 ).hasClass( "ui-listview-item-has-count"),
 					"First LI should have ui-listview-item-has-count class" );
-				ok(  items.eq( 0 ).find( "a" ).first().hasClass( "ui-icon-carat-r"), "First LI A should have ui-icon-carat-r class" );
+				deepEqual(
+					items.eq( 0 ).find( "a" ).first().children( "span.ui-icon-carat-r" ).length, 1,
+						"First LI A should have ui-icon-carat-r span" );
 				ok( !items.eq( 1 ).hasClass( "ui-listview-item-has-count"),
 					"Second LI should NOT have ui-listview-item-has-count class" );
-				ok(  items.eq( 1 ).find( "a" ).first().hasClass( "ui-icon-carat-r"), "Second LI A should have ui-icon-carat-r class" );
+				deepEqual(
+					items.eq( 1 ).find( "a" ).first().children( "span.ui-icon-carat-r" ).length, 1,
+						"Second LI A should have ui-icon-carat-r span" );
 				ok( !items.eq( 2 ).hasClass( "ui-listview-item-has-count"),
 					"Third LI should NOT have ui-listview-item-has-count class" );
-				ok( !items.eq( 2 ).find( "a" ).first().hasClass( "ui-icon-carat-r"), "Third LI A should NOT have ui-icon-carat-r class" );
+				deepEqual(
+					items.eq( 2 ).find( "a" ).first().children( "span.ui-icon-carat-r" ).length, 0,
+						"Third LI A should NOT have ui-icon-carat-r span" );
 				ok(  items.eq( 3 ).hasClass( "ui-listview-item-has-count"),
 					"Fourth LI should have ui-listview-item-has-count class" );
-				ok( !items.eq( 3 ).find( "a" ).first().hasClass( "ui-icon-carat-r"), "Fourth LI A should NOT have ui-icon-carat-r class" );
+				deepEqual(
+					items.eq( 3 ).find( "a" ).first().children( "span.ui-icon-carat-r" ).length, 0,
+						"Fourth LI A should NOT have ui-icon-carat-r span" );
 				ok( !items.eq( 4 ).hasClass( "ui-listview-item-has-count"),
 					"Fifth LI should NOT have ui-listview-item-has-count class" );
 				ok( !items.eq( 4 ).find( "a" ).first().hasClass( "ui-icon-carat-r"), "Fifth LI A should NOT have ui-icon-carat-r class" );
@@ -569,7 +577,11 @@
 					var $elem = $(elem),
 						order = [ "star", "plus", "delete", "grid" ];
 
-					ok( $elem.children(".ui-button").last().hasClass("ui-icon-" + order[i]) );
+					deepEqual(
+						$elem
+							.children(".ui-button")
+								.last()
+									.children( "span.ui-icon-" + order[ i ] ).length, 1 );
 				});
 
 				window.history.back();
