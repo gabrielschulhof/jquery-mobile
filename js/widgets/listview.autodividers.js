@@ -6,6 +6,8 @@ define( [ "jquery", "./listview" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
 
+var dividerClassRegex = /\bui-listview-item-divider\b/;
+
 function defaultAutodividersSelector( elt ) {
 	// look for the text in the given element
 	var text = $.trim( elt.text() ) || null;
@@ -29,29 +31,36 @@ $.widget( "mobile.listview", $.mobile.listview, {
 	_beforeListviewRefresh: function() {
 		if ( this.options.autodividers ) {
 			this._replaceDividers();
-			this._superApply( arguments );
 		}
+		return this._superApply( arguments );
 	},
 
 	_replaceDividers: function() {
-		var i, lis, li, dividerText,
+		var i, item, dividerText,
+			listItems = [],
 			lastDividerText = null,
 			list = this.element,
 			divider;
 
-		list.children( "li:jqmData(role='list-divider')" ).remove();
+		// Remove existing dividers and record remaining items
+		this._getChildrenByTagName( list[ 0 ], "li", "LI" )
+			.filter( function() {
+				if ( this.className && this.className.match( dividerClassRegex ) ) {
+					return true;
+				}
+				listItems.push( this );
+			} )
+			.remove();
 
-		lis = list.children( "li" );
-
-		for ( i = 0; i < lis.length ; i++ ) {
-			li = lis[ i ];
-			dividerText = this.options.autodividersSelector( $( li ) );
+		for ( i = 0; i < listItems.length ; i++ ) {
+			item = listItems[ i ];
+			dividerText = this.options.autodividersSelector( $( item ) );
 
 			if ( dividerText && lastDividerText !== dividerText ) {
 				divider = document.createElement( "li" );
 				divider.appendChild( document.createTextNode( dividerText ) );
 				divider.setAttribute( "data-" + $.mobile.ns + "role", "list-divider" );
-				li.parentNode.insertBefore( divider, li );
+				item.parentNode.insertBefore( divider, item );
 			}
 
 			lastDividerText = dividerText;
