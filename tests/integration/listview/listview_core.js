@@ -83,19 +83,24 @@ asyncTest( "Presence of ui-listview-item-has- classes", function() {
 
 			ok( items.eq( 0 ).hasClass( "ui-listview-item-has-count" ),
 				"First LI should have ui-listview-item-has-count class" );
-			ok( items.eq( 0 ).find( "a" ).first().hasClass( "ui-icon-caret-r" ), "First LI A should have ui-icon-caret-r class" );
+			deepEqual( items.eq( 0 ).find( "a" ).first().children( "span.ui-icon-caret-r" ).length,
+				1, "First LI A should have ui-icon-caret-r class" );
 			ok( !items.eq( 1 ).hasClass( "ui-listview-item-has-count" ),
 				"Second LI should NOT have ui-listview-item-has-count class" );
-			ok( items.eq( 1 ).find( "a" ).first().hasClass( "ui-icon-caret-r" ), "Second LI A should have ui-icon-caret-r class" );
+			deepEqual( items.eq( 1 ).find( "a" ).first().children( "span.ui-icon-caret-r" ).length,
+				1, "Second LI A should have ui-icon-caret-r class" );
 			ok( !items.eq( 2 ).hasClass( "ui-listview-item-has-count" ),
 				"Third LI should NOT have ui-listview-item-has-count class" );
-			ok( !items.eq( 2 ).find( "a" ).first().hasClass( "ui-icon-caret-r" ), "Third LI A should NOT have ui-icon-caret-r class" );
+			deepEqual( items.eq( 2 ).find( "a" ).first().children( "span.ui-icon-caret-r" ).length,
+				0, "Third LI A should NOT have ui-icon-caret-r class" );
 			ok( items.eq( 3 ).hasClass( "ui-listview-item-has-count" ),
 				"Fourth LI should have ui-listview-item-has-count class" );
-			ok( !items.eq( 3 ).find( "a" ).first().hasClass( "ui-icon-caret-r" ), "Fourth LI A should NOT have ui-icon-caret-r class" );
+			deepEqual( items.eq( 3 ).find( "a" ).first().children( "span.ui-icon-caret-r" ).length,
+				0, "Fourth LI A should NOT have ui-icon-caret-r class" );
 			ok( !items.eq( 4 ).hasClass( "ui-listview-item-has-count" ),
 				"Fifth LI should NOT have ui-listview-item-has-count class" );
-			ok( !items.eq( 4 ).find( "a" ).first().hasClass( "ui-icon-caret-r" ), "Fifth LI A should NOT have ui-icon-caret-r class" );
+			deepEqual( items.eq( 4 ).find( "a" ).first().children( "span.ui-icon-caret-r" ).length,
+				0, "Fifth LI A should NOT have ui-icon-caret-r class" );
 			ok( items.eq( 5 ).hasClass( "ui-listview-item-has-alternate" ),
 				"Sixth LI should have ui-listview-item-has-alternate class" );
 			start();
@@ -568,7 +573,10 @@ asyncTest( "split list items respect the icon", function() {
 				var $elem = $( elem ),
 					order = [ "star", "plus", "delete", "grid" ];
 
-				ok( $elem.children( ".ui-button" ).last().hasClass( "ui-icon-" + order[ i ] ) );
+				deepEqual( $elem
+					.children( ".ui-button" )
+						.last()
+							.children( "span.ui-icon-" + order[ i ] ).length, 1 );
 			} );
 
 			window.history.back();
