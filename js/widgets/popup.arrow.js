@@ -68,9 +68,11 @@ $.widget( "mobile.popup", $.mobile.popup, {
 		return this._super();
 	},
 
-	// Pretend to show an arrow described by @p and @dir and calculate the
-	// distance from the desired point. If a best-distance is passed in, return
-	// the minimum of the one passed in and the one calculated.
+	// Pretend to show an arrow described by @p and @dir and calculate the distance from the
+	// desired point. If a best-distance is passed in, return the minimum of the one passed in and
+	// the one calculated.
+	// Note: x and y coordinates are abstracted as @p.fst and @p.snd. This allows us to avoid
+	// having to write the same calculation twice, but with x and y coordinates reversed.
 	_tryAnArrow: function( p, dir, desired, s, best ) {
 		var result, r, diff, desiredForArrow = {}, tip = {};
 
@@ -80,21 +82,64 @@ $.widget( "mobile.popup", $.mobile.popup, {
 			return best;
 		}
 
+		// Calculate coordinates for the centre of the popup that minimize the distance between the
+		// tip of the arrow and the desired coordinates. To illustrate:
+		// For @dir = l (that is, if we want the arrow to appear along the left edge):
+		//
+		//
+		// desired
+		//  coords (place where the user clicked on screen)
+		//    |
+		//    +--+ .---------------.
+		//       | |               |
+		//       v |               |
+		//       +<|       +<--------- desiredFoArrow (place where we pretend to want the popup
+		//         |               |   when the arrow is to be on the left edge)
+		//         |               |
+		//         '---------------'
+		//
+		// For @dir = t (that is, if we want the arrow to appear along the top edge):
+		//
+		//
+		// desired
+		//  coords (place where the user clicked on screen)
+		//    |
+		//    +----------->+
+		//                 ^
+		//         .---------------.
+		//         |               |
+		//         |               |
+		//         |       +<--------- desiredFoArrow (place where we pretend to want the popup
+		//         |               |   when the arrow is to be on the left edge)
+		//         |               |
+		//         '---------------'
+		//
 		desiredForArrow[ p.fst ] = desired[ p.fst ] +
 			( s.arHalf[ p.oDimKey ] + s.menuHalf[ p.oDimKey ] ) * p.offsetFactor -
 			s.contentBox[ p.fst ] + ( s.clampInfo.menuSize[ p.oDimKey ] - s.contentBox[ p.oDimKey ] ) * p.arrowOffsetFactor;
 		desiredForArrow[ p.snd ] = desired[ p.snd ];
 
-		result = s.result || this._calculateFinalLocation( desiredForArrow, s.clampInfo );
+		// Adjust the above-calculated coordinates to make sure that they would result in the popup
+		// being placed within the defined tolerances. Essentially, pretend to place the popup at
+		// the desiredForArrow coordinates, and retrieve the coordinates where the popup would
+		// actually be placed.
+		result = this._calculateFinalLocation( desiredForArrow, s.clampInfo );
 		r = { x: result.left, y: result.top };
 
+		// Calculate the coordinates for the arrow tip
 		tip[ p.fst ] = r[ p.fst ] + s.contentBox[ p.fst ] + p.tipOffset;
 		tip[ p.snd ] = Math.max( result[ p.prop ] + s.guideOffset[ p.prop ] + s.arHalf[ p.dimKey ],
 			Math.min( result[ p.prop ] + s.guideOffset[ p.prop ] + s.guideDims[ p.dimKey ] - s.arHalf[ p.dimKey ],
 				desired[ p.snd ] ) );
 
+		// Calculate the distance (absolute x distance plus absolute y distance) from the desired
+		// coordinates, and compare to a previously calculated difference, if found. If the
+		// distancec computed herein is shorter than the distance that was passed in, return the
+		// parameters for placing the popup such that the shorter of the two distances ends up
+		// being the distance from the desired coordinate to the arrow tip.
 		diff = Math.abs( desired.x - tip.x ) + Math.abs( desired.y - tip.y );
 		if ( !best || diff < best.diff ) {
+
 			// Convert tip offset to coordinates inside the popup
 			tip[ p.snd ] -= s.arHalf[ p.dimKey ] + result[ p.prop ] + s.contentBox[ p.snd ];
 			best = { dir: dir, diff: diff, result: result, posProp: p.prop, posVal: tip[ p.snd ] };
@@ -103,6 +148,7 @@ $.widget( "mobile.popup", $.mobile.popup, {
 		return best;
 	},
 
+	// Retrieve sizes and offsets needed for our calculations
 	_getPlacementState: function() {
 		var offset, gdOffset,
 			ar = this._ui.arrow,
@@ -127,6 +173,8 @@ $.widget( "mobile.popup", $.mobile.popup, {
 
 		// The arrow box moves between guideOffset and guideOffset + guideDims - arFull
 		state.guideOffset = { left: state.guideOffset.left - offset.left, top: state.guideOffset.top - offset.top };
+
+		// Pre-calculate half the arrow and popup width and height
 		state.arHalf = { cx: state.arFull.cx / 2, cy: state.arFull.cy / 2 };
 		state.menuHalf = { cx: state.clampInfo.menuSize.cx / 2, cy: state.clampInfo.menuSize.cy / 2 };
 
