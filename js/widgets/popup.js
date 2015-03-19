@@ -439,7 +439,7 @@ $.widget( "mobile.popup", {
 		return this;
 	},
 
-	_clampPopupWidth: function( infoOnly ) {
+	_clampPopupWidth: function() {
 		var menuSize,
 			windowCoordinates = getWindowCoordinates( this.window ),
 			// rectangle within which the popup must fit
@@ -450,10 +450,8 @@ $.widget( "mobile.popup", {
 				cy: windowCoordinates.cy - this._tolerance.t - this._tolerance.b
 			};
 
-		if ( !infoOnly ) {
-			// Clamp the width of the menu before grabbing its size
-			this._ui.container.css( "max-width", rectangle.cx );
-		}
+		// Clamp the width of the menu before grabbing its size
+		this._ui.container.css( "max-width", rectangle.cx );
 
 		menuSize = {
 			cx: this._ui.container.outerWidth( true ),

@@ -103,11 +103,11 @@ $.widget( "mobile.popup", $.mobile.popup, {
 		return best;
 	},
 
-	_getPlacementState: function( clamp ) {
+	_getPlacementState: function() {
 		var offset, gdOffset,
 			ar = this._ui.arrow,
 			state = {
-				clampInfo: this._clampPopupWidth( !clamp ),
+				clampInfo: this._clampPopupWidth(),
 				arFull: { cx: ar.ct.width(), cy: ar.ct.height() },
 				guideDims: { cx: ar.gd.width(), cy: ar.gd.height() },
 				guideOffset: ar.gd.offset()
@@ -145,7 +145,7 @@ $.widget( "mobile.popup", $.mobile.popup, {
 		ar.arEls.show();
 
 		bgRef = {};
-		state = this._getPlacementState( true );
+		state = this._getPlacementState();
 		params = {
 			"l": { fst: "x", snd: "y", prop: "top", dimKey: "cy", oDimKey: "cx", offsetFactor: 1, tipOffset:  -state.arHalf.cx, arrowOffsetFactor: 0 },
 			"r": { fst: "x", snd: "y", prop: "top", dimKey: "cy", oDimKey: "cx", offsetFactor: -1, tipOffset: state.arHalf.cx + state.contentBox.cx, arrowOffsetFactor: 1 },
