@@ -13,6 +13,7 @@
 
 define( [
 	"jquery",
+	"../vmouse",
 	"../links",
 	"../widget",
 	"../support",
