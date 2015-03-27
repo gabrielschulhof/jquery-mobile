@@ -1,15 +1,8 @@
 /*
  * mobile slider unit tests
  */
-(function($){
-	$.mobile.page.prototype.options.keepNative = "input.should-be-native";
-	
+(function($){	
 	module( "jquery.mobile.slider.js core" );
-
-	// not testing the positive case here since's it's obviously tested elsewhere
-	test( "slider elements in the keepNative set shouldn't be enhanced", function() {
-		deepEqual( $("input.should-be-native").siblings(".ui-slider-track").length, 0 );
-	});
 
 	test( "refresh should force val to nearest step", function() {
 		var slider = $( "#step-slider" ),
@@ -34,8 +27,8 @@
 		var slider = $( "#slider-switch" );
 
 		deepEqual(slider.siblings(".ui-slider-switch").find("a").attr('title'),
-				 $(slider.find("option")[slider[0].selectedIndex]).text(),
-				 "verify that the link title is set to the selected option text");
+				$(slider.find("option")[slider[0].selectedIndex]).text(),
+				"verify that the link title is set to the selected option text");
 	});
 
 	test( "data-highlight works properly", function() {
@@ -62,7 +55,7 @@
 	test( "slider input does not get clear button", function() {
 		deepEqual( $( ".textinput-test" ).find( ".ui-input-clear" ).length, 0, "slider input does not get clear button" );
 	});
-	
+
 	test( "slider input is not wrapped in div.ui-input-text", function() {
 		ok( ! $( "#textinput-test" ).parents().is( "div.ui-input-text" ), "slider input is not wrapped in div.ui-input-text" );
 	});
