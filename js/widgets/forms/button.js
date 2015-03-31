@@ -41,7 +41,7 @@
 			theme: null
 		},
 
-		_enhanced: function() {
+		_enhance: function() {
 			if ( !this.options.enahnced ) {
 				this._super();
 			} else if ( this.options.icon ) {

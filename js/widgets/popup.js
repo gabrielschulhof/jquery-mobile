@@ -110,11 +110,11 @@ var popupEnhancer = function() {
 		.addClass( "ui-link" );
 };
 
-if ( $.fn.enhance ) {
+if ( $.fn.enhance.hooks ) {
 	$.fn.enhance.hooks.push( popupEnhancer );
 } else {
-	$.fn.enhancer = $.noop;
-	$.fn.enhancer.hooks = [ popupEnhancer ];
+	$.fn.enhance = $.fn.enhance || $.noop;
+	$.fn.enhance.hooks = [ popupEnhancer ];
 }
 
 $.widget( "mobile.popup", {
