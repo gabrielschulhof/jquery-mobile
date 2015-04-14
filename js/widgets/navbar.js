@@ -79,9 +79,10 @@ return $.widget( "mobile.navbar", {
 					that._addClass( activeBtn, null, "ui-button-active" );
 
 					// The code below is a workaround to fix #1181
-					$( document ).one( "pagehide", function() {
-						that._removeClass( activeBtn, null, "ui-button-active" );
-					});
+					that.element.closest( ":mobile-pagecontainer" )
+						.one( "pagecontainerhide", function( event, data ) {
+							that._removeClass( activeBtn, null, "ui-button-active" );
+						});
 				}
 			}
 		});
