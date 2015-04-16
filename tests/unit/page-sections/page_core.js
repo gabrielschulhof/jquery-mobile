@@ -30,15 +30,15 @@
 		$ignored
 			.parent()
 			.attr( "data-" + $.mobile.ns + "role", "page" )
-			.page()
-			.trigger( "pagecreate" );
+			.page();
+
 		ok( !$ignored.hasClass( "ui-header" ), "ignored header has no class" );
 
 		$enhanced
 			.parent()
 			.attr( "data-" + $.mobile.ns + "role", "page" )
-			.page()
-			.trigger( "pagecreate" );
+			.page();
+
 		ok( $enhanced.hasClass( "ui-header" ), "enhanced header has classes" );
 
 		$.mobile.ignoreContentEnabled = false;
