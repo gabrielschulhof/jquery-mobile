@@ -301,7 +301,7 @@ define( [
 				httpCleanup = function() {
 					window.setTimeout(function() { $.mobile.removeActiveLinkClass( true ); }, 200 );
 				},
-				baseUrl, href,
+				baseUrl, href, absHref,
 				useDefaultUrlHandling, isExternal,
 				transition, reverse, role;
 
@@ -327,8 +327,21 @@ define( [
 
 			baseUrl = $.mobile.getClosestBaseUrl( $link );
 
+			href = $link.attr( "href" );
+
+			absHref = path.makeUrlAbsolute( href || "#", baseUrl );
+
+			// If the href is internal to the document, but there is no corresponding page we
+			// assume it's a link to a portion of the document and we allow the browser to perform
+			// its default action
+			if ( !path.isPath( href ) &&
+					$.mobile.pageContainer.pagecontainer( "instance" )
+						._find( absHref ).length === 0 ) {
+				return;
+			}
+
 			//get href, if defined, otherwise default to empty hash
-			href = path.makeUrlAbsolute( $link.attr( "href" ) || "#", baseUrl );
+			href = absHref;
 
 			//if ajax is disabled, exit early
 			if ( !$.mobile.ajaxEnabled && !path.isEmbeddedPage( href ) ) {
