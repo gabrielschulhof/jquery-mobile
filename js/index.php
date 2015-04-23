@@ -56,6 +56,7 @@ $files = array(
 	'grid.js',
 	'widgets/navbar.js',
 	'widgets/listview.js',
+	'widgets/listview.backcompat.js',
 	'widgets/listview.autodividers.js',
 	'widgets/listview.hidedividers.js',
 	'nojs.js',
