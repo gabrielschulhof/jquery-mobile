@@ -52,10 +52,6 @@ return $.widget( "mobile.collapsibleset", $.extend( {
 		var elem = this.element,
 			opts = this.options;
 
-		$.extend( this, {
-			_classes: ""
-		} );
-
 		this.childCollapsiblesSelector = ":mobile-collapsible, " +
 			( "[data-" + $.mobile.ns +  "role='collapsible']" );
 
