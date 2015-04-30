@@ -41,31 +41,32 @@ function noHiddenClass( elements ) {
 }
 
 $.mobile.behaviors.addFirstLastClasses = {
-	_getVisibles: function( $els, create ) {
+	_getVisibles: function( els, create ) {
 		var visibles;
 
 		if ( create ) {
-			visibles = noHiddenClass( $els );
+			visibles = noHiddenClass( els );
 		} else {
-			visibles = $els.filter( ":visible" );
+			visibles = els.filter( ":visible" );
 			if ( visibles.length === 0 ) {
-				visibles = noHiddenClass( $els );
+				visibles = noHiddenClass( els );
 			}
 		}
 
 		return visibles;
 	},
 
-	_addFirstLastClasses: function( $els, $visibles, create ) {
-		$els.removeClass( "ui-first-child ui-last-child" );
-		$visibles.eq( 0 ).addClass( "ui-first-child" ).end().last().addClass( "ui-last-child" );
+	_addFirstLastClasses: function( els, visibles, create ) {
+		this._removeClass( els, null, "ui-first-child ui-last-child" );
+		this._addClass( visibles.eq( 0 ), null, "ui-first-child" );
+		this._addClass( visibles.last(), null, "ui-last-child" );
 		if ( !create ) {
 			this.element.trigger( "updatelayout" );
 		}
 	},
 
-	_removeFirstLastClasses: function( $els ) {
-		$els.removeClass( "ui-first-child ui-last-child" );
+	_removeFirstLastClasses: function( els ) {
+		this._removeClass( els, null, "ui-first-child ui-last-child" );
 	}
 };
 

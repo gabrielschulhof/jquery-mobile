@@ -21,7 +21,7 @@
 		// AMD. Register as an anonymous module.
 		define( [
 			"jquery",
-			"./wigdet.backcompat",
+			"./widget.backcompat",
 			"./listview" ], factory );
 	} else {
 
