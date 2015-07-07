@@ -30,7 +30,9 @@
 	}
 } )( function( $ ) {
 
-var getAttr = $.mobile.getAttribute;
+var getAttr = $.mobile.getAttribute,
+	staticOrDividerRe = /\bui-listview-item-static\b|\bui-listview-item-divider\b/,
+	buttonClassRe = /\bui-button\b/
 
 return $.widget( "mobile.listview", $.extend( {
 	version: "@VERSION",
@@ -100,13 +102,13 @@ return $.widget( "mobile.listview", $.extend( {
 			itemClassKey = "";
 
 			if ( create || item[ 0 ].className
-					.search( /\bui-listview-item-static\b|\bui-listview-item-divider\b/ ) < 0 ) {
+					.search( staticOrDividerRe ) < 0 ) {
 				a = this._getChildrenByTagName( item[ 0 ], "a", "A" );
 				isDivider = ( getAttr( item[ 0 ], "role" ) === "list-divider" );
 				value = item.attr( "value" );
 				itemTheme = getAttr( item[ 0 ], "theme" );
 
-				if ( a.length && a[ 0 ].className.search( /\bui-button\b/ ) < 0 && !isDivider ) {
+				if ( a.length && a[ 0 ].className.search( buttonClassRe ) < 0 && !isDivider ) {
 					itemIcon = getAttr( item[ 0 ], "icon" );
 					icon = ( itemIcon === false ) ? false : ( itemIcon || o.icon );
 
