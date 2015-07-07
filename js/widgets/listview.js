@@ -36,11 +36,11 @@ return $.widget( "mobile.listview", $.extend( {
 	version: "@VERSION",
 
 	options: {
-		theme: null,
-		dividerTheme: null,
+		theme: "inherit",
+		dividerTheme: "inherit",
 		icon: "caret-r",
 		splitIcon: "caret-r",
-		splitTheme: null,
+		splitTheme: "inherit",
 		inset: false,
 		enhanced: false
 	},
