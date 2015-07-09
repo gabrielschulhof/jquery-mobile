@@ -82,7 +82,7 @@ return $.widget( "mobile.listview", $.extend( {
 	refresh: function( create ) {
 		var buttonClass, pos, numli, item, itemClass, itemExtraClass, itemTheme, itemIcon, icon, a,
 			isDivider, startCount, newStartCount, value, last, splittheme, splitThemeClass, spliticon,
-			altButtonClass, dividerTheme, li, ol, start, itemClassDict, dictionaryKey,
+			altButtonClass, dividerTheme, li, ol, start, itemClassDict, dictionaryKey, span,
 			o = this.options,
 			$list = this.element;
 
@@ -135,21 +135,23 @@ return $.widget( "mobile.listview", $.extend( {
 						spliticon = getAttribute( last[ 0 ], "icon" ) || getAttribute( item[ 0 ], "icon" ) || o.splitIcon;
 						altButtonClass = "ui-button ui-button-icon-only" + splitThemeClass;
 
-						last
-							.attr( "title", $.trim( last.getEncodedText() ) )
-							.addClass( altButtonClass )
+						span = $( "<span>" );
+						this._addClass( span, null, "ui-icon ui-icon-" + spliticon );
+						this._addClass( last, null, altButtonClass );
+						last.attr( "title", $.trim( last.getEncodedText() ) )
 							.empty()
-							.append( "<span class='ui-icon ui-icon-" + spliticon + "'></span>" );
+							.append( span );
 
 						// Reduce to the first anchor, because only the first gets the buttonClass
 						a = a.first();
 					} else if ( icon ) {
-						buttonClass += " ui-icon-end";
-						a.append( "<span class='ui-icon ui-icon-" + icon + "'></span>" );
+						span = $( "<span>" );
+						this._addClass( span, null, "ui-icon ui-icon-" + icon + " ui-icon-end" );
+						a.append( span );
 					}
 
 					// Apply buttonClass to the (first) anchor
-					a.addClass( buttonClass );
+					this._addClass( a, null, buttonClass );
 				} else if ( isDivider ) {
 					dividerTheme = ( getAttribute( item[ 0 ], "theme" ) || o.dividerTheme || o.theme );
 
