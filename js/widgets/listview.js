@@ -146,7 +146,8 @@ return $.widget( "mobile.listview", $.extend( {
 						a = a.first();
 					} else if ( icon ) {
 						span = $( "<span>" );
-						this._addClass( span, null, "ui-icon ui-icon-" + icon + " ui-icon-end" );
+						this._addClass( span, null, "ui-icon ui-icon-" + icon +
+							" ui-widget-icon-flushend" );
 						a.append( span );
 					}
 
