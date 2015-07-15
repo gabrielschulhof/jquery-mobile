@@ -1,7 +1,17 @@
-//>>excludeStart("jqmBuildExclude", pragmas.jqmBuildExclude);
-//>>description: Enhances and consistently styles listviews.
-//>>label: Listviews
+/*!
+ * jQuery Mobile Listview Backcompat @VERSION
+ * http://jquerymobile.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Listview Backcompat
 //>>group: Widgets
+//>>description: Listview style options preserved for backwards compatibility
+//>>docs: http://api.jquerymobile.com/listview/
+//>>demos: http://demos.jquerymobile.com/@VERSION/listview/
 //>>css.structure: ../css/structure/jquery.mobile.listview.css
 //>>css.theme: ../css/themes/default/jquery.mobile.theme.css
 
@@ -19,9 +29,7 @@
 		// Browser globals
 		factory( jQuery );
 	}
-})( function( jQuery ) {
-//>>excludeEnd("jqmBuildExclude");
-( function( $, undefined ) {
+} )( function( $ ) {
 
 if ( $.mobileBackcompat !== false ) {
 	$.widget( "mobile.listview", $.mobile.listview, {
@@ -42,7 +50,4 @@ if ( $.mobileBackcompat !== false ) {
 	$.widget( "mobile.listview", $.mobile.listview, $.mobile.widget.backcompat );
 }
 
-})( jQuery );
-//>>excludeStart("jqmBuildExclude", pragmas.jqmBuildExclude);
-});
-//>>excludeEnd("jqmBuildExclude");
+} );

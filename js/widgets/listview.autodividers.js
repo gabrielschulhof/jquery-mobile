@@ -30,14 +30,15 @@
 var dividerClassRegex = /\bui-listview-item-divider\b/;
 
 function defaultAutodividersSelector( elt ) {
-	// look for the text in the given element
+
+	// Look for the text in the given element
 	var text = $.trim( elt.text() ) || null;
 
 	if ( !text ) {
 		return null;
 	}
 
-	// create the text for the divider (first uppercased letter)
+	// Create the text for the divider (first uppercased letter)
 	text = text.slice( 0, 1 ).toUpperCase();
 
 	return text;

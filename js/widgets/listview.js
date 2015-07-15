@@ -40,7 +40,7 @@ return $.widget( "mobile.listview", $.extend( {
 		classes: {
 			"ui-listview-inset": "ui-corner-all ui-shadow"
 		},
-		theme: "inherit,
+		theme: "inherit",
 		dividerTheme: "inherit",
 		icon: "caret-r",
 		splitIcon: "caret-r",
@@ -52,7 +52,7 @@ return $.widget( "mobile.listview", $.extend( {
 	// items such as splitTheme and dividerTheme have to be handled in refresh().
 	_themeElements: function() {
 		return [ {
-			element: this.element
+			element: this.element,
 			prefix: "ui-group-theme-"
 		} ];
 	},
@@ -128,9 +128,11 @@ return $.widget( "mobile.listview", $.extend( {
 						itemClass = "ui-listview-item-has-alternate";
 
 						last = a.last();
-						splittheme = getAttribute( last[ 0 ], "theme" ) || currentOptions.splitTheme || getAttribute( item[ 0 ], "theme", true );
+						splittheme = getAttribute( last[ 0 ], "theme" ) ||
+							currentOptions.splitTheme || getAttribute( item[ 0 ], "theme", true );
 						splitThemeClass = splittheme ? " ui-button-" + splittheme : "";
-						spliticon = getAttribute( last[ 0 ], "icon" ) || getAttribute( item[ 0 ], "icon" ) || currentOptions.splitIcon;
+						spliticon = getAttribute( last[ 0 ], "icon" ) ||
+							getAttribute( item[ 0 ], "icon" ) || currentOptions.splitIcon;
 						altButtonClass = "ui-button ui-button-icon-only" + splitThemeClass;
 
 						span = $( "<span>" );
@@ -152,7 +154,8 @@ return $.widget( "mobile.listview", $.extend( {
 					// Apply buttonClass to the (first) anchor
 					this._addClass( a, null, buttonClass );
 				} else if ( isDivider ) {
-					dividerTheme = ( getAttribute( item[ 0 ], "theme" ) || currentOptions.dividerTheme || currentOptions.theme );
+					dividerTheme = ( getAttribute( item[ 0 ], "theme" ) ||
+						currentOptions.dividerTheme || currentOptions.theme );
 
 					itemClass = "ui-listview-item-divider";
 					itemExtraClass = "ui-bar-" + ( dividerTheme ? dividerTheme : "inherit" );
