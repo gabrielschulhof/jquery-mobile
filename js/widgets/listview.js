@@ -83,28 +83,24 @@ return $.widget( "mobile.listview", $.extend( {
 
 	refresh: function( create ) {
 		var buttonClass, pos, numli, item, itemClass, itemExtraClass, itemTheme, itemIcon, icon, a,
-			isDivider, startCount, newStartCount, value, last, splittheme, splitThemeClass, spliticon,
-			altButtonClass, dividerTheme, li, ol, start, itemClassDict, dictionaryKey, span,
-			o = this.options,
-			$list = this.element;
+			isDivider, startCount, newStartCount, value, last, splittheme, splitThemeClass, li, ol,
+			altButtonClass, dividerTheme, start, itemClassDict, dictionaryKey, span, spliticon,
+			currentOptions = this.options,
+			list = this.element;
 
-		if ( o.enhanced && create ) {
-			return;
-		}
-
-		ol = !!$.nodeName( $list[ 0 ], "ol" );
-		start = $list.attr( "start" );
+		ol = !!$.nodeName( list[ 0 ], "ol" );
+		start = list.attr( "start" );
 		itemClassDict = {};
 
 		// Check if a start attribute has been set while taking a value of 0 into account
 		if ( ol && ( start || start === 0 ) ) {
 			startCount = parseInt( start, 10 ) - 1;
-			$list.css( "counter-reset", "listnumbering " + startCount );
+			list.css( "counter-reset", "listnumbering " + startCount );
 		}
 
 		this._beforeListviewRefresh();
 
-		li = this._getChildrenByTagName( $list[ 0 ], "li", "LI" );
+		li = this._getChildrenByTagName( list[ 0 ], "li", "LI" );
 
 		for ( pos = 0, numli = li.length; pos < numli; pos++ ) {
 			item = li.eq( pos );
@@ -120,7 +116,7 @@ return $.widget( "mobile.listview", $.extend( {
 
 				if ( a.length && a[ 0 ].className.search( /\bui-button\b/ ) < 0 && !isDivider ) {
 					itemIcon = getAttribute( item[ 0 ], "icon" );
-					icon = ( itemIcon === false ) ? false : ( itemIcon || o.icon );
+					icon = ( itemIcon === false ) ? false : ( itemIcon || currentOptions.icon );
 
 					buttonClass = "ui-button";
 
@@ -132,9 +128,9 @@ return $.widget( "mobile.listview", $.extend( {
 						itemClass = "ui-listview-item-has-alternate";
 
 						last = a.last();
-						splittheme = getAttribute( last[ 0 ], "theme" ) || o.splitTheme || getAttribute( item[ 0 ], "theme", true );
+						splittheme = getAttribute( last[ 0 ], "theme" ) || currentOptions.splitTheme || getAttribute( item[ 0 ], "theme", true );
 						splitThemeClass = splittheme ? " ui-button-" + splittheme : "";
-						spliticon = getAttribute( last[ 0 ], "icon" ) || getAttribute( item[ 0 ], "icon" ) || o.splitIcon;
+						spliticon = getAttribute( last[ 0 ], "icon" ) || getAttribute( item[ 0 ], "icon" ) || currentOptions.splitIcon;
 						altButtonClass = "ui-button ui-button-icon-only" + splitThemeClass;
 
 						span = $( "<span>" );
@@ -156,7 +152,7 @@ return $.widget( "mobile.listview", $.extend( {
 					// Apply buttonClass to the (first) anchor
 					this._addClass( a, null, buttonClass );
 				} else if ( isDivider ) {
-					dividerTheme = ( getAttribute( item[ 0 ], "theme" ) || o.dividerTheme || o.theme );
+					dividerTheme = ( getAttribute( item[ 0 ], "theme" ) || currentOptions.dividerTheme || currentOptions.theme );
 
 					itemClass = "ui-listview-item-divider";
 					itemExtraClass = "ui-bar-" + ( dividerTheme ? dividerTheme : "inherit" );
