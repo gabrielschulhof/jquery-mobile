@@ -48,17 +48,19 @@ return $.widget( "mobile.listview", $.extend( {
 		enhanced: false
 	},
 
-	_create: function() {
-		if ( !this.options.enhanced ) {
-			this._enhance();
-			this.refresh( true );
-		}
+	// We only handle the theme option through the theme extension. Theme options concerning list
+	// items such as splitTheme and dividerTheme have to be handled in refresh().
+	_themeElements: function() {
+		return [ {
+			element: this.element
+			prefix: "ui-group-theme-"
+		} ];
 	},
 
-	_enhance: function() {
-		this._addClass( this.element, "ui-listview" );
-		if ( this.options.theme ) {
-			this._addClass( this.element, null, "ui-group-theme-" + this.options.theme );
+	_create: function() {
+		this._addClass( "ui-listview" );
+		if ( !this.options.enhanced ) {
+			this.refresh( true );
 		}
 	},
 
