@@ -40,11 +40,11 @@ return $.widget( "mobile.listview", $.extend( {
 		classes: {
 			"ui-listview-inset": "ui-corner-all ui-shadow"
 		},
-		theme: null,
-		dividerTheme: null,
+		theme: "inherit,
+		dividerTheme: "inherit",
 		icon: "caret-r",
 		splitIcon: "caret-r",
-		splitTheme: null,
+		splitTheme: "inherit",
 		enhanced: false
 	},
 
