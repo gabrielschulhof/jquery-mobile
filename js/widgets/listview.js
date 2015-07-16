@@ -54,9 +54,7 @@ return $.widget( "mobile.listview", $.extend( {
 		if ( this.options.inset ) {
 			this._addClass( "ui-listview-inset" );
 		}
-		if ( !this.options.enhanced ) {
-			this.refresh( true );
-		}
+		this.refresh( true );
 	},
 
 	// We only handle the theme option through the theme extension. Theme options concerning list
@@ -98,6 +96,7 @@ return $.widget( "mobile.listview", $.extend( {
 			isDivider, startCount, newStartCount, value, last, splittheme, splitThemeClass, li, ol,
 			altButtonClass, dividerTheme, start, itemClassDict, dictionaryKey, span, spliticon,
 			currentOptions = this.options,
+			createEnhanced = create && this.options.enhanced,
 			list = this.element;
 
 		ol = !!$.nodeName( list[ 0 ], "ol" );
@@ -147,20 +146,26 @@ return $.widget( "mobile.listview", $.extend( {
 							getAttribute( item[ 0 ], "icon" ) || currentOptions.splitIcon;
 						altButtonClass = "ui-button ui-button-icon-only" + splitThemeClass;
 
-						span = $( "<span>" );
-						this._addClass( span, null, "ui-icon ui-icon-" + spliticon );
+						span = createEnhanced ? last.children( ".ui-listview-item-split-icon" ) :
+							$( "<span>" );
+						this._addClass( span, "ui-listview-item-split-icon",
+							"ui-icon ui-icon-" + spliticon );
 						this._addClass( last, null, altButtonClass );
-						last.attr( "title", $.trim( last.getEncodedText() ) )
-							.empty()
-							.append( span );
+						last.attr( "title", $.trim( last.getEncodedText() ) );
+						if ( !createEnhanced ) {
+							last.empty().append( span );
+						}
 
 						// Reduce to the first anchor, because only the first gets the buttonClass
 						a = a.first();
 					} else if ( icon ) {
-						span = $( "<span>" );
+						span = createEnhanced ? a.children( ".ui-listview-item-icon" ) :
+							$( "<span>" );
 						this._addClass( span, null, "ui-icon ui-icon-" + icon +
 							" ui-widget-icon-flushend" );
-						a.append( span );
+						if ( !createEnhanced ) {
+							a.append( span );
+						}
 					}
 
 					// Apply buttonClass to the (first) anchor
