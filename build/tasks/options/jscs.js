@@ -52,6 +52,7 @@ module.exports = {
 			// Tests
 			"tests/integration/listview/autodividers_core.js",
 			"tests/integration/listview/listview_core.js",
+			"tests/integration/listview/backcompat_core.js",
 			"tests/unit/textinput/settings.js",
 			"tests/unit/textinput/textinput_core.js",
 			"tests/integration/dialog/dialog_events.js",
