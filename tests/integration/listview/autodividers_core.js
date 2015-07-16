@@ -3,7 +3,7 @@
 function assertDividers( assert, listview, indices, prefix ) {
 	var index;
 
-	assert.deepEqual( listview.children( ".ui-listview-item-divider" ).length, indices.length,
+	assert.strictEqual( listview.children( ".ui-listview-item-divider" ).length, indices.length,
 		prefix + "The correct number of dividers is present" );
 
 	for ( index in indices ) {
