@@ -162,7 +162,7 @@ return $.widget( "mobile.listview", $.extend( {
 						span = createEnhanced ? a.children( ".ui-listview-item-icon" ) :
 							$( "<span>" );
 						this._addClass( span, "ui-listview-item-icon", "ui-icon ui-icon-" + icon +
-							" ui-widget-icon-flushend" );
+							" ui-widget-icon-floatend" );
 						if ( !createEnhanced ) {
 							a.append( span );
 						}
