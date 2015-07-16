@@ -35,17 +35,9 @@ if ( $.mobileBackcompat !== false ) {
 	$.widget( "mobile.listview", $.mobile.listview, {
 		options: {
 			corners: true,
-			shadow: true,
-			inset: false
+			shadow: true
 		},
-		classProp: "ui-listview-inset",
-		_create: function() {
-			if ( !this.options.enhanced && this.options.inset ) {
-				this._addClass( this.element, "ui-listview-inset" );
-			}
-
-			return this._superApply( arguments );
-		}
+		classProp: "ui-listview-inset"
 	} );
 	$.widget( "mobile.listview", $.mobile.listview, $.mobile.widget.backcompat );
 }

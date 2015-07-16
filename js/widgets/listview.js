@@ -45,7 +45,18 @@ return $.widget( "mobile.listview", $.extend( {
 		icon: "caret-r",
 		splitIcon: "caret-r",
 		splitTheme: "inherit",
+		inset: false,
 		enhanced: false
+	},
+
+	_create: function() {
+		this._addClass( "ui-listview" );
+		if ( this.options.inset ) {
+			this._addClass( "ui-listview-inset" );
+		}
+		if ( !this.options.enhanced ) {
+			this.refresh( true );
+		}
 	},
 
 	// We only handle the theme option through the theme extension. Theme options concerning list
@@ -57,11 +68,12 @@ return $.widget( "mobile.listview", $.extend( {
 		} ];
 	},
 
-	_create: function() {
-		this._addClass( "ui-listview" );
-		if ( !this.options.enhanced ) {
-			this.refresh( true );
+	_setOption: function( key, value ) {
+		if ( key === "inset" ) {
+			this._toggleClass( this.element, "ui-listview-inset", null, !!value );
 		}
+
+		return this._superApply( arguments );
 	},
 
 	_getChildrenByTagName: function( ele, lcName, ucName ) {
