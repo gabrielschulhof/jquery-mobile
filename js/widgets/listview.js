@@ -150,7 +150,7 @@ return $.widget( "mobile.listview", $.extend( {
 							$( "<span>" );
 						this._addClass( span, "ui-listview-item-split-icon",
 							"ui-icon ui-icon-" + spliticon );
-						this._addClass( last, null, altButtonClass );
+						this._addClass( last, "ui-listview-item-split-button", altButtonClass );
 						last.attr( "title", $.trim( last.getEncodedText() ) );
 						if ( !createEnhanced ) {
 							last.empty().append( span );
@@ -161,7 +161,7 @@ return $.widget( "mobile.listview", $.extend( {
 					} else if ( icon ) {
 						span = createEnhanced ? a.children( ".ui-listview-item-icon" ) :
 							$( "<span>" );
-						this._addClass( span, null, "ui-icon ui-icon-" + icon +
+						this._addClass( span, "ui-listview-item-icon", "ui-icon ui-icon-" + icon +
 							" ui-widget-icon-flushend" );
 						if ( !createEnhanced ) {
 							a.append( span );
@@ -169,7 +169,7 @@ return $.widget( "mobile.listview", $.extend( {
 					}
 
 					// Apply buttonClass to the (first) anchor
-					this._addClass( a, null, buttonClass );
+					this._addClass( a, "ui-listview-item-button", buttonClass );
 				} else if ( isDivider ) {
 					dividerTheme = ( getAttribute( item[ 0 ], "theme" ) ||
 						currentOptions.dividerTheme || currentOptions.theme );
