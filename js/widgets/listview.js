@@ -125,7 +125,8 @@ return $.widget( "mobile.listview", $.extend( {
 				value = item.attr( "value" );
 				itemTheme = getAttribute( item[ 0 ], "theme" );
 
-				if ( a.length && a[ 0 ].className.search( /\bui-button\b/ ) < 0 && !isDivider ) {
+				if ( ( a.length && a[ 0 ].className.search( /\bui-button\b/ ) < 0 &&
+						!isDivider ) || create ) {
 					itemIcon = getAttribute( item[ 0 ], "icon" );
 					icon = ( itemIcon === false ) ? false : ( itemIcon || currentOptions.icon );
 
