@@ -20,8 +20,7 @@
 		// AMD. Register as an anonymous module.
 		define( [
 			"jquery",
-			"../widget",
-			"./page" ], factory );
+			"../widget" ], factory );
 	} else {
 
 		// Browser globals
@@ -33,54 +32,30 @@ return $.widget( "mobile.table", {
 	version: "@VERSION",
 
 	options: {
-		classes: {
-			table: "ui-table"
-		},
 		enhanced: false
 	},
 
 	_create: function() {
-		if ( !this.options.enhanced ) {
-			this.element.addClass( this.options.classes.table );
-		}
 
-		// extend here, assign on refresh > _setHeaders
-		$.extend( this, {
-
-			// Expose headers and allHeaders properties on the widget
-			// headers references the THs within the first TR in the table
-			headers: undefined,
-
-			// allHeaders references headers, plus all THs in the thead, which may
-			// include several rows, or not
-			allHeaders: undefined
-		} );
-
-		this._refresh( true );
+		this._establishStructure();
+		this._setAttributes();
+		this._attachToDOM();
+		this._addHandlers();
 	},
 
-	_setHeaders: function() {
+	_establishStructure: function() {
 		var trs = this.element.find( "thead tr" );
 
+		this.trs = trs;
 		this.headers = this.element.find( "tr:eq(0)" ).children();
 		this.allHeaders = this.headers.add( trs.children() );
 	},
 
-	refresh: function() {
-		this._refresh();
-	},
-
-	rebuild: $.noop,
-
-	_refresh: function( /* create */ ) {
-		var table = this.element,
-			trs = table.find( "thead tr" );
-
-		// updating headers on refresh (fixes #5880)
-		this._setHeaders();
+	_setAttributes: function() {
+		this._addClass( "ui-table" );
 
 		// Iterate over the trs
-		trs.each( function() {
+		this.trs.each( function() {
 			var columnCount = 0;
 
 			// Iterate over the children of the tr
@@ -100,12 +75,16 @@ return $.widget( "mobile.table", {
 
 				// Store "cells" data on header as a reference to all cells in the
 				// same column as this TH
-				$( this ).jqmData( "cells", table.find( "tr" ).not( trs.eq( 0 ) ).not( this ).children( selector ) );
+				$( this ).jqmData( "cells",
+					table.find( "tr" ).not( trs.eq( 0 ) ).not( this ).children( selector ) );
 
 				columnCount++;
 			} );
 		} );
-	}
+	},
+
+	_attachToDOM: $.noop,
+	_addHandlers: $.noop
 } );
 
 } );

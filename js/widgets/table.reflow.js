@@ -30,13 +30,8 @@
 
 return $.widget( "mobile.table", $.mobile.table, {
 	options: {
-		mode: "reflow",
-		classes: $.extend( $.mobile.table.prototype.options.classes, {
-			reflowTable: "ui-table-reflow",
-			cellLabels: "ui-table-cell-label"
-		} )
+		mode: null
 	},
-
 	_create: function() {
 		this._super();
 

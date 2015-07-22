@@ -33,7 +33,7 @@
 
 return $.widget( "mobile.table", $.mobile.table, {
 	options: {
-		mode: "columntoggle",
+		mode: null,
 		columnBtnTheme: null,
 		columnPopupTheme: null,
 		columnBtnText: "Columns...",
