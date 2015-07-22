@@ -6,6 +6,7 @@ $files = array(
 	'../external/jquery-ui/widget.js',
 	'widget.js',
 	'widgets/widget.backcompat.js',
+	'widgets/widget.classes.backcompat.js',
 	'widgets/widget.theme.js',
 	'media.js',
 	'support/touch.js',
