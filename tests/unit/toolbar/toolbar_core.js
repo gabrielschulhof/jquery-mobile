@@ -1,7 +1,9 @@
 /*
  * mobile Fixed Toolbar unit tests
  */
-( function( $ ) {
+<<<<<<< HEAD
+define( [ "jquery" ], function( $ ) {
+
     module( "toolbar" );
 
     test( "markup structure", function( assert ) {
@@ -94,4 +96,4 @@
         ok( $.testHelper.domEqual( headerClone, unEnhancedHeader ), "headers match after destroy" );
      } );
 
-} )( jQuery );
+} );
