@@ -30,6 +30,32 @@
 	}
 } )( function( $ ) {
 
+function filterBubbleSpan() {
+	var child, parentNode,
+		anchorHash = { "a": true, "A": true };
+
+	for ( child = this.firstChild ; !!child ; child = child.nextSibling ) {
+
+		// Accept list item when we've found an element with class
+		// ui-listview-item-count-bubble
+		if ( child.className && child.className.match( countBubbleClassRegex ) ) {
+			return true;
+		}
+
+		// Descend into anchor, remembering where we've been
+		if ( anchorHash[ child.nodeName ] ) {
+			parentNode = child;
+			child = child.firstChild;
+		}
+
+		// When done with anchor, resume checking children of list item
+		if ( !child && parentNode ) {
+			child = parentNode;
+			parentNode = null;
+		}
+	}
+}
+
 var getAttribute = $.mobile.getAttribute,
 	countBubbleClassRegex = /\bui-listview-item-count-bubble\b/;
 
@@ -119,13 +145,14 @@ return $.widget( "mobile.listview", $.extend( {
 			itemExtraClass = undefined;
 
 			if ( create || item[ 0 ].className
-					.search( /\bui-listview-item-static\b|\bui-listview-item-divider\b/ ) < 0 ) {
+					.search( /\bui-listview-item-static\b|\bui-listview-item-divider\b/ ) ===
+					-1 ) {
 				a = this._getChildrenByTagName( item[ 0 ], "a", "A" );
 				isDivider = ( getAttribute( item[ 0 ], "role" ) === "list-divider" );
 				value = item.attr( "value" );
 				itemTheme = getAttribute( item[ 0 ], "theme" );
 
-				if ( ( a.length && a[ 0 ].className.search( /\bui-button\b/ ) < 0 &&
+				if ( ( a.length && a[ 0 ].className.search( /\bui-button\b/ ) === -1 &&
 						!isDivider ) || create ) {
 					itemIcon = getAttribute( item[ 0 ], "icon" );
 					icon = ( itemIcon === false ) ? false : ( itemIcon || currentOptions.icon );
@@ -222,31 +249,7 @@ return $.widget( "mobile.listview", $.extend( {
 		}
 
 		this._addClass(
-			li.filter( function trueIfContextHasBubbleOrHasAnchorThatHasBubble() {
-				var child, parentNode,
-					anchorHash = { "a": true, "A": true };
-
-				for ( child = this.firstChild ; !!child ; child = child.nextSibling ) {
-
-					// Accept list item when we've found an element with class
-					// ui-listview-item-count-bubble
-					if ( child.className && child.className.match( countBubbleClassRegex ) ) {
-						return true;
-					}
-
-					// Descend into anchor, remembering where we've been
-					if ( anchorHash[ child.nodeName ] ) {
-						parentNode = child;
-						child = child.firstChild;
-					}
-
-					// When done with anchor, resume checking children of list item
-					if ( !child && parentNode ) {
-						child = parentNode;
-						parentNode = null;
-					}
-				}
-			} ),
+			li.filter( filterBubbleSpan ),
 			"ui-listview-item-has-count" );
 
 		this._afterListviewRefresh();
