@@ -146,13 +146,13 @@ return $.widget( "mobile.listview", $.extend( {
 			itemClass = "ui-listview-item";
 			itemExtraClass = undefined;
 
-			if ( create || item[ 0 ].className.search( listviewItemClassRegex ) === -1 ) {
+			if ( create || !listviewItemClassRegex.test( item[ 0 ].className ) ) {
 				a = this._getChildrenByTagName( item[ 0 ], "a", "A" );
 				isDivider = ( getAttribute( item[ 0 ], "role" ) === "list-divider" );
 				value = item.attr( "value" );
 				itemTheme = getAttribute( item[ 0 ], "theme" );
 
-				if ( ( a.length && a[ 0 ].className.search( buttonClassRegex ) === -1 &&
+				if ( ( a.length && !buttonClassRegex.test( a[ 0 ].className ) &&
 						!isDivider ) || create ) {
 					itemIcon = getAttribute( item[ 0 ], "icon" );
 					icon = ( itemIcon === false ) ? false : ( itemIcon || currentOptions.icon );
