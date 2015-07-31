@@ -57,7 +57,9 @@ function filterBubbleSpan() {
 }
 
 var getAttribute = $.mobile.getAttribute,
-	countBubbleClassRegex = /\bui-listview-item-count-bubble\b/;
+	countBubbleClassRegex = /\bui-listview-item-count-bubble\b/,
+	listviewItemClassRegex = /\bui-listview-item-static\b|\bui-listview-item-divider\b/,
+	buttonClassRegex = /\bui-button\b/;
 
 return $.widget( "mobile.listview", $.extend( {
 	version: "@VERSION",
@@ -144,15 +146,13 @@ return $.widget( "mobile.listview", $.extend( {
 			itemClass = "ui-listview-item";
 			itemExtraClass = undefined;
 
-			if ( create || item[ 0 ].className
-					.search( /\bui-listview-item-static\b|\bui-listview-item-divider\b/ ) ===
-					-1 ) {
+			if ( create || item[ 0 ].className.search( listviewItemClassRegex ) === -1 ) {
 				a = this._getChildrenByTagName( item[ 0 ], "a", "A" );
 				isDivider = ( getAttribute( item[ 0 ], "role" ) === "list-divider" );
 				value = item.attr( "value" );
 				itemTheme = getAttribute( item[ 0 ], "theme" );
 
-				if ( ( a.length && a[ 0 ].className.search( /\bui-button\b/ ) === -1 &&
+				if ( ( a.length && a[ 0 ].className.search( buttonClassRegex ) === -1 &&
 						!isDivider ) || create ) {
 					itemIcon = getAttribute( item[ 0 ], "icon" );
 					icon = ( itemIcon === false ) ? false : ( itemIcon || currentOptions.icon );
