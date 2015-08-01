@@ -30,6 +30,18 @@
 	}
 } )( function( $ ) {
 
+function addItemToDictionary( itemClassDict, element, key, extra ) {
+
+	// Construct the dictionary key from the key class and the extra class
+	var dictionaryKey = [ key ].concat( extra ? [ extra ] : [] ).join( "|" );
+
+	if ( !itemClassDict[ dictionaryKey ] ) {
+		itemClassDict[ dictionaryKey ] = [];
+	}
+
+	itemClassDict[ dictionaryKey ].push( element );
+}
+
 function filterBubbleSpan() {
 	var child, parentNode,
 		anchorHash = { "a": true, "A": true };
@@ -152,8 +164,8 @@ return $.widget( "mobile.listview", $.extend( {
 				value = item.attr( "value" );
 				itemTheme = getAttribute( item[ 0 ], "theme" );
 
-				if ( ( a.length && !buttonClassRegex.test( a[ 0 ].className ) &&
-						!isDivider ) || create ) {
+				if ( a.length && ( ( !buttonClassRegex.test( a[ 0 ].className ) && !isDivider ) ||
+						create ) ) {
 					itemIcon = getAttribute( item[ 0 ], "icon" );
 					icon = ( itemIcon === false ) ? false : ( itemIcon || currentOptions.icon );
 
@@ -176,9 +188,10 @@ return $.widget( "mobile.listview", $.extend( {
 
 						span = createEnhanced ? last.children( ".ui-listview-item-split-icon" ) :
 							$( "<span>" );
-						this._addClass( span, "ui-listview-item-split-icon",
-							"ui-icon ui-icon-" + spliticon );
-						this._addClass( last, "ui-listview-item-split-button", altButtonClass );
+						addItemToDictionary( itemClassDict, span[ 0 ],
+							"ui-listview-item-split-icon", "ui-icon ui-icon-" + spliticon );
+						addItemToDictionary( itemClassDict, last[ 0 ],
+							"ui-listview-item-split-button", altButtonClass );
 						last.attr( "title", $.trim( last.getEncodedText() ) );
 						if ( !createEnhanced ) {
 							last.empty().append( span );
@@ -189,15 +202,16 @@ return $.widget( "mobile.listview", $.extend( {
 					} else if ( icon ) {
 						span = createEnhanced ? a.children( ".ui-listview-item-icon" ) :
 							$( "<span>" );
-						this._addClass( span, "ui-listview-item-icon", "ui-icon ui-icon-" + icon +
-							" ui-widget-icon-floatend" );
+						addItemToDictionary( itemClassDict, span[ 0 ], "ui-listview-item-icon",
+							"ui-icon ui-icon-" + icon + " ui-widget-icon-floatend" );
 						if ( !createEnhanced ) {
 							a.append( span );
 						}
 					}
 
 					// Apply buttonClass to the (first) anchor
-					this._addClass( a, "ui-listview-item-button", buttonClass );
+					addItemToDictionary( itemClassDict, a[ 0 ], "ui-listview-item-button",
+						buttonClass );
 				} else if ( isDivider ) {
 					dividerTheme = ( getAttribute( item[ 0 ], "theme" ) ||
 						currentOptions.dividerTheme || currentOptions.theme );
@@ -221,16 +235,7 @@ return $.widget( "mobile.listview", $.extend( {
 			// at this point in time, push the item into a dictionary
 			// that tells us what class to set on it so we can do this after this
 			// processing loop is finished.
-
-			// Construct the dictionary key from the key class and the extra class
-			dictionaryKey = [ itemClass ]
-				.concat( itemExtraClass ? [ itemExtraClass ] : [] )
-				.join( "|" );
-			if ( !itemClassDict[ dictionaryKey ] ) {
-				itemClassDict[ dictionaryKey ] = [];
-			}
-
-			itemClassDict[ dictionaryKey ].push( item[ 0 ] );
+			addItemToDictionary( itemClassDict, item[ 0 ], itemClass, itemExtraClass );
 		}
 
 		// Set the appropriate listview item classes on each list item.
