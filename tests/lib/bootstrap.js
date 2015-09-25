@@ -15,6 +15,22 @@
 		}
 	} );
 
+	// Define no backcompat and set ns modules
+	define( "jquery-no-backcompat", [ "jquery" ], function( $ ) {
+		$.mobileBackcompat = false;
+		return $;
+	} );
+
+	define( "jquery-set-ns", [ "jquery" ], function( $ ) {
+		$( document ).bind( "mobileinit", function() {
+			$.mobile.ns = "nstest-";
+			$.support.inlineSVG = $.noop;
+		});
+
+		return $;
+	} );
+
+
 	var widgets = [
 		// Main Widgets
 		"accordion",
@@ -140,9 +156,21 @@
 			deps = [];
 		}
 
+		deps = fixPaths( deps );
+
+		var full = !!script.getAttribute( "data-full" );
+
+		if ( full ) {
+			deps = deps.concat( "jquery.mobile" );
+		}
+
+
+		var init = !!script.getAttribute( "data-init" );
+		var noBackCompat = !!script.getAttribute( "data-no-backcompat" );
 		var baseUrl = script.getAttribute( "data-base-url" );
 		var noAutoStart = !!script.getAttribute( "data-no-autostart" );
 		var modules = script.getAttribute( "data-modules" );
+
 		// Format modules attribute
 		if ( modules ) {
 			modules = modules
@@ -162,7 +190,20 @@
 			"tests/jquery.testHelper"
 		].concat( deps );
 
-		deps = [ "jquery" ].concat( deps );
+		if ( init ) {
+			deps = deps.concat( [ "init" ] );
+
+			if ( noBackCompat ) {
+				deps = [ "jquery-no-backcompat" ].concat( deps );
+			} else {
+				deps =  [
+					"jquery-set-ns",
+					"widgets/widget.backcompat"
+				].concat( deps );
+			}
+		} else {
+			deps = [ "jquery" ].concat( deps );
+		}
 
 		deps = deps.concat( modules );
 
