@@ -138,6 +138,10 @@ $.testHelper = {
 	reloadLib: function( libName ) {
 		var reload;
 
+		if ( libName.indexOf( "../" ) === -1 ) {
+			libName = "../../../js/" + libName;
+		}
+
 		if ( this.reloads[ libName ] === undefined ) {
 			this.reloads[ libName ] = {
 				lib: libName,
