@@ -1,35 +1,6 @@
 ( function() {
 
-	requirejs.config( {
-		paths: {
-			"tests": "../tests",
-			"external": "../external",
-			"qunit": "../external/qunit/qunit",
-			"text": "../external/requirejs/plugins/text",
-			"json": "../external/requirejs/plugins/json",
-
-			"jquery": "../external/jquery/jquery",
-			"jquery-ui": "../external/jquery-ui",
-			"jquery-plugins": "../external/jquery/plugins",
-			"qunit-assert-classes": "../external/qunit-assert-classes/qunit-assert-classes"
-		}
-	} );
-
-	define( "jquery-no-backcompat", [ "jquery" ], function( $ ) {
-		$.mobileBackcompat = false;
-		return $;
-	} );
-
-	define( "jquery-set-ns", [ "jquery" ], function( $ ) {
-		$( document ).bind( "mobileinit", function() {
-			$.mobile.ns = "nstest-";
-			$.support.inlineSVG = $.noop;
-		});
-
-		return $;
-	} );
-
-	var widgets = [
+		var widgets = [
 		// Main Widgets
 		"accordion",
 		"addFirstLastClasses",
@@ -110,8 +81,8 @@
 		return deps;
 	}
 
-	function requireModules( dependencies, callback, noAutoStart, modules ) {
-		if ( dependencies.length == 1 ) {
+	function requireModules( dependencies, callback, modules ) {
+		if ( !dependencies.length ) {
 
 			$( document ).ready( function() {
 				var $fixture = $( '#qunit-fixture' );
@@ -119,17 +90,15 @@
 					QUnit.config.fixture = $fixture.html();
 				}
 
-				if ( !noAutoStart ) {
-					QUnit.start();
-				}
+				QUnit.start();
 			} );
-		}
 
-		if ( !dependencies.length ) {
 			if ( callback ) {
 				callback.apply( null, modules );
 			}
+			return;
 		}
+
 
 		if ( !modules ) {
 			modules = [];
@@ -138,11 +107,10 @@
 		var dependency = dependencies.shift();
 		require( [ dependency ], function( module ) {
 			modules.push( module );
-			requireModules( dependencies, callback, noAutoStart, modules );
+			requireModules( dependencies, callback, modules );
 		} );
 	}
 
-	// Load test modules based on data attributes
 	( function() {
 
 		var scripts = document.getElementsByTagName( "script" );
@@ -156,20 +124,8 @@
 			deps = [];
 		}
 
-		var full = !!script.getAttribute( "data-full" );
-
-		if ( full ) {
-			deps = deps.concat( "jquery.mobile" );
-		}
-
-		deps = fixPaths( deps );
-
-		var init = !!script.getAttribute( "data-init" );
-		var noAutoStart = !!script.getAttribute( "data-no-autostart" );
-		var noBackCompat = !!script.getAttribute( "data-no-backcompat" );
 		var baseUrl = script.getAttribute( "data-base-url" );
 		var modules = script.getAttribute( "data-modules" );
-
 		// Format modules attribute
 		if ( modules ) {
 			modules = modules
@@ -183,29 +139,8 @@
 			modules = [];
 		}
 
-		// Load these after backcompat resolution
-		deps = [
-			"jquery.tag.inserter",
-			"tests/jquery.testHelper"
-		].concat( deps );
-
-		if ( init ) {
-			deps = deps.concat( [ "init" ] );
-
-			if ( noBackCompat ) {
-				deps = [ "jquery-no-backcompat" ].concat( deps );
-			} else {
-				deps =  [
-					"jquery-set-ns",
-					"widgets/widget.backcompat"
-				].concat( deps );
-			}
-		} else {
-			deps = [ "jquery" ].concat( deps );
-		}
-
 		// Load QUnit first among all of them
-		deps = [ "qunit" ].concat( deps );
+		// deps = concat( deps );
 
 		deps = deps.concat( modules );
 
@@ -213,10 +148,10 @@
 			baseUrl: baseUrl || "../../../js"
 		} );
 
-		requireModules( deps, function( QUnit ) {
-			QUnit.config.autostart = false;
-		}, noAutoStart );
+
+			// QUnit.config.autostart = false;
+		requireModules( deps, function() {
+		} );
 
 	} )();
-
 } )();
