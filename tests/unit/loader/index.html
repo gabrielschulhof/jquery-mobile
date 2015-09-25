@@ -13,7 +13,7 @@
 
  	<script
  		src="../../lib/bootstrap.js"
- 		data-deps="qunit-assert-classes ./loader_core.js"
+ 		data-deps="qunit-assert-classes jquery-set-ns ./loader_core.js"
  		data-full="true"
  		data-no-autostart="true"/>
 	</script>
@@ -21,8 +21,11 @@
 <body>
 
 	<div id="qunit"></div>
+	
 	<div id="qunit-fixture">
 		<div data-role="loader" id="theme-test"></div>
-		<div data-nstest-role="page" id="foo"></div>
+	</div>
+		
+	<div data-nstest-role="page" id="foo"></div>
 </body>
 </html>

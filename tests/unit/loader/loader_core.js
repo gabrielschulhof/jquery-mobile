@@ -1,11 +1,10 @@
 /*
  * mobile init tests
  */
+
 define( [ "jquery", "qunit" ], function( $, QUnit ) {
 
-setTimeout( function() {
-	QUnit.start();
-}, 2000 );
+$.testHelper.delayStart();
 
 QUnit.module( "Theme option", {
 	setup: function() {
