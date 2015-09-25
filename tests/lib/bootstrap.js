@@ -173,6 +173,7 @@
 		var noBackCompat = !!script.getAttribute( "data-no-backcompat" );
 		var baseUrl = script.getAttribute( "data-base-url" );
 		var noAutoStart = !!script.getAttribute( "data-no-autostart" );
+		var initAfterModules = !!script.getAttribute( "data-init-after-modules" );
 		var modules = script.getAttribute( "data-modules" );
 
 		// Format modules attribute
@@ -194,6 +195,10 @@
 			"tests/jquery.testHelper"
 		].concat( deps );
 
+		if ( initAfterModules ) {
+			deps = deps.concat(modules);
+		}
+
 		if ( init ) {
 			deps = deps.concat( [ "init" ] );
 
@@ -209,7 +214,9 @@
 			deps = [ "jquery" ].concat( deps );
 		}
 
-		deps = deps.concat( modules );
+		if ( !initAfterModules ) {
+			deps = deps.concat( modules );
+		}
 
 		require( {
 			baseUrl: baseUrl || "../../../js"
