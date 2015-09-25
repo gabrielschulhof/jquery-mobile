@@ -81,7 +81,7 @@
 		return deps;
 	}
 
-	function requireModules( dependencies, callback, modules ) {
+	function requireModules( dependencies, noAutoStart, modules ) {
 		if ( !dependencies.length ) {
 
 			$( document ).ready( function() {
@@ -90,13 +90,11 @@
 					QUnit.config.fixture = $fixture.html();
 				}
 
-				QUnit.start();
+				if ( !noAutoStart ) {
+					QUnit.start();
+				}
 			} );
 
-			if ( callback ) {
-				callback.apply( null, modules );
-			}
-			return;
 		}
 
 
@@ -105,10 +103,13 @@
 		}
 
 		var dependency = dependencies.shift();
-		require( [ dependency ], function( module ) {
-			modules.push( module );
-			requireModules( dependencies, callback, modules );
-		} );
+
+		if ( dependency ) {
+			require( [ dependency ], function( module ) {
+				modules.push( module );
+				requireModules( dependencies, noAutoStart, modules );
+			} );
+		}
 	}
 
 	( function() {
@@ -125,6 +126,7 @@
 		}
 
 		var baseUrl = script.getAttribute( "data-base-url" );
+		var noAutoStart = !!script.getAttribute( "data-no-autostart" );
 		var modules = script.getAttribute( "data-modules" );
 		// Format modules attribute
 		if ( modules ) {
@@ -139,8 +141,13 @@
 			modules = [];
 		}
 
-		// Load QUnit first among all of them
-		// deps = concat( deps );
+		// Load these after backcompat resolution
+		deps = [
+			"jquery.tag.inserter",
+			"tests/jquery.testHelper"
+		].concat( deps );
+
+		deps = [ "jquery" ].concat( deps );
 
 		deps = deps.concat( modules );
 
@@ -148,10 +155,9 @@
 			baseUrl: baseUrl || "../../../js"
 		} );
 
+		QUnit.config.autostart = false;
 
-			// QUnit.config.autostart = false;
-		requireModules( deps, function() {
-		} );
+		requireModules( deps, noAutoStart );
 
 	} )();
 } )();
