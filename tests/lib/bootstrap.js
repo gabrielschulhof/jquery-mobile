@@ -10,6 +10,7 @@
 			"jquery-ui": "../external/jquery-ui",
 			"jquery-plugins": "../external/jquery/plugins",
 			"qunit": "../external/qunit/qunit",
+			"qunit-assert-classes": "../external/qunit-assert-classes/qunit-assert-classes",
 
 			"tests": "../tests"
 		}
