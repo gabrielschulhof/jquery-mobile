@@ -7,6 +7,8 @@ requirejs.config( {
 		"jquery": "../external/jquery/jquery",
 		"jquery-ui": "../external/jquery-ui",
 		"jquery-plugins": "../external/jquery/plugins",
-		"qunit": "../external/qunit/qunit"
+		"qunit": "../external/qunit/qunit",
+
+		"tests": "../tests"
 	}
 } );
