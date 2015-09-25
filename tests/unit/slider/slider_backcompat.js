@@ -3,7 +3,6 @@
  */
 define( [ "jquery" ], function( $ ) {
 
-
 module( "jquery.mobile.slider.js backcompat" );
 
 $.mobile.keepNative = "input.should-be-native";

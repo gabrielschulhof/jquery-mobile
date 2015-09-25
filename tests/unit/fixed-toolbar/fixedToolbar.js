@@ -3,7 +3,7 @@
  */
 define( [ "jquery" ], function( $ ) {
 
-	module( 'jquery.mobile.toolbar.js' );
+	module( "jquery.mobile.toolbar.js" );
 
 	var pageActiveFixedHeader = $( ".ui-page-active .ui-toolbar-header-fixed" );
 	test( "markup structure", function( assert ) {

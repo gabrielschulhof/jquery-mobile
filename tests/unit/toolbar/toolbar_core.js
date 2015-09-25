@@ -1,7 +1,6 @@
 /*
  * mobile Fixed Toolbar unit tests
  */
-<<<<<<< HEAD
 define( [ "jquery" ], function( $ ) {
 
     module( "toolbar" );
