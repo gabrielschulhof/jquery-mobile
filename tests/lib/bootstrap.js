@@ -31,7 +31,6 @@
 		return $;
 	} );
 
-
 	var widgets = [
 		// Main Widgets
 		"accordion",
@@ -132,7 +131,6 @@
 
 		}
 
-
 		if ( !modules ) {
 			modules = [];
 		}
@@ -163,12 +161,6 @@
 		deps = fixPaths( deps );
 
 		var full = !!script.getAttribute( "data-full" );
-
-		if ( full ) {
-			deps = deps.concat( "jquery.mobile" );
-		}
-
-
 		var init = !!script.getAttribute( "data-init" );
 		var noBackCompat = !!script.getAttribute( "data-no-backcompat" );
 		var baseUrl = script.getAttribute( "data-base-url" );
@@ -176,20 +168,23 @@
 		var initAfterModules = !!script.getAttribute( "data-init-after-modules" );
 		var modules = script.getAttribute( "data-modules" );
 
+		if ( full ) {
+			deps = deps.concat( "jquery.mobile" );
+		}
+
 		// Format modules attribute
 		if ( modules ) {
-			modules = modules
-					  .replace( /^\s+|\s+$/g, "" )
-					  .split( /\s+/ )
-					  .map( function( module ) {
-					  	// Change to make sure it is loaded from the local folder
+			modules = modules.replace( /^\s+|\s+$/g, "" )
+					 .split( /\s+/ )
+					 .map( function( module ) {
+					 	// Change to make sure it is loaded from the local folder
 					  	return "./" + module + ".js";
 					  });
 		} else {
 			modules = [];
 		}
 
-		// Load these after backcompat resolution
+		// Load these before backcompat resolution
 		deps = [
 			"jquery.tag.inserter",
 			"tests/jquery.testHelper"
@@ -218,10 +213,12 @@
 			deps = deps.concat( modules );
 		}
 
+		// Set base url for requirejs
 		require( {
 			baseUrl: baseUrl || "../../../js"
 		} );
 
+		// Set autostart to false
 		QUnit.config.autostart = false;
 
 		requireModules( deps, noAutoStart );
