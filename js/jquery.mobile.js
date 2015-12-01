@@ -56,6 +56,7 @@
 			"./widgets/forms/autogrow",
 			"./widgets/forms/select.backcompat",
 			"./widgets/forms/select.custom",
+			"./widgets/forms/select.custom.backcompat",
 			"./jquery-ui/controlgroup",
 			"./widgets/toolbar",
 			"./widgets/fixedToolbar",
