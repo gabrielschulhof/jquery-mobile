@@ -36,10 +36,10 @@
 } )( function( $ ) {
 
 var unfocusableItemSelector = ".ui-disabled,.ui-state-disabled,.ui-listview-item-divider," +
-		".ui-screen-hidden,:jqmData(role='placeholder')",
+		".ui-screen-hidden",
 	goToAdjacentItem = function( item, target, direction ) {
 		var adjacent = item[ direction + "All" ]()
-			.not( unfocusableItemSelector )
+			.not( unfocusableItemSelector + ",[data-" + this._ns() + "role='placeholder']" )
 				.first();
 
 		// If there's a previous option, focus it
@@ -77,7 +77,8 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		// Custom selects cannot exist inside popups, so revert the "nativeMenu" option to true if
 		// a parent is a popup
 		o.nativeMenu = o.nativeMenu ||
-			( this.element.parents( ":jqmData(role='popup'),:mobile-popup" ).length > 0 );
+			( this.element.closest( "[data-" + this._ns() +
+			"role='popup'],:mobile-popup" ).length > 0 );
 
 		return this._super();
 	},
@@ -106,11 +107,11 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			if ( this.menuType === "overlay" ) {
 				this.button
 					.attr( "href", "#" + this.popupId )
-					.attr( "data-" + ( this._ns() || "" ) + "rel", "popup" );
+					.attr( "data-" + this._ns() + "rel", "popup" );
 			} else {
 				this.button
 					.attr( "href", "#" + this.dialogId )
-					.attr( "data-" + ( this._ns() || "" ) + "rel", "dialog" );
+					.attr( "data-" + this._ns() + "rel", "dialog" );
 			}
 			this.isOpen = true;
 
@@ -378,7 +379,8 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 	},
 
 	selected: function() {
-		return this._selectOptions().filter( ":selected:not( :jqmData(placeholder='true') )" );
+		return this._selectOptions()
+			.filter( ":selected:not( [data-" + this._ns() + "placeholder='true'] )" );
 	},
 
 	refresh: function( force ) {
@@ -456,7 +458,8 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 	_focusMenuItem: function() {
 		var selector = this.list.find( "a.ui-button-active" );
 		if ( selector.length === 0 ) {
-			selector = this.list.find( "li:not(" + unfocusableItemSelector + ") a.ui-button" );
+			selector = this.list.find( "li:not(" + unfocusableItemSelector +
+				",[data-" + this._ns() + "role='placeholder'] ) a.ui-button" );
 		}
 		selector.first().focus();
 	},
@@ -496,12 +499,12 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 	},
 
 	_decideFormat: function() {
-		var $window = this.window,
+		var theWindow = this.window,
 			selfListParent = this.list.parent(),
 			menuHeight = selfListParent.outerHeight(),
-			scrollTop = $window.scrollTop(),
+			scrollTop = theWindow.scrollTop(),
 			buttonOffset = this.button.offset().top,
-			screenHeight = $window.height();
+			screenHeight = theWindow.height();
 
 		if ( menuHeight > screenHeight - 80 || !$.support.scrollTop ) {
 
@@ -516,7 +519,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			// For WebOS/Opera Mini (set lastscroll using button offset)
 			if ( scrollTop === 0 && buttonOffset > screenHeight ) {
 				this.thisPage.one( "pagehide", function() {
-					$( this ).jqmData( "lastScroll", buttonOffset );
+					$( this ).data( $.camelCase( this._ns() + "lastScroll" ), buttonOffset );
 				} );
 			}
 
@@ -544,7 +547,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			placeholder = this.placeholder,
 			needPlaceholder = true,
 			dataIcon = "false",
-			$options, numOptions, select,
+			optionsList, numOptions, select,
 			dataPrefix = "data-" + this._ns(),
 			dataIndexAttr = dataPrefix + "option-index",
 			dataIconAttr = dataPrefix + "icon",
@@ -554,20 +557,20 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			isPlaceholderItem = false,
 			optGroup,
 			i,
-			option, $option, parent, text, anchor, classes,
+			option, optionElement, parent, text, anchor, classes,
 			optLabel, divider, item;
 
 		this.list.empty().filter( ".ui-listview" ).listview( "destroy" );
-		$options = this._selectOptions();
-		numOptions = $options.length;
+		optionsList = this._selectOptions();
+		numOptions = optionsList.length;
 		select = this.select[ 0 ];
 
 		for ( i = 0; i < numOptions; i++, isPlaceholderItem = false ) {
-			option = $options[ i ];
-			$option = $( option );
+			option = optionsList[ i ];
+			optionElement = $( option );
 
 			// Do not create options based on ui-screen-hidden select options
-			if ( $option.hasClass( "ui-screen-hidden" ) ) {
+			if ( optionElement.hasClass( "ui-screen-hidden" ) ) {
 				continue;
 			}
 
@@ -579,7 +582,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			// only arises if we do something like $( "<li><a href='#'>" + text + "</a></li>" ). We
 			// don't do that. We do document.createTextNode( text ) instead, which guarantees that
 			// whatever we paste in will end up as text, with characters like <, > and & escaped.
-			text = $option.text();
+			text = optionElement.text();
 			anchor = document.createElement( "a" );
 			anchor.setAttribute( "href", "#" );
 			anchor.appendChild( document.createTextNode( text ) );
@@ -601,7 +604,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			if ( needPlaceholder &&
 				( !option.getAttribute( "value" ) ||
 					text.length === 0 ||
-					$option.jqmData( "placeholder" ) ) ) {
+					optionElement.data( $.camelCase( this._ns() + "placeholder" ) ) ) ) {
 				needPlaceholder = false;
 				isPlaceholderItem = true;
 

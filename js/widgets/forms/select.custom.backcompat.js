@@ -29,7 +29,7 @@ if ( $.mobileBackcompat !== false ) {
 
 	$.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		_ns: function() {
-			return $.mobile.ns;
+			return $.mobile.ns || "";
 		}
 	} );
 }
