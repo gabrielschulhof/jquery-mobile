@@ -499,7 +499,8 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 	},
 
 	_decideFormat: function() {
-		var theWindow = this.window,
+		var pageWidget,
+			theWindow = this.window,
 			selfListParent = this.list.parent(),
 			menuHeight = selfListParent.outerHeight(),
 			scrollTop = theWindow.scrollTop(),
@@ -514,7 +515,8 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 
 			// Prevent the parent page from being removed from the DOM, otherwise the results of
 			// selecting a list item in the dialog fall into a black hole
-			this.thisPage.unbind( "pagehide.remove" );
+			pageWidget = this.thisPage.page( "instance" );
+			pageWidget._off( pageWidget.element, "pagehide" );
 
 			// For WebOS/Opera Mini (set lastscroll using button offset)
 			if ( scrollTop === 0 && buttonOffset > screenHeight ) {
