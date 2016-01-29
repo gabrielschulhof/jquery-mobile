@@ -525,9 +525,9 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 				} );
 			}
 
-			this.menuPage.one( {
-				pageshow: $.proxy( this, "_focusMenuItem" ),
-				pagehide: $.proxy( this, "close" )
+			this._on( this.document, {
+				pagecontainershow: "_handlePageContainerShow",
+				pagecontainerhide: "_handlePageContainerHide"
 			} );
 
 			this.menuType = "page";
@@ -542,6 +542,20 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		}
 		this._setTheme( "theme", this.options.theme );
 		this._setTheme( "overlayTheme", this.options.overlayTheme );
+	},
+
+	_handlePageContainerShow: function( event, data ) {
+		if ( data.toPage[ 0 ] === this.menuPage[ 0 ] ) {
+			this._off( this.document, "pagecontainershow" );
+			this._focusMenuItem();
+		}
+	},
+
+	_handlePageContainerHide: function( event, data ) {
+		if ( data.prevPage[ 0 ] === this.menuPage[ 0 ] ) {
+			this._off( this.document, "pagecontainershow" );
+			this.close();
+		}
 	},
 
 	_buildList: function() {
