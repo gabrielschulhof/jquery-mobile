@@ -79,7 +79,7 @@ $.widget( "mobile.selectmenu", $.extend( {
 	},
 
 	_selectOptions: function() {
-		return this.select.find( "option" );
+		return this.element.find( "option" );
 	},
 
 	// Setup items that are generally necessary for select menu extension
@@ -101,18 +101,18 @@ $.widget( "mobile.selectmenu", $.extend( {
 		}
 
 		this._removeClass( this.element, null, "ui-button-left ui-button-right" );
-		this.select = this.element;
+		this.element = this.element;
 		this.selectWrapper = $( "<div>" );
 		this._addClass( this.selectWrapper, "ui-selectmenu", classes );
 		this.selectWrapper.insertBefore( this.element );
 		this.element.detach();
 
-		this.selectId = this.select.attr( "id" ) || ( "select-" + this.uuid );
+		this.selectId = this.element.attr( "id" ) || ( "select-" + this.uuid );
 		this.buttonId = this.selectId + "-button";
-		this.isMultiple = this.select[ 0 ].multiple;
+		this.isMultiple = this.element[ 0 ].multiple;
 
 		this.element.appendTo( this.selectWrapper );
-		this.label = this.select.labels().first();
+		this.label = this.element.labels().first();
 	},
 
 	_destroy: function() {
@@ -131,7 +131,7 @@ $.widget( "mobile.selectmenu", $.extend( {
 	_create: function() {
 		var options = this.options,
 			iconpos = options.icon ?
-				( options.iconpos || this.select.jqmData( "iconpos" ) ) : false;
+				( options.iconpos || this.element.jqmData( "iconpos" ) ) : false;
 
 		this._preExtension();
 
@@ -139,7 +139,7 @@ $.widget( "mobile.selectmenu", $.extend( {
 
 		this.button.attr( "id", this.buttonId );
 		this._addClass( this.button, "ui-selectmenu-button", "ui-button" );
-		this.button.insertBefore( this.select );
+		this.button.insertBefore( this.element );
 
 		if ( this.options.icon ) {
 			this.icon = $( "<span>" );
@@ -174,7 +174,7 @@ $.widget( "mobile.selectmenu", $.extend( {
 		}
 
 		// Events on native select
-		this._on( this.select, {
+		this._on( this.element, {
 			change: "refresh"
 		} );
 
@@ -190,7 +190,7 @@ $.widget( "mobile.selectmenu", $.extend( {
 	build: function() {
 		var self = this;
 
-		this.select
+		this.element
 			.appendTo( self.button )
 			.bind( "vmousedown", function() {
 				// Add active class to button
@@ -226,7 +226,7 @@ $.widget( "mobile.selectmenu", $.extend( {
 				$.mobile.zoom.disable( true );
 			}
 		} );
-		self.select.bind( "focus", function() {
+		self.element.bind( "focus", function() {
 			if ( self.options.preventFocusZoom ) {
 				$.mobile.zoom.disable( true );
 			}
@@ -238,7 +238,7 @@ $.widget( "mobile.selectmenu", $.extend( {
 				}, 0 );
 			}
 		} );
-		self.select.bind( "blur", function() {
+		self.element.bind( "blur", function() {
 			if ( self.options.preventFocusZoom ) {
 				$.mobile.zoom.enable( true );
 			}
@@ -289,7 +289,7 @@ $.widget( "mobile.selectmenu", $.extend( {
 
 				// TODO possibly aggregate multiple select option classes
 				return span
-					.addClass( self.select.attr( "class" ) )
+					.addClass( self.element.attr( "class" ) )
 					.addClass( selected.attr( "class" ) )
 					.removeClass( "ui-screen-hidden" );
 			} )() );

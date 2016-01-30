@@ -205,7 +205,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			listItem = $( event.target ).closest( "li" ),
 
 			// Index of option tag to be selected
-			oldIndex = this.select[ 0 ].selectedIndex,
+			oldIndex = this.element[ 0 ].selectedIndex,
 			newIndex = $.mobile.getAttribute( listItem, "option-index" ),
 			option = this._selectOptions().eq( newIndex )[ 0 ];
 
@@ -228,7 +228,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		// Hide custom select for single selects only - otherwise focus clicked item
 		// We need to grab the clicked item the hard way, because the list may have been rebuilt
 		if ( this.isMultiple ) {
-			this.select.trigger( "change" );
+			this.element.trigger( "change" );
 			this.list.find( "li:not(.ui-listview-item-divider)" ).eq( newIndex )
 				.find( "a" ).first().focus();
 		} else {
@@ -272,7 +272,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			.prependTo( menuPage );
 		listbox = $( "<div></div>" )
 			.attr( "id", popupId )
-			.insertAfter( this.select )
+			.insertAfter( this.element )
 			.popup();
 		list = $( "<ul role='listbox' aria-labelledby='" +
 			this.buttonId + "'" + themeAttr + dividerThemeAttr + "></ul>" )
@@ -322,8 +322,8 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		// Create list from select, update state
 		this.refresh();
 
-		this.select.attr( "tabindex", "-1" );
-		this._on( this.select, { focus: "_handleSelectFocus" } );
+		this.element.attr( "tabindex", "-1" );
+		this._on( this.element, { focus: "_handleSelectFocus" } );
 
 		// Button events
 		this._on( this.button, {
@@ -579,7 +579,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		this.list.empty().filter( ".ui-listview" ).listview( "destroy" );
 		optionsList = this._selectOptions();
 		numOptions = optionsList.length;
-		select = this.select[ 0 ];
+		select = this.element[ 0 ];
 
 		for ( i = 0; i < numOptions; i++, isPlaceholderItem = false ) {
 			option = optionsList[ i ];
@@ -698,9 +698,9 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			// Restore the tabindex attribute to its original value
 			if ( this._origTabIndex !== undefined ) {
 				if ( this._origTabIndex !== false ) {
-					this.select.attr( "tabindex", this._origTabIndex );
+					this.element.attr( "tabindex", this._origTabIndex );
 				} else {
-					this.select.removeAttr( "tabindex" );
+					this.element.removeAttr( "tabindex" );
 				}
 			}
 
