@@ -26,7 +26,7 @@
 			"../../zoom",
 			"../../navigation/path",
 			"../widget.theme",
-			"./reset" ], factory );
+			"jquery-ui/form-reset-mixin" ], factory );
 	} else {
 
 		// Browser globals
@@ -34,7 +34,7 @@
 	}
 } )( function( $ ) {
 
-$.widget( "mobile.selectmenu", $.extend( {
+return $.widget( "mobile.selectmenu", $.widget( "mobile.selectmenu", [ {
 	version: "@VERSION",
 
 	options: {
@@ -120,6 +120,7 @@ $.widget( "mobile.selectmenu", $.extend( {
 			this.element.insertAfter( this.selectWrapper );
 			this.selectWrapper.remove();
 		}
+		this._unbindFormResetHandler();
 	},
 
 	_create: function() {
@@ -172,7 +173,7 @@ $.widget( "mobile.selectmenu", $.extend( {
 			change: "refresh"
 		} );
 
-		this._handleFormReset();
+		this._bindFormResetHandler();
 
 		this._on( this.button, {
 			keydown: "_handleKeydown"
@@ -278,7 +279,8 @@ $.widget( "mobile.selectmenu", $.extend( {
 					span.html( "&#160;" );
 				}
 
-				// hide from assistive technologies, as otherwise this will create redundant text announcement - see gh-8256
+				// hide from assistive technologies, as otherwise this will create redundant text
+				// announcement - see gh-8256
 				span.attr( "aria-hidden", "true" );
 
 				// TODO possibly aggregate multiple select option classes
@@ -300,10 +302,6 @@ $.widget( "mobile.selectmenu", $.extend( {
 
 	_handleKeydown: function( /* event */ ) {
 		this._delay( "_refreshButton" );
-	},
-
-	_reset: function() {
-		this.refresh();
 	},
 
 	_refreshButton: function() {
@@ -329,8 +327,6 @@ $.widget( "mobile.selectmenu", $.extend( {
 		this._setDisabled( false );
 		this.button.removeClass( "ui-state-disabled" );
 	}
-}, $.mobile.behaviors.formReset ) );
-
-return $.widget( "mobile.selectmenu", $.mobile.selectmenu, $.mobile.widget.theme );
+}, $.ui.formResetMixin ] ), $.mobile.widget.theme );
 
 } );
