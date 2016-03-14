@@ -262,11 +262,11 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		"overlay-theme='" + overlayTheme + "'" ) : "";
 		dividerThemeAttr = ( o.dividerTheme && this.element.children( "optgroup" ).length > 0 ) ?
 			( " data-" + this._ns() + "divider-theme='" + o.dividerTheme + "'" ) : "";
-		menuPage = $( "<div data-" + this._ns() + "role='dialog'>" +
+		menuPage = $( "<div data-" + this._ns() + "role='page' " +
+			"data-" + this._ns() + "dialog='true'>" +
 			"<div></div>" +
 			"</div>" )
-			.attr( "id", dialogId )
-			.page();
+			.attr( "id", dialogId );
 		menuPageHeader = $( "<div><h1></h1></div>" )
 			.toolbar( { type: "header" } )
 			.prependTo( menuPage );
@@ -282,6 +282,8 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			.toolbar( { type: "header" } )
 			.prependTo( listbox );
 		headerTitle = $( "<h1></h1>" ).appendTo( header );
+
+		menuPage.page();
 
 		this._addClass( menuPage, null, "ui-selectmenu-custom" );
 		this._addClass( menuPage.children(), null, "ui-content" );
@@ -510,7 +512,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		if ( menuHeight > screenHeight - 80 || !$.support.scrollTop ) {
 
 			this.menuPage.appendTo( $.mobile.pageContainer );
-			this.menuPageContent = this.menuPage.find( ".ui-content" );
+			this.menuPageContent = this.menuPage.find( ".ui-page-dialog-contain.ui-content" );
 			this.menuPageClose = this.menuPage.find( ".ui-header a" );
 
 			// Prevent the parent page from being removed from the DOM, otherwise the results of

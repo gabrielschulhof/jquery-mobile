@@ -106,7 +106,7 @@ QUnit.asyncTest( "Clicking dialog 'Close' button renders it unclickable", functi
 		},
 
 		function() {
-			var closeButton = $( "#foo-dialog a" ).click();
+			var closeButton = $( "#foo-dialog a" ).first().click();
 
 			assert.strictEqual( closeButton.css( "pointer-events" ), "none",
 				"Close button has pointer events turned off post-click" );
@@ -116,7 +116,7 @@ QUnit.asyncTest( "Clicking dialog 'Close' button renders it unclickable", functi
 
 		function( timedOut ) {
 			assert.ok( !timedOut, "Clicking dialog 'Close' has resulted in a pagechange event" );
-			assert.ok( location.href === correctLocation, "Location is correct afterwards" );
+			assert.strictEqual( location.href, correctLocation, "Location is correct afterwards" );
 			$.mobile.back();
 		},
 

@@ -234,7 +234,7 @@ QUnit.asyncTest( "focus is transferred to a menu item when the menu is opened",
 			function() {
 
 				// Bring up the dialog
-				$( "#select-choice-menu-focus-test a:first" ).trigger( "click" );
+				$( "#select-choice-menu-focus-test-container a:first" ).trigger( "click" );
 			},
 
 			function() {
@@ -261,7 +261,7 @@ QUnit.asyncTest( "using custom refocuses the button after close", function( asse
 		resetHash,
 
 		function() {
-			select = $( "#select-choice-focus-test" );
+			select = $( "#select-choice-focus-test-container" );
 			button = select.find( "a" );
 			button.trigger( "click" );
 		},
@@ -376,7 +376,7 @@ QUnit.test( "custom select list item links have encoded option text values", fun
 } );
 
 // Not testing the positive case here since's it's obviously tested elsewhere
-QUnit.test( "select elements in the keepNative set shouldn't be enhanced", function( assert ) {
+QUnit.test( "select elements not marked with role shouldn't be enhanced", function( assert ) {
 	assert.lacksClasses( $( "#keep-native" ).parent(), "ui-button" );
 } );
 
