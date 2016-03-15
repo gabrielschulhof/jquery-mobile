@@ -71,10 +71,10 @@ return $.widget( "mobile.selectmenu", $.widget( "mobile.selectmenu", [ {
 	},
 
 	_focusButton: function() {
-		var self = this;
+		var that = this;
 
 		setTimeout( function() {
-			self.button.focus();
+			that.button.focus();
 		}, 40 );
 	},
 
@@ -126,7 +126,8 @@ return $.widget( "mobile.selectmenu", $.widget( "mobile.selectmenu", [ {
 	_create: function() {
 		var options = this.options,
 			iconpos = options.icon ?
-				( options.iconpos || this.element.jqmData( "iconpos" ) ) : false;
+				( options.iconpos || this.element.attr( "data-" + this._ns() + "iconpos" ) ) :
+					false;
 
 		this._preExtension();
 
@@ -183,58 +184,58 @@ return $.widget( "mobile.selectmenu", $.widget( "mobile.selectmenu", [ {
 	},
 
 	build: function() {
-		var self = this;
+		var that = this;
 
 		this.element
-			.appendTo( self.button )
+			.appendTo( that.button )
 			.bind( "vmousedown", function() {
 				// Add active class to button
-				self.button.addClass( "ui-button-active" );
+				that.button.addClass( "ui-button-active" );
 			} )
 			.bind( "focus", function() {
-				self.button.addClass( "ui-focus" );
+				that.button.addClass( "ui-focus" );
 			} )
 			.bind( "blur", function() {
-				self.button.removeClass( "ui-focus" );
+				that.button.removeClass( "ui-focus" );
 			} )
 			.bind( "focus vmouseover", function() {
-				self.button.trigger( "vmouseover" );
+				that.button.trigger( "vmouseover" );
 			} )
 			.bind( "vmousemove", function() {
 				// Remove active class on scroll/touchmove
-				self.button.removeClass( "ui-button-active" );
+				that.button.removeClass( "ui-button-active" );
 			} )
 			.bind( "change blur vmouseout", function() {
-				self.button.trigger( "vmouseout" )
+				that.button.trigger( "vmouseout" )
 					.removeClass( "ui-button-active" );
 			} );
 
 		// In many situations, iOS will zoom into the select upon tap, this prevents that from
 		// happening
-		self.button.bind( "vmousedown", function() {
-			if ( self.options.preventFocusZoom ) {
+		that.button.bind( "vmousedown", function() {
+			if ( that.options.preventFocusZoom ) {
 				$.mobile.zoom.disable( true );
 			}
 		} );
-		self.label.bind( "click focus", function() {
-			if ( self.options.preventFocusZoom ) {
+		that.label.bind( "click focus", function() {
+			if ( that.options.preventFocusZoom ) {
 				$.mobile.zoom.disable( true );
 			}
 		} );
-		self.element.bind( "focus", function() {
-			if ( self.options.preventFocusZoom ) {
+		that.element.bind( "focus", function() {
+			if ( that.options.preventFocusZoom ) {
 				$.mobile.zoom.disable( true );
 			}
 		} );
-		self.button.bind( "mouseup", function() {
-			if ( self.options.preventFocusZoom ) {
+		that.button.bind( "mouseup", function() {
+			if ( that.options.preventFocusZoom ) {
 				setTimeout( function() {
 					$.mobile.zoom.enable( true );
 				}, 0 );
 			}
 		} );
-		self.element.bind( "blur", function() {
-			if ( self.options.preventFocusZoom ) {
+		that.element.bind( "blur", function() {
+			if ( that.options.preventFocusZoom ) {
 				$.mobile.zoom.enable( true );
 			}
 		} );
@@ -245,15 +246,15 @@ return $.widget( "mobile.selectmenu", $.widget( "mobile.selectmenu", [ {
 	},
 
 	selectedIndices: function() {
-		var self = this;
+		var that = this;
 
 		return this.selected().map( function() {
-			return self._selectOptions().index( this );
+			return that._selectOptions().index( this );
 		} ).get();
 	},
 
 	setButtonText: function() {
-		var self = this,
+		var that = this,
 			selected = this.selected(),
 			text = this.placeholder,
 			span = $( "<span>" );
@@ -267,7 +268,7 @@ return $.widget( "mobile.selectmenu", $.widget( "mobile.selectmenu", [ {
 						return $( this ).text();
 					} ).get().join( ", " );
 				} else {
-					text = self.placeholder;
+					text = that.placeholder;
 				}
 
 				if ( text ) {
@@ -284,10 +285,10 @@ return $.widget( "mobile.selectmenu", $.widget( "mobile.selectmenu", [ {
 				span.attr( "aria-hidden", "true" );
 
 				// TODO possibly aggregate multiple select option classes
-				return span
-					.addClass( self.element.attr( "class" ) )
-					.addClass( selected.attr( "class" ) )
-					.removeClass( "ui-screen-hidden" );
+				that._addClass( span, null,
+					[ that.element.attr( "class" ), selected.attr( "class" ) ].join( " " ) );
+				that._removeClass( span, null, "ui-screen-hidden" );
+				return span;
 			} )() );
 	},
 

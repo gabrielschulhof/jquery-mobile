@@ -55,8 +55,7 @@ var unfocusableItemSelector = ".ui-disabled,.ui-state-disabled,.ui-listview-item
 return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 	options: {
 		classes: {
-			"ui-selectmenu-custom-header-close-button":
-				"ui-button ui-corner-all ui-button-left ui-button-icon-only ui-icon-delete"
+			"ui-selectmenu-custom-header-close-button": "ui-corner-all"
 		},
 		overlayTheme: null,
 		dividerTheme: null,
@@ -285,7 +284,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 
 		menuPage.page();
 
-		this._addClass( menuPage, null, "ui-selectmenu-custom" );
+		this._addClass( menuPage, "ui-selectmenu-custom" );
 		this._addClass( menuPage.children(), null, "ui-content" );
 		this._addClass( listbox, null, "ui-selectmenu-custom" );
 		this._addClass( list, null, "ui-selectmenu-custom-list" );
@@ -296,7 +295,8 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 				"text": o.closeText,
 				"href": "#"
 			} );
-			this._addClass( headerClose, "ui-selectmenu-custom-header-close-button" );
+			this._addClass( headerClose, "ui-selectmenu-custom-header-close-button",
+				"ui-button ui-button-left ui-button-icon-only ui-icon-delete" );
 			headerClose.appendTo( header );
 		}
 
