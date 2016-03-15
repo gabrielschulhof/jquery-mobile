@@ -146,7 +146,7 @@ QUnit.asyncTest( "a large select menu should use the default dialog transition",
 
 QUnit.asyncTest( "selecting an item from a large custom select leaves no dialog hash key",
 	function( assert ) {
-		var dialogHashKey = "ui-state=dialog";
+		var dialogHashKey = "select-choice-many-hash-check-dialog";
 
 		$.testHelper.pageSequence( [
 			resetHash,
@@ -169,7 +169,7 @@ QUnit.asyncTest( "selecting an item from a large custom select leaves no dialog 
 
 QUnit.asyncTest( "dialog sized select menu opened many times remains a dialog",
 	function( assert ) {
-		var dialogHashKey = "ui-state=dialog",
+		var dialogHashKey = "select-choice-many-many-clicks-dialog",
 
 			openDialogSequence = [
 				resetHash,

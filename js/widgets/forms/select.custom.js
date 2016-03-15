@@ -685,6 +685,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 				// TODO value is undefined at creation
 				"aria-owns": this.menuId
 			};
+		attributes[ "data-" + this._ns() + "transition" ] = "pop";
 
 		if ( this._origTabIndex ) {
 			attributes.tabindex = this._origTabIndex;
