@@ -86,15 +86,6 @@ return $.widget( "mobile.selectmenu", $.widget( "mobile.selectmenu", [ {
 	_preExtension: function() {
 		var classes = "";
 
-		if ( !!~this.element[ 0 ].className.indexOf( "ui-button-left" ) ) {
-			classes = " ui-button-left";
-		}
-
-		if ( !!~this.element[ 0 ].className.indexOf( "ui-button-right" ) ) {
-			classes = " ui-button-right";
-		}
-
-		this._removeClass( this.element, null, "ui-button-left ui-button-right" );
 		this.element = this.element;
 		this.selectWrapper = $( "<div>" );
 		this._addClass( this.selectWrapper, "ui-selectmenu", classes );
@@ -111,12 +102,6 @@ return $.widget( "mobile.selectmenu", $.widget( "mobile.selectmenu", [ {
 
 	_destroy: function() {
 		if ( this.selectWrapper.length > 0 ) {
-			if ( this.selectWrapper.is( ".ui-button-left, .ui-button-right" ) ) {
-				this._addClass( null,
-					this.selectWrapper.hasClass( "ui-button-left" ) ?
-						"ui-button-left" :
-						"ui-button-right" );
-			}
 			this.element.insertAfter( this.selectWrapper );
 			this.selectWrapper.remove();
 		}
