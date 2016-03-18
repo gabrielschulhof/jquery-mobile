@@ -266,6 +266,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			"<div></div>" +
 			"</div>" )
 			.attr( "id", dialogId );
+		menuPageContent = menuPage.children();
 		menuPageHeader = $( "<div><h1></h1></div>" )
 			.toolbar( { type: "header" } )
 			.prependTo( menuPage );
@@ -285,7 +286,7 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		menuPage.page();
 
 		this._addClass( menuPage, "ui-selectmenu-custom" );
-		this._addClass( menuPage.children(), null, "ui-content" );
+		this._addClass( menuPageContent, null, "ui-content" );
 		this._addClass( listbox, null, "ui-selectmenu-custom" );
 		this._addClass( list, null, "ui-selectmenu-custom-list" );
 
@@ -512,7 +513,6 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		if ( menuHeight > screenHeight - 80 || !$.support.scrollTop ) {
 
 			this.menuPage.appendTo( $.mobile.pageContainer );
-			this.menuPageContent = this.menuPage.find( ".ui-page-dialog-contain.ui-content" );
 			this.menuPageClose = this.menuPage.find( ".ui-header a" );
 
 			// Prevent the parent page from being removed from the DOM, otherwise the results of
