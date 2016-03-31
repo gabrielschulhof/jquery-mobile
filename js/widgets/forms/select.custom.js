@@ -173,25 +173,6 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 		}
 	},
 
-	_handleMenuPageHide: function() {
-
-		// After the dialog's done, we may want to trigger change if the value has actually changed
-		this._delayedTrigger();
-
-		// TODO centralize page removal binding / handling in the page plugin.
-		// Suggestion from @jblas to do refcounting.
-		//
-		// TODO extremely confusing dependency on the open method where the pagehide.remove
-		// bindings are stripped to prevent the parent page from disappearing. The way we're
-		// keeping pages in the DOM right now sucks
-		//
-		// Rebind the page remove that was unbound in the open function to allow for the parent
-		// page removal from actions other than the use of a dialog sized custom select
-		//
-		// Doing this here provides for the back button on the custom select dialog
-		this.thisPage.page( "bindRemove" );
-	},
-
 	_handleHeaderCloseClick: function() {
 		if ( this.menuType === "overlay" ) {
 			this.close();
@@ -342,10 +323,6 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 			"click li:not(.ui-disabled,.ui-state-disabled,.ui-listview-item-divider)":
 				"_handleListItemClick"
 		} );
-
-		// Button refocus ensures proper height calculation by removing the inline style and
-		// ensuring page inclusion
-		this._on( this.menuPage, { pagehide: "_handleMenuPageHide" } );
 
 		// Events on the popup
 		this._on( this.listbox, { popupafterclose: "_popupClosed" } );
@@ -556,6 +533,25 @@ return $.widget( "mobile.selectmenu", $.mobile.selectmenu, {
 	_handlePageContainerHide: function( event, data ) {
 		if ( data.prevPage[ 0 ] === this.menuPage[ 0 ] ) {
 			this._off( this.document, "pagecontainershow" );
+
+			// After the dialog's done, we may want to trigger change if the value has actually
+			// changed
+			this._delayedTrigger();
+
+			// TODO centralize page removal binding / handling in the page plugin.
+			// Suggestion from @jblas to do refcounting.
+			//
+			// TODO extremely confusing dependency on the open method where the pagehide.remove
+			// bindings are stripped to prevent the parent page from disappearing. The way we're
+			// keeping pages in the DOM right now sucks
+			//
+			// Rebind the page remove that was unbound in the open function to allow for the parent
+			// page removal from actions other than the use of a dialog sized custom select
+			//
+			// Doing this here provides for the back button on the custom select dialog
+			this.thisPage.page( "bindRemove" );
+			this.menuPage.detach();
+
 			this.close();
 		}
 	},

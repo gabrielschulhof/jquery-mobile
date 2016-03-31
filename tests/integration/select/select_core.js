@@ -676,6 +676,7 @@ function testChangeAfterClose( assert, select, ns, openEvent, closeEvent, tail )
 				}
 
 				if ( name === closeEventName &&
+						( !closeEvent.filter || closeEvent.filter( callLog[ index ].data ) ) &&
 						target === ( typeof closeEvent.src === "function" ?
 							closeEvent.src()[ 0 ] :
 							closeEvent.src[ 0 ] ) ) {
@@ -708,12 +709,19 @@ QUnit.asyncTest( "Small select triggers change after popup closes", function( as
 QUnit.asyncTest( "Large select triggers change after dialog closes", function( assert ) {
 	testChangeAfterClose( assert, $( "#large-select-change-after-close" ),
 		".largeSelectTriggersChangeAfterPopupCloses",
-		{ src: $( document ), event: "pageshow" },
 		{
-			src: function() {
-				return $( "#large-select-change-after-close-dialog" );
-			},
-			event: "pagehide"
+			src: $( "body" ),
+			event: "pagecontainershow",
+			filter: function dataFilter( data ) {
+				return data.nextPage.attr( "id" ) === "large-select-change-after-close-dialog";
+			}
+		},
+		{
+			src: $( "body" ),
+			event: "pagecontainerhide",
+			filter: function dataFilter( data ) {
+				return data.prevPage.attr( "id" ) === "large-select-change-after-close-dialog";
+			}
 		},
 		QUnit.start );
 } );
