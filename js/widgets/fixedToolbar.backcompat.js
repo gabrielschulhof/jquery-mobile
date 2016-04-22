@@ -183,18 +183,7 @@ if ( $.mobileBackcompat !== false ) {
 				this.document.find( ".ui-page-active" )
 					.css( "padding-bottom", paddingBottom + "px" );
 			}, 0 );
-		},
-
-		destroy: function() {
-			this._super();
-			var pageActive = this.document.find( ".ui-page-active" ),
-				currentPage = !!this.page ? this.page : pageActive.length ?
-				pageActive : this.document.find( ".ui-page" ).eq( 0 );
-
-			//Remove the class we added to the page previously in android 2.x
-			this._removeClass( currentPage, "ui-toolbar-android-2x-fix" );
 		}
-
 	} );
 
 }

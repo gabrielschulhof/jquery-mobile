@@ -244,7 +244,7 @@ return $.widget( "mobile.toolbar", $.mobile.toolbar, {
 	},
 
 	_destroy: function() {
-		var pageClasses, toolbarClasses, hasFixed, header, hasFullscreen,
+		var hasFixed, header,
 			page = this.pagecontainer.pagecontainer( "getActivePage" );
 
 		this._super();
@@ -252,21 +252,10 @@ return $.widget( "mobile.toolbar", $.mobile.toolbar, {
 			hasFixed = this.document.find( "body>.ui-" + this.role + "-fixed" )
 						.add( page.find( ".ui-" + this.role + "-fixed" ) )
 						.not( this.element ).length > 0;
-			hasFullscreen = this.document.find( "body>.ui-" + this.role + "-fixed" )
-						.add( page.find( ".ui-" + this.role + "-fullscreen" ) )
-						.not( this.element ).length > 0;
-			toolbarClasses =  "ui-header-fixed ui-footer-fixed ui-header-fullscreen in out" +
-				" ui-footer-fullscreen fade slidedown slideup ui-fixed-hidden";
-			this._removeClass( toolbarClasses );
-			if ( !hasFullscreen ) {
-				pageClasses = "ui-page-" + this.role + "-fullscreen";
-			}
 			if ( !hasFixed ) {
 				header = this.role === "header";
-				pageClasses += " ui-page-" + this.role + "-fixed";
 				page.css( "padding-" + ( header ? "top" : "bottom" ), "" );
 			}
-			this._removeClass( page, pageClasses );
 		}
 	}
 
