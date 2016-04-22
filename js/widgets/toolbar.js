@@ -57,7 +57,7 @@ $.widget( "mobile.toolbar", {
 		if ( page.length === 0 ) {
 			page = false;
 			this._on( this.document, {
-				"pageshow": "refresh"
+				"pagecontainershow": "refresh"
 			} );
 		}
 		$.extend( this, {
