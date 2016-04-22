@@ -67,12 +67,12 @@ return $.widget( "mobile.toolbar", $.mobile.toolbar, {
 			this._makeFixed();
 		}
 		if ( this.options.position === "fixed" ) {
-			var pageActive = $( ".ui-page-active" ),
+			var pageActive = this.document.find( ".ui-page-active" ),
 				currentPage = !!this.page ?
 				this.page :
 				pageActive.length ?
 				pageActive :
-				$( ".ui-page" ).eq( 0 );
+				this.document.find( ".ui-page" ).eq( 0 );
 			if ( o.fullscreen !== undefined ) {
 				if ( o.fullscreen ) {
 					this._addClass( "ui-toolbar-" + this.role + "-fullscreen" );
@@ -177,7 +177,7 @@ return $.widget( "mobile.toolbar", $.mobile.toolbar, {
 			scroll = $win.scrollTop(),
 			elHeight = $el.height(),
 			pHeight = ( !!this.page ) ? $el.closest( ".ui-page" ).height() :
-				$( ".ui-page-active" ).height(),
+				this.document.find( ".ui-page-active" ).height(),
 			viewportHeight = $( window ).height();
 
 		return !notransition &&
@@ -249,10 +249,10 @@ return $.widget( "mobile.toolbar", $.mobile.toolbar, {
 
 		this._super();
 		if ( this.options.position === "fixed" ) {
-			hasFixed = $( "body>.ui-" + this.role + "-fixed" )
+			hasFixed = this.document.find( "body>.ui-" + this.role + "-fixed" )
 						.add( page.find( ".ui-" + this.role + "-fixed" ) )
 						.not( this.element ).length > 0;
-			hasFullscreen = $( "body>.ui-" + this.role + "-fixed" )
+			hasFullscreen = this.document.find( "body>.ui-" + this.role + "-fixed" )
 						.add( page.find( ".ui-" + this.role + "-fullscreen" ) )
 						.not( this.element ).length > 0;
 			toolbarClasses =  "ui-header-fixed ui-footer-fixed ui-header-fullscreen in out" +

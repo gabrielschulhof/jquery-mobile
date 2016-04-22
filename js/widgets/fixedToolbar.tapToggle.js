@@ -46,7 +46,8 @@ return $.widget( "mobile.toolbar", $.mobile.toolbar, {
 	},
 
 	_bindToggleHandlers: function() {
-		this._attachToggleHandlersToPage( ( !!this.page ) ? this.page : $( ".ui-page" ) );
+		this._attachToggleHandlersToPage( ( !!this.page ) ? this.page :
+			this.document.find( ".ui-page" ) );
 	},
 
 	_attachToggleHandlersToPage: function( page ) {

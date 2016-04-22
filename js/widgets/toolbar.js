@@ -96,7 +96,8 @@ $.widget( "mobile.toolbar", {
 
 	//We only want this to run on non fixed toolbars so make it easy to override
 	_setRelative: function() {
-		$( "[data-" + $.mobile.ns + "role='page']" ).css( { "position": "relative" } );
+		this.document.find( "[data-" + $.mobile.ns + "role='page']" )
+			.css( { "position": "relative" } );
 	},
 
 	_updateBackButton: function() {
@@ -114,7 +115,7 @@ $.widget( "mobile.toolbar", {
 				this.role === "header" &&
 
 				// There must be multiple pages in the DOM
-				$( ".ui-page" ).length > 1 &&
+				this.document.find( ".ui-page" ).length > 1 &&
 				( this.page ?
 
 					// If the toolbar is internal the page's URL must differ from the hash

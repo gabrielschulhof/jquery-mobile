@@ -158,9 +158,9 @@ if ( $.mobileBackcompat !== false ) {
 		// -webkit-transform:translate3d(0,0,0); solves this problem to avoid potential issues in
 		// other platforms we scope this with the class ui-android-2x-fix
 		_bindListThumbWorkaround: function() {
-			var pageActive = $( ".ui-page-active" ),
+			var pageActive = this.document.find( ".ui-page-active" ),
 				currentPage = !!this.page ? this.page : pageActive.length ?
-				pageActive : $( ".ui-page" ).eq( 0 );
+				pageActive : this.document.find( ".ui-page" ).eq( 0 );
 			this._addClass( currentPage, "ui-toolbar-android-2x-fix" );
 		},
 
@@ -170,23 +170,26 @@ if ( $.mobileBackcompat !== false ) {
 		// adding 1px of padding to the bottom then removing it causes a "redraw"
 		// which positions the toolbars correctly (they will always be visually correct)
 		_triggerRedraw: function() {
-			var paddingBottom = parseFloat( $( ".ui-page-active" ).css( "padding-bottom" ) );
+			var paddingBottom = parseFloat( this.document.find( ".ui-page-active" )
+				.css( "padding-bottom" ) );
 
 			//Trigger page redraw to fix incorrectly positioned fixed elements
-			$( ".ui-page-active" ).css( "padding-bottom", ( paddingBottom + 1 ) + "px" );
+			this.document.find( ".ui-page-active" )
+				.css( "padding-bottom", ( paddingBottom + 1 ) + "px" );
 
 			//If the padding is reset with out a timeout the reposition will not occure.
 			//this is independent of JQM the browser seems to need the time to react.
 			setTimeout( function() {
-				$( ".ui-page-active" ).css( "padding-bottom", paddingBottom + "px" );
+				this.document.find( ".ui-page-active" )
+					.css( "padding-bottom", paddingBottom + "px" );
 			}, 0 );
 		},
 
 		destroy: function() {
 			this._super();
-			var pageActive = $( ".ui-page-active" ),
+			var pageActive = this.document.find( ".ui-page-active" ),
 				currentPage = !!this.page ? this.page : pageActive.length ?
-				pageActive : $( ".ui-page" ).eq( 0 );
+				pageActive : this.document.find( ".ui-page" ).eq( 0 );
 
 			//Remove the class we added to the page previously in android 2.x
 			this._removeClass( currentPage, "ui-toolbar-android-2x-fix" );
