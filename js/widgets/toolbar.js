@@ -43,26 +43,19 @@ $.widget( "mobile.toolbar", {
 		backBtnTheme: null,
 		backBtnText: "Back",
 		type: "toolbar",
+		external: null,
 		ariaRole: null
 	},
 
 	_create: function() {
 		var leftbutton, rightbutton,
 			role =  this.options.type,
-			page = this.element.closest( ".ui-page" ),
 			toolbarAriaRole = this.options.ariaRole === null ?
 				role === "header" ? "banner" :
 				( role === "footer" ? "contentinfo" : "toolbar" ) :
 				this.options.ariaRole;
-		if ( page.length === 0 ) {
-			page = false;
-			this._on( this.document, {
-				"pagecontainershow": "refresh"
-			} );
-		}
 		$.extend( this, {
 			role: role,
-			page: page,
 			leftbutton: leftbutton,
 			rightbutton: rightbutton
 		} );
@@ -82,8 +75,28 @@ $.widget( "mobile.toolbar", {
 
 		this._super( o );
 	},
+	_page: function() {
+		var myPage;
+
+		// If the "external" option is set to true, we assume this is an external toolbar
+		if ( this.options.external ) {
+			return false;
+		}
+
+		// Otherwise, we try to find the parent page.
+		myPage = this.element.closest( ".ui-page" );
+
+		// If we cannot find the parent page, we only return false if the "external" option is set
+		// to null, i.e., auto-detect. Otherwise, if it is set to false, i.e. we assume there is a
+		// parent page, then we return the jQuery object for the parent page, even if it's empty.
+		if ( this.options.external === null && !myPage.length ) {
+			myPage = false;
+		}
+
+		return myPage;
+	},
 	refresh: function() {
-		if ( !this.page ) {
+		if ( !this._page() ) {
 			this._setRelative();
 			if ( this.role === "footer" ) {
 				this.element.appendTo( "body" );
@@ -102,6 +115,7 @@ $.widget( "mobile.toolbar", {
 
 	_updateBackButton: function() {
 		var backButton,
+			myPage = this._page(),
 			options = this.options,
 			theme = options.backBtnTheme || options.theme;
 
@@ -116,10 +130,10 @@ $.widget( "mobile.toolbar", {
 
 				// There must be multiple pages in the DOM
 				this.document.find( ".ui-page" ).length > 1 &&
-				( this.page ?
+				( myPage ?
 
 					// If the toolbar is internal the page's URL must differ from the hash
-					( this.page[ 0 ].getAttribute( "data-" + $.mobile.ns + "url" ) !==
+					( myPage.attr( "data-" + $.mobile.ns + "url" ) !==
 						$.mobile.path.stripHash( location.hash ) ) :
 
 					// Otherwise, if the toolbar is external there must be at least one

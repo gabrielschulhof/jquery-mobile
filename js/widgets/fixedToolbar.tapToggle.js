@@ -37,7 +37,8 @@ return $.widget( "mobile.toolbar", $.mobile.toolbar, {
 	options: {
 		tapToggle: false,
 		tapToggleBlacklist: "a, button, input, select, textarea, .ui-toolbar-header-fixed, " +
-			".ui-toolbar-footer-fixed, .ui-flipswitch, .ui-popup, .ui-panel, .ui-panel-dismiss-open"
+			".ui-toolbar-footer-fixed, .ui-flipswitch, .ui-popup, .ui-panel, " +
+			".ui-panel-dismiss-open"
 	},
 
 	_makeFixed: function() {
@@ -46,7 +47,8 @@ return $.widget( "mobile.toolbar", $.mobile.toolbar, {
 	},
 
 	_bindToggleHandlers: function() {
-		this._attachToggleHandlersToPage( ( !!this.page ) ? this.page :
+		var myPage = this._page();
+		this._attachToggleHandlersToPage( myPage ? myPage :
 			this.document.find( ".ui-page" ) );
 	},
 

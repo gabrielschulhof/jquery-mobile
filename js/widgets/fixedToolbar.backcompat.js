@@ -158,10 +158,21 @@ if ( $.mobileBackcompat !== false ) {
 		// -webkit-transform:translate3d(0,0,0); solves this problem to avoid potential issues in
 		// other platforms we scope this with the class ui-android-2x-fix
 		_bindListThumbWorkaround: function() {
-			var pageActive = this.document.find( ".ui-page-active" ),
-				currentPage = !!this.page ? this.page : pageActive.length ?
-				pageActive : this.document.find( ".ui-page" ).eq( 0 );
-			this._addClass( currentPage, "ui-toolbar-android-2x-fix" );
+
+			// Add the class to the parent page
+			var	page = this._page();
+
+			// If there is no parent page, add the class to the active page
+			if ( !page ) {
+				page = this.document.find( ".ui-page-active" );
+			}
+
+			// If there is no active page, add the class to the first page in the DOM
+			if ( !page.length ) {
+				page = this.document.find( ".ui-page" ).eq( 0 );
+			}
+
+			this._addClass( page, "ui-toolbar-android-2x-fix" );
 		},
 
 		// Addresses issues #4337 Fixed header problem after scrolling content on iOS and Android
