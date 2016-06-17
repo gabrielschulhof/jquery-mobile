@@ -1,11 +1,11 @@
 /*
- * mobile select unit tests
+ * Mobile select unit tests
  */
 
 ( function( $ ) {
 var libName = "forms.select";
 
-$( document ).bind( 'mobileinit', function() {
+$( document ).bind( "mobileinit", function() {
 	$.mobile.selectmenu.prototype.options.nativeMenu = false;
 } );
 
@@ -27,8 +27,11 @@ test( "selects marked with data-native-menu=true should sit inside the button", 
 	deepEqual( $( "#select-choice-native-container div.ui-button select" ).length, 1 );
 } );
 
-test( "select controls will create when inside a container that receives a 'create' event", function() {
-	ok( !$( "#enhancetest" ).appendTo( ".ui-page-active" ).find( ".ui-selectmenu" ).length, "did not have enhancements applied" );
-	ok( $( "#enhancetest" ).enhanceWithin().find( ".ui-selectmenu" ).length, "enhancements applied" );
-} );
+test( "select controls will create when inside a container that receives a 'create' event",
+	function() {
+		ok( !$( "#enhancetest" ).appendTo( ".ui-page-active" ).find( ".ui-selectmenu" ).length,
+			"did not have enhancements applied" );
+		ok( $( "#enhancetest" ).enhanceWithin().find( ".ui-selectmenu" ).length,
+			"enhancements applied" );
+	} );
 } )( jQuery );
